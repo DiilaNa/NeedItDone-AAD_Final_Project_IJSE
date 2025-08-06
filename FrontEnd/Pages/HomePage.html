@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeedItDone - You post it, they do it</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+
+        }
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .service-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<!-- Home Page -->
+<div id="navbar"></div>
+<div id="home" class="page-section active">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="display-4 mb-4">You Post It, They Do It</h1>
+            <p class="lead mb-4">Connect with skilled professionals for all your home service needs</p>
+            <div class="row justify-content-center">
+                <div class="col-md-4 mb-3">
+                    <button class="btn btn-light btn-lg w-100" onclick="showPage('register')">
+                        <i class="fas fa-home me-2"></i>I Need Services
+                    </button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button class="btn btn-outline-light btn-lg w-100" onclick="showPage('register')">
+                        <i class="fas fa-wrench me-2"></i>I Provide Services
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Services</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-wrench fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Plumbing</h5>
+                            <p class="card-text">Professional plumbing services for all your water and pipe needs.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-bolt fa-3x text-warning mb-3"></i>
+                            <h5 class="card-title">Electrical</h5>
+                            <p class="card-text">Certified electricians for safe and reliable electrical work.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-hammer fa-3x text-success mb-3"></i>
+                            <h5 class="card-title">Construction</h5>
+                            <p class="card-text">Skilled construction workers for your building projects.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-saw-blade fa-3x text-info mb-3"></i>
+                            <h5 class="card-title">Carpentry</h5>
+                            <p class="card-text">Expert carpenters for furniture and woodwork projects.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-cogs fa-3x text-danger mb-3"></i>
+                            <h5 class="card-title">Mechanical</h5>
+                            <p class="card-text">Professional mechanics for all your mechanical needs.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card service-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-paint-brush fa-3x text-secondary mb-3"></i>
+                            <h5 class="card-title">Painting</h5>
+                            <p class="card-text">Professional painters for interior and exterior work.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(function () {
+        $("#navbar").load("navbar.html");
+    });
+</script>
+
+</body>
+</html>
