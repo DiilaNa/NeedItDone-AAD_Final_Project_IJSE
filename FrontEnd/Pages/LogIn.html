@@ -6,19 +6,61 @@
   <title>NeedItDone - You post it, they do it</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body{
+      overflow: hidden;
+    }
+    #navbar{
+      background-color: #1f2937;
+    }
+    #container{
+      width: auto;
+      min-width: 450px;
+    }
+    .page-section{
+      width: 100%;
+      height: 95vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #000000;
+    }
+    .btn:hover{
+      background-color: #10b981 !important;
+    }
+    .btn{
+      text-transform: uppercase;
+      color: #ffffff !important;
+      background-color: #1e40af !important;
+      margin-top: 70px;
+    }
+    a{
+      text-align: center;
+      font-size: 13px;
+    }
+    a:hover{
+      color: #ef4444;
+    }
+
+    #cardS{
+      height: 450px;
+    }
+
+  </style>
+
 </head>
 <body>
 <!-- Login Page -->
 <div id="navbar"></div>
 <div id="login" class="page-section">
-  <div class="container">
-    <div class="login-container">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white text-center">
+  <div id="container" class="container">
+    <div class="login-container mt-1">
+      <div class="card shadow" id="cardS">
+        <div class="card-header bg-primary text-white text-center mb-3">
           <h4><i class="fas fa-sign-in-alt me-2"></i>Login</h4>
         </div>
-        <div class="card-body">
-          <form>
+        <div class="card-body mt-3" id="cardBody">
+          <form id="frm">
             <div class="mb-3">
               <label for="loginEmail" class="form-label">Email</label>
               <input type="email" class="form-control" id="loginEmail" required>
@@ -27,15 +69,9 @@
               <label for="loginPassword" class="form-label">Password</label>
               <input type="password" class="form-control" id="loginPassword" required>
             </div>
-            <div class="mb-3">
-              <select class="form-select" required>
-                <option value="">Select Role</option>
-                <option value="homeowner">Homeowner</option>
-                <option value="worker">Worker</option>
-                <option value="admin">Admin</option>
-              </select>
+            <div id="loginButtnDiv">
+              <button type="submit" class="btn btn-custom w-100">Login</button>
             </div>
-            <button type="submit" class="btn btn-custom w-100">Login</button>
           </form>
           <div class="text-center mt-3">
             <a href="#" onclick="showPage('register')">Don't have an account? Register here</a>
