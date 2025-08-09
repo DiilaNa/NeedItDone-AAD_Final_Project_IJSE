@@ -1,0 +1,242 @@
+.wrapper {
+    width: 100%;
+    height: 95vh;
+    display: grid;
+    place-content: center;
+    background: black;
+    z-index: -2;
+    overflow: hidden;
+}
+
+.form {
+    padding: 2rem 3rem;
+    display: grid;
+    place-items: center;
+    gap: 2rem;
+    border: 1px solid transparent;
+    -o-border-image: linear-gradient(transparent, #0790e4, transparent) 1;
+    border-image: linear-gradient(transparent, #0b24c6, transparent) 1;
+    border-width: 0 2px 0px 2px;
+    background: radial-gradient(
+            100% 61.73% at 100% 50%,
+            rgba(21, 3, 99, 0.05) 0%,
+            transparent 100%
+    ),
+    radial-gradient(
+            91.09% 56.23% at 0% 50%,
+            rgba(4, 14, 74, 0.05) 0%,
+            transparent 100%
+    );
+    position: relative;
+}
+.form::before,
+.form::after {
+    content: "";
+    position: absolute;
+    border: 1px solid transparent;
+    border: inherit;
+    z-index: -1;
+}
+.form::before {
+    inset: -1rem;
+    opacity: 15%;
+}
+.form::after {
+    inset: -2rem;
+    opacity: 5%;
+}
+.form .title {
+    color: #29dfc9;
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1.5rem;
+    text-transform: uppercase;
+    background: linear-gradient(rgb(63, 205, 188), rgb(78, 78, 78));
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+.form .input-container {
+    display: flex;
+    align-items: center;
+    background: radial-gradient(
+            47.3% 73.08% at 50% 94.23%,
+            rgba(255, 255, 255, 0.1) 5%,
+            rgba(0, 0, 0, 0) 100%
+    );
+    border: 1px solid transparent;
+    -o-border-image: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.445) 0%,
+            rgba(0, 0, 0, 0) 100%
+    )
+    1;
+    border-image: radial-gradient(
+            circle,
+            rgba(32, 106, 191, 0.44) 0%,
+            rgba(0, 0, 0, 0) 100%
+    )
+    1;
+    border-width: 0 0 3px 0;
+}
+.form .input-container svg {
+    stroke: #02447a;
+}
+.form .input-container svg g {
+    transition: all 0.2s ease-in-out;
+}
+.form .input-container .input {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: #32e1b6;
+}
+.form .input-container .input:focus {
+    outline: none;
+    color: #0acab3;
+}
+.form .input-container:focus-within {
+    background: radial-gradient(
+            47.3% 73.08% at 50% 94.23%,
+            rgba(255, 224, 166, 0.1) 5%,
+            rgba(0, 0, 0, 0) 100%
+    );
+    -o-border-image: radial-gradient(circle, #178d9c 0%, transparent 100%) 1;
+    border-image: radial-gradient(circle, #15bdb0 0%, transparent 100%) 1;
+}
+.form .input-container:focus-within svg g {
+    stroke: #0576c6;
+}
+.form .signup-button {
+    width: 100%;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+}
+.form .signup-button .input {
+    cursor: pointer;
+    padding: 1rem;
+    width: 100%;
+    background: radial-gradient(
+            100% 45% at 100% 50%,
+            rgba(16, 239, 187, 0.08) 0%,
+            rgba(2, 59, 147, 0) 100%
+    ),
+    radial-gradient(
+            100% 45% at 0% 50%,
+            rgba(255, 224, 166, 0.084) 0%,
+            rgba(115, 115, 115, 0) 100%
+    );
+    border: 1px solid transparent;
+    -o-border-image: linear-gradient(transparent, #079eb8, transparent) 1;
+    border-image: linear-gradient(transparent, #09cdb0, transparent) 1;
+    border-width: 0 1px 0 1px;
+    text-align: center;
+    color: #0f8f80;
+    font-size: 1rem;
+}
+.form .signup-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+            0deg,
+            rgba(6, 79, 175, 0.66) 0.5px,
+            transparent 0.5px
+    );
+    background-size: 0.1px 3px;
+    mix-blend-mode: soft-light;
+    -webkit-mask-image: radial-gradient(
+            40% 45% at 100% 50%,
+            #0791e4 0%,
+            transparent 100%
+    ),
+    radial-gradient(40% 45% at 0% 50%, rgba(10, 243, 224, 0) 0%, transparent 100%);
+    mask-image: radial-gradient(40% 45% at 100% 50%, #0fb2e3 0%, transparent 100%),
+    radial-gradient(40% 45% at 0% 50%, #0bdada 0%, transparent 100%);
+}
+.form .signup-button:hover {
+    animation: flicker 0.5s infinite;
+    width: 105%;
+}
+.form .signup-button:active {
+    width: 95%;
+}
+.form .texture {
+    position: absolute;
+    background-image: linear-gradient(0deg, #12c3e3 1px, transparent 1px);
+    background-size: 1px 5px;
+    inset: 0;
+    mix-blend-mode: soft-light;
+    -webkit-mask-image: radial-gradient(
+            30% 45% at 100% 50%,
+            #039382 0%,
+            transparent 100%
+    ),
+    radial-gradient(30% 45% at 0% 50%, #03bfb9 0%, transparent 100%);
+    mask-image: radial-gradient(30% 45% at 100% 50%, #019fb5 0%, transparent 100%),
+    radial-gradient(30% 45% at 0% 50%, #064ab1 0%, transparent 100%);
+    pointer-events: none;
+    animation: movingLines 1s linear infinite;
+}
+
+@keyframes flicker {
+    0% {
+        filter: brightness(100%);
+    }
+    10% {
+        filter: brightness(80%);
+    }
+    20% {
+        filter: brightness(120%);
+    }
+    30% {
+        filter: brightness(90%);
+    }
+    40% {
+        filter: brightness(110%);
+    }
+    50% {
+        filter: brightness(100%);
+    }
+    60% {
+        filter: brightness(85%);
+    }
+    70% {
+        filter: brightness(95%);
+    }
+    80% {
+        filter: brightness(105%);
+    }
+    90% {
+        filter: brightness(115%);
+    }
+    100% {
+        filter: brightness(100%);
+    }
+}
+@keyframes movingLines {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 5px;
+    }
+}
+
+.navbar{
+    background-color: #1f2937 !important;
+}
+.nav-link,.navbar-brand{
+    color: white!important;
+}
+
+.text-center a {
+    color: #32e1b6;
+    text-decoration: none;
+}
+
+.text-center a:hover {
+    color: #0acab3;
+}
