@@ -53,6 +53,40 @@
             color: white !important;
             text-transform: uppercase;
         }
+
+        #typewriterText{
+            font-size: 20px;
+        }
+        .typewriter {
+            color: #fff;
+            overflow: hidden;
+            border-right: .15em solid #6600ff;
+            white-space: nowrap;
+            margin: 0 auto;
+            width: 65%;
+            animation:
+                    typing 3.5s steps(60, end),
+                    blink-caret .5s ease-in-out infinite    ;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 65% }
+        }
+
+
+        @keyframes blink-caret {
+            from,
+            to { border-color: transparent }
+            50% { border-color: #6600ff
+            }
+        }
+        @media all and (min-width: 768px){
+            #typewriterText{
+                font-size: 45px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -62,7 +96,8 @@
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
-            <h1 class="display-4 mb-4">You Post It, They Do It</h1>
+            <h1 class="typewriter display-4 mb-4" id="typewriterText">You Post It,
+                They Do It</h1>
             <p class="lead mb-4">Connect with skilled professionals for all your home service needs</p>
             <div class="row justify-content-center">
                 <div class="col-md-4 mb-3">
