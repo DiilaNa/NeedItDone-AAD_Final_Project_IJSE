@@ -1,0 +1,127 @@
+:root {
+    --primary-color: #2761df;
+    --secondary-color: #020717;
+    --accent-color: #f59e0b;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --dark-color: #1f2937;
+    --light-color: #a8a9ac;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-color);
+
+}
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+    border: 2px solid #130040;
+}
+
+.service-card {
+    transition: transform 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #1f2937;
+    color: white;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgb(1, 7, 113);
+}
+.page-section {
+    display: none;
+}
+
+.page-section.active {
+    display: block;
+}
+#serviceSection{
+    background-color: #000000;
+}
+#serviceSection>.container>h2{
+    color: white !important;
+    text-transform: uppercase;
+}
+
+#typewriterText{
+    font-size: 20px;
+}
+.typewriter {
+    color: #fff;
+    overflow: hidden;
+    border-right: .15em solid #6600ff;
+    white-space: nowrap;
+    margin: 0 auto;
+    width: 65%;
+    animation:
+            typing 3.5s steps(60, end),
+            blink-caret .5s ease-in-out infinite    ;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 65% }
+}
+
+
+@keyframes blink-caret {
+    from,
+    to { border-color: transparent }
+    50% { border-color: #6600ff
+    }
+}
+
+.card {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 4px;
+    z-index: 1111;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 6px #5205d6, -2px -2px 6px #0c67dc;
+;
+}
+.navbar{
+    background-color: #1f2937 !important;
+}
+.nav-link,.navbar-brand{
+    color: white!important;
+    overflow: hidden;
+}
+
+@media all and (min-width: 768px){
+    #typewriterText{
+        font-size: 42px;
+    }
+    .card{
+        width: auto;
+
+    }
+}
+
+@media all and (min-width: 320px){
+   .card{
+       border: 2px solid #6507b1;
+       margin-left: 25px
+   }
+}
+@media all and (min-width: 375px){
+    .card{
+        width: auto;
+    }
+}
+@media all and (min-width: 425px){
+    .card{
+        width: auto;
+
+    }
+}

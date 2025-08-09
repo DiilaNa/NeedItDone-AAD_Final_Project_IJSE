@@ -6,110 +6,87 @@
     <title>NeedItDone - You post it, they do it</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Css/HomePage.css">
     <style>
-        :root {
-            --primary-color: #2761df;
-            --secondary-color: #020717;
-            --accent-color: #f59e0b;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --dark-color: #1f2937;
-            --light-color: #a8a9ac;
+        #loader {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            margin-top: -2.7em;
+            margin-left: -2.7em;
+            width: 5.4em;
+            height: 5.4em;
+            background-color: transparent;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-color);
-
-        }
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 100px 0;
-            text-align: center;
-        }
-
-        .service-card {
-            transition: transform 0.3s ease;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            background-color: #1f2937;
-            color: white;
+        #hill {
+            position: absolute;
+            width: 7.1em;
+            height: 7.1em;
+            top: 1.7em;
+            left: 1.7em;
+            background-color: transparent;
+            border-left: .25em solid whitesmoke;
+            transform: rotate(45deg);
         }
 
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgb(1, 113, 113);
-        }
-        .page-section {
-            display: none;
-        }
-
-        .page-section.active {
-            display: block;
-        }
-        #serviceSection{
-            background-color: #000000;
-        }
-        #serviceSection>.container>h2{
-            color: white !important;
-            text-transform: uppercase;
+        #hill:after {
+            content: '';
+            position: absolute;
+            width: 7.1em;
+            height: 7.1em;
+            left: 0;
+            background-color: transparent;
         }
 
-        #typewriterText{
-            font-size: 20px;
-        }
-        .typewriter {
-            color: #fff;
-            overflow: hidden;
-            border-right: .15em solid #6600ff;
-            white-space: nowrap;
-            margin: 0 auto;
-            width: 65%;
-            animation:
-                    typing 3.5s steps(60, end),
-                    blink-caret .5s ease-in-out infinite    ;
+        #box {
+            position: absolute;
+            left: 0;
+            bottom: -.1em;
+            width: 1em;
+            height: 1em;
+            background-color: transparent;
+            border: .25em solid whitesmoke;
+            border-radius: 15%;
+            transform: translate(0, -1em) rotate(-45deg);
+            animation: push 2.5s cubic-bezier(.79, 0, .47, .97) infinite;
         }
 
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 65% }
-        }
-
-
-        @keyframes blink-caret {
-            from,
-            to { border-color: transparent }
-            50% { border-color: #6600ff
+        @keyframes push {
+            0% {
+                transform: translate(0, -1em) rotate(-45deg);
+            }
+            5% {
+                transform: translate(0, -1em) rotate(-50deg);
+            }
+            20% {
+                transform: translate(1em, -2em) rotate(47deg);
+            }
+            25% {
+                transform: translate(1em, -2em) rotate(45deg);
+            }
+            30% {
+                transform: translate(1em, -2em) rotate(40deg);
+            }
+            45% {
+                transform: translate(2em, -3em) rotate(137deg);
+            }
+            50% {
+                transform: translate(2em, -3em) rotate(135deg);
+            }
+            55% {
+                transform: translate(2em, -3em) rotate(130deg);
+            }
+            70% {
+                transform: translate(3em, -4em) rotate(217deg);
+            }
+            75% {
+                transform: translate(3em, -4em) rotate(220deg);
+            }
+            100% {
+                transform: translate(0, -1em) rotate(-225deg);
             }
         }
-        @media all and (min-width: 768px){
-            #typewriterText{
-                font-size: 45px;
-            }
-        }
-        .card {
-            position: relative;
-            width: 400px;
-            height: 250px;
-            border-radius: 4px;
-            z-index: 1111;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 2px 2px 6px #5205d6, -2px -2px 6px #0c67dc;
-        ;
-        }
-        .navbar{
-            background-color: #1f2937 !important;
-        }
-        .nav-link,.navbar-brand{
-            color: white!important;
-        }
-
-
     </style>
 </head>
 <body>
@@ -169,6 +146,10 @@
             </div>
         </div>
     </section>
+    <div id="loader">
+        <div id="box"></div>
+        <div id="hill"></div>
+    </div>
 
     <!-- Services Section -->
     <section class="py-5" id="serviceSection">
@@ -206,7 +187,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card service-card h-100">
                         <div class="card-body text-center">
-                            <i class="fas fa-saw-blade fa-3x text-info mb-3"></i>
+                            <i class="fas fa-cog fa-3x text-info mb-3"></i>
                             <h5 class="card-title">Carpentry</h5>
                             <p class="card-text">Expert carpenters for furniture and woodwork projects.</p>
                         </div>
