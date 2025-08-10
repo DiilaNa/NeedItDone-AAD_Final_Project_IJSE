@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="../Css/HomeOwnerDashBoard.css">
     <style>
 
+
+
     </style>
 </head>
 <body>
@@ -62,26 +64,360 @@
 <!-- Enhanced navigation panel -->
 <div class="side-nav" id="sideNav">
     <ul class="nav-menu">
-        <li><a href="#" data-page="home"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-        <li><a href="#" data-page="services"><i class="fas fa-pen-square"></i> Post a Job</a></li>
-        <li><a href="#" data-page="portfolio"><i class="fas fa-briefcase"></i> My Jobs</a></li>
-        <li><a href="#" data-page="about"><i class="fas fa-file-alt"></i> Applications</a></li>
-        <!-- <li><a href="#" data-page="contact"><i class="fas fa-envelope"></i> Contact</a></li> -->
-        <li><a href="#" data-page="help"><i class="fas fa-user-circle"></i> Profile</a></li>
+        <li><a href="#dashboard-post-job-content" data-target="add-job"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="#homeowner-post-job-content" data-section="homeowner-post-job-content" ><i class="fas fa-pen-square"></i> Post a Job</a></li>
+        <li><a href="#homeowner-my-jobs-content" ><i class="fas fa-briefcase"></i> My Jobs</a></li>
+        <li><a href="#homeowner-applications-content"><i class="fas fa-file-alt"></i> Applications</a></li>
+        <li><a href="#homeowner-profile-content"><i class="fas fa-user-circle"></i> Profile</a></li>
     </ul>
 </div>
-
-<!-- Demo content -->
 <div class="demo-content">
+    <div class="col-md-10 p-4">
+        <!-- Dashboard Overview -->
+        <section id="dashboard-post-job-content" class="dashboard-section ">
+            <h2 class="mb-4">Dashboard Overview</h2>
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-briefcase fa-2x mb-2"></i>
+                            <h4>12</h4>
+                            <p>Active Jobs</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-2x mb-2"></i>
+                            <h4>28</h4>
+                            <p>Applications</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-check-circle fa-2x mb-2"></i>
+                            <h4>8</h4>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-star fa-2x mb-2"></i>
+                            <h4>4.8</h4>
+                            <p>Rating</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Recent Jobs</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="job-card card mb-2">
+                                <div class="card-body">
+                                    <h6>Kitchen Plumbing Repair</h6>
+                                    <p class="small text-muted" style="color: white !important;">Posted 2 days ago</p>
+                                    <span class="badge bg-success status-badge">5 Applications</span>
+                                </div>
+                            </div>
+                            <div class="job-card card mb-2">
+                                <div class="card-body">
+                                    <h6>Electrical Wiring</h6>
+                                    <p class="small text-muted" style="color: white !important;">Posted 1 week ago</p>
+                                    <span class="badge bg-warning status-badge">In Progress</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Recent Applications</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <strong>John Smith</strong>
+                                    <small class="text-muted d-block" style="color: white !important;">Applied for Kitchen Plumbing</small>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-success">Accept</button>
+                                    <button class="btn btn-sm btn-outline-danger">Decline</button>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Mike Johnson</strong>
+                                    <small class="text-muted d-block" style="color: white !important;">Applied for Electrical Wiring</small>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-success">Accept</button>
+                                    <button class="btn btn-sm btn-outline-danger">Decline</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Post Job Section -->
+        <section id="homeowner-post-job-content" class="dashboard-section">
+            <h2 class="mb-4">Post New Job</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="jobTitle" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="jobTitle" placeholder="e.g., Kitchen Plumbing Repair" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="jobCategory" class="form-label">Category</label>
+                                    <select class="form-select" id="jobCategory" required>
+                                        <option value="">Select Category</option>
+                                        <option value="plumbing">Plumbing</option>
+                                        <option value="electrical">Electrical</option>
+                                        <option value="construction">Construction</option>
+                                        <option value="carpentry">Carpentry</option>
+                                        <option value="mechanical">Mechanical</option>
+                                        <option value="painting">Painting</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="jobDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="jobDescription" rows="4" placeholder="Describe the work needed..." required></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="jobBudget" class="form-label">Budget ($)</label>
+                                        <input type="number" class="form-control" id="jobBudget" placeholder="0.00" min="0" step="0.01">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="jobDeadline" class="form-label">Deadline</label>
+                                        <input type="date" class="form-control" id="jobDeadline">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="jobLocation" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="jobLocation" placeholder="Job location/address" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="jobUrgency" class="form-label">Urgency</label>
+                                    <select class="form-select" id="jobUrgency">
+                                        <option value="low">Low</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="high">High</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-custom w-100">Post Job</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Jobs Section -->
+        <section id="homeowner-my-jobs-content" class="dashboard-section">
+            <h2 class="mb-4">My Jobs</h2>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card job-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Kitchen Plumbing Repair</h5>
+                            <p class="card-text">Fix leaking pipes under kitchen sink</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-success">5 Applications</span>
+                                <small class="text-muted">Posted 2 days ago</small>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-sm btn-outline-primary">View</button>
+                                <button class="btn btn-sm btn-outline-secondary">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card job-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Electrical Wiring</h5>
+                            <p class="card-text">Install new outlets in living room</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-warning">In Progress</span>
+                                <small class="text-muted">Posted 1 week ago</small>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-sm btn-outline-primary">View</button>
+                                <button class="btn btn-sm btn-outline-secondary">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card job-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Fence Repair</h5>
+                            <p class="card-text">Repair wooden fence in backyard</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-primary">8 Applications</span>
+                                <small class="text-muted">Posted 3 days ago</small>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-sm btn-outline-primary">View</button>
+                                <button class="btn btn-sm btn-outline-secondary">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section id="homeowner-applications-content" class="dashboard-section">
+            <h2 class="mb-4">Job Applications</h2>
+            <div class="application-card">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5>Kitchen Plumbing Repair</h5>
+                        <hr>
+                        <div class="row"><div class="col-md-2">
+                            <strong>John Smith</strong>
+                            <p class="small text-muted" style="color: white !important;">Plumber • 5 years exp</p>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                4.9
+                            </div>
+                        </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-success btn-sm mb-2 w-100">Accept</button>
+                                <button class="btn btn-outline-danger btn-sm w-100">Decline</button>
+                            </div>
+                        </div>
+                        <p class="mt-2">"I have extensive experience with kitchen plumbing repairs. I can fix your leaking pipes efficiently and provide warranty on my work."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="application-card">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5>Electrical Wiring</h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <strong>Mike Johnson</strong>
+                                <p class="small text-muted" style="color: white !important;">Electrician • 8 years exp</p>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    4.7
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-success btn-sm mb-2 w-100">Accept</button>
+                                <button class="btn btn-outline-danger btn-sm w-100">Decline</button>
+                            </div>
+                        </div>
+                        <p class="mt-2">"Licensed electrician with experience in residential wiring. I can install your outlets safely and up to code."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="application-card">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5>Fence Repair</h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <strong>David Brown</strong>
+                                <p class="small text-muted" style="color: white !important;">Carpenter • 6 years exp</p>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    4.5
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-success btn-sm mb-2 w-100">Accept</button>
+                                <button class="btn btn-outline-danger btn-sm w-100">Decline</button>
+                            </div>
+                        </div>
+                        <p class="mt-2">"I specialize in fence repairs and installations. I can restore your wooden fence to excellent condition."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="homeowner-profile-content" class="dashboard-section">
+            <h2 class="mb-4">Profile Settings</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="profileFirstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="profileFirstName" value="John">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="profileLastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="profileLastName" value="Doe">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="profileEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="profileEmail" value="john.doe@email.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="profilePhone" class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="profilePhone" value="+1234567890">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="profileAddress" class="form-label">Address</label>
+                                    <textarea class="form-control" id="profileAddress" rows="2">123 Main Street, City, State 12345</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-custom">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="../Js/HomeOwnerDashBoard.js"></script>
-<script>
 
-
-</script>
 </body>
 </html>

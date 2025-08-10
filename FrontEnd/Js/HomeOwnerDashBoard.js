@@ -1,53 +1,38 @@
-$(document).ready(function () {
-    const $circleBtn = $('#circleMenuBtn');
-    const $sideNav = $('#sideNav');
-    const $backdrop = $('#navBackdrop');
-    const $hamburgerIcon = $('#hamburgerIcon');
+$(document).ready(function() {
 
-    // Toggle navigation
-    $circleBtn.on('click', function () {
-        const isOpen = $sideNav.hasClass('show');
+    var $circleMenuBtn = $('#circleMenuBtn');
+    var $hamburgerIcon = $('#hamburgerIcon');
+    var $sideNav = $('#sideNav');
+    var $navBackdrop = $('#navBackdrop');
 
-        if (isOpen) {
-            closeNav();
+
+    $circleMenuBtn.on('click', function() {
+        if ($sideNav.hasClass('show')) {
+            $sideNav.removeClass('show');
+            $navBackdrop.removeClass('show');
+            $hamburgerIcon.removeClass('active');
+            $circleMenuBtn.removeClass('active');
         } else {
-            openNav();
+            $sideNav.addClass('show');
+            $navBackdrop.addClass('show');
+            $hamburgerIcon.addClass('active');
+            $circleMenuBtn.addClass('active');
         }
     });
 
-    // Close nav when clicking backdrop
-    $backdrop.on('click', function() {
-        closeNav();
-    });
-
-    // Close nav when clicking a link
-    $('.nav-menu a').on('click', function(e) {
-        e.preventDefault();
-        const page = $(this).data('page');
-        console.log(`Navigating to: ${page}`);
-        closeNav();
-    });
-
-    function openNav() {
-        $sideNav.addClass('show');
-        $backdrop.addClass('show');
-        $circleBtn.addClass('active');
-        $hamburgerIcon.addClass('active');
-        $('body').css('overflow', 'hidden');
-    }
-
-    function closeNav() {
+    $navBackdrop.on('click', function() {
         $sideNav.removeClass('show');
-        $backdrop.removeClass('show');
-        $circleBtn.removeClass('active');
+        $navBackdrop.removeClass('show');
         $hamburgerIcon.removeClass('active');
-        $('body').css('overflow', 'auto');
-    }
+        $circleMenuBtn.removeClass('active');
+    });
 
-    // Keyboard navigation
-    $(document).on('keydown', function(e) {
-        if (e.key === 'Escape' && $sideNav.hasClass('show')) {
-            closeNav();
+    $('.nav-menu a').on('click', function() {
+        if ($(window).width() <= 991) {
+            $sideNav.removeClass('show');
+            $navBackdrop.removeClass('show');
+            $hamburgerIcon.removeClass('active');
+            $circleMenuBtn.removeClass('active');
         }
     });
 });
