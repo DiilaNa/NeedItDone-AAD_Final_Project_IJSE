@@ -348,7 +348,7 @@ body {
 @media (min-width: 992px) {
 
     #dashboard-post-job-content{
-        padding: 65px!important;
+        padding-top: 65px!important;
     }
     .navbar{
         position: fixed;

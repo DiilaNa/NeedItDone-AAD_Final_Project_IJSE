@@ -1,0 +1,455 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeedItDone - You post it, they do it</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  </head>
+  <body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="HomePage.html">
+        <i class="fas fa-tools me-2"></i>NeedItDone
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="HomePage.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="LogIn.html">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="SignUpPage.html">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="HomeOwnerDashBoard.html">Homeowner</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Worker</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Admin</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Backdrop overlay -->
+  <div class="nav-backdrop" id="navBackdrop"></div>
+
+  <!-- Floating circular button -->
+  <div class="circle-menu-btn" id="circleMenuBtn">
+    <div class="hamburger-icon" id="hamburgerIcon">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <!-- Enhanced navigation panel -->
+  <div class="side-nav" id="sideNav">
+    <ul class="nav-menu">
+      <li><a href="#worker-dashboard-content" data-target="add-job"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="#worker-browse-jobs-content" data-section="homeowner-post-job-content" ><i class="fas fa-pen-square"></i> Job Search</a></li>
+      <li><a href="#worker-my-applications-content" ><i class="fas fa-briefcase"></i> My Applications</a></li>
+      <li><a href="#worker-active-jobs-content"><i class="fas fa-file-alt"></i> Active Jobs</a></li>
+      <li><a href="#worker-profile-content"><i class="fas fa-user-circle"></i> Profile</a></li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <!-- Main Content -->
+    <div class="col-md-10 p-4">
+      <!-- Dashboard Overview -->
+      <div id="worker-dashboard-content" class="dashboard-section active">
+                <h2 class="mb-4">Worker Dashboard</h2>
+                <div class="row mb-4">
+                  <div class="col-md-3">
+                    <div class="card stats-card">
+                      <div class="card-body text-center">
+                        <i class="fas fa-paper-plane fa-2x mb-2"></i>
+                        <h4>15</h4>
+                        <p>Applications Sent</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="card stats-card">
+                      <div class="card-body text-center">
+                        <i class="fas fa-briefcase fa-2x mb-2"></i>
+                        <h4>6</h4>
+                        <p>Active Jobs</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="card stats-card">
+                      <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-2x mb-2"></i>
+                        <h4>23</h4>
+                        <p>Completed Jobs</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="card stats-card">
+                      <div class="card-body text-center">
+                        <i class="fas fa-dollar-sign fa-2x mb-2"></i>
+                        <h4>$2,450</h4>
+                        <p>Earnings This Month</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h5>Recent Applications</h5>
+                      </div>
+                      <div class="card-body">
+                        <div class="job-card card mb-2">
+                          <div class="card-body">
+                            <h6>Kitchen Renovation</h6>
+                            <p class="small text-muted">Applied 1 day ago</p>
+                            <span class="badge bg-warning status-badge">Under Review</span>
+                          </div>
+                        </div>
+                        <div class="job-card card mb-2">
+                          <div class="card-body">
+                            <h6>Bathroom Plumbing</h6>
+                            <p class="small text-muted">Applied 3 days ago</p>
+                            <span class="badge bg-success status-badge">Accepted</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h5>Active Jobs</h5>
+                      </div>
+                      <div class="card-body">
+                        <div class="job-card card mb-2">
+                          <div class="card-body">
+                            <h6>Office Electrical Work</h6>
+                            <p class="small text-muted">Due in 3 days</p>
+                            <div class="progress mb-2">
+                              <div class="progress-bar" role="progressbar" style="width: 60%"></div>
+                            </div>
+                            <small class="text-muted">60% Complete</small>
+                          </div>
+                        </div>
+                        <div class="job-card card">
+                          <div class="card-body">
+                            <h6>Home Carpentry</h6>
+                            <p class="small text-muted">Due in 1 week</p>
+                            <div class="progress mb-2">
+                              <div class="progress-bar" role="progressbar" style="width: 25%"></div>
+                            </div>
+                            <small class="text-muted">25% Complete</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+      <!-- Browse Jobs Section -->
+      <div id="worker-browse-jobs-content" class="dashboard-section">
+                <h2 class="mb-4">Browse Available Jobs</h2>
+                <div class="row mb-3">
+                  <div class="col-md-4">
+                    <select class="form-select" id="categoryFilter">
+                      <option value="">All Categories</option>
+                      <option value="plumbing">Plumbing</option>
+                      <option value="electrical">Electrical</option>
+                      <option value="construction">Construction</option>
+                      <option value="carpentry">Carpentry</option>
+                      <option value="mechanical">Mechanical</option>
+                      <option value="painting">Painting</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="form-select" id="budgetFilter">
+                      <option value="">Any Budget</option>
+                      <option value="0-500">$0 - $500</option>
+                      <option value="500-1000">$500 - $1000</option>
+                      <option value="1000-2000">$1000 - $2000</option>
+                      <option value="2000+">$2000+</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Search jobs..." id="jobSearch">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <div class="card job-card">
+                      <div class="card-body">
+                        <h5 class="card-title">Kitchen Sink Repair</h5>
+                        <p class="card-text">Need urgent repair for leaking kitchen sink. Must be completed within 2 days.</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <span class="badge bg-primary">Plumbing</span>
+                          <span class="text-success fw-bold">$250</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                          <small class="text-muted"><i class="fas fa-map-marker-alt"></i> Downtown Area</small>
+                          <small class="text-muted"><i class="fas fa-clock"></i> Posted 2 hours ago</small>
+                        </div>
+                        <button class="btn btn-custom btn-sm w-100">Apply Now</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card job-card">
+                      <div class="card-body">
+                        <h5 class="card-title">Ceiling Fan Installation</h5>
+                        <p class="card-text">Install 3 ceiling fans in bedrooms. All materials provided.</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <span class="badge bg-warning">Electrical</span>
+                          <span class="text-success fw-bold">$180</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                          <small class="text-muted"><i class="fas fa-map-marker-alt"></i> Suburb Area</small>
+                          <small class="text-muted"><i class="fas fa-clock"></i> Posted 5 hours ago</small>
+                        </div>
+                        <button class="btn btn-custom btn-sm w-100">Apply Now</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card job-card">
+                      <div class="card-body">
+                        <h5 class="card-title">Deck Staining</h5>
+                        <p class="card-text">Stain wooden deck approximately 200 sq ft. Weather dependent scheduling.</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <span class="badge bg-secondary">Painting</span>
+                          <span class="text-success fw-bold">$320</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                          <small class="text-muted"><i class="fas fa-map-marker-alt"></i> North Side</small>
+                          <small class="text-muted"><i class="fas fa-clock"></i> Posted 1 day ago</small>
+                        </div>
+                        <button class="btn btn-custom btn-sm w-100">Apply Now</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card job-card">
+                      <div class="card-body">
+                        <h5 class="card-title">Cabinet Installation</h5>
+                        <p class="card-text">Install kitchen cabinets. Experience with cabinet hardware required.</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <span class="badge bg-success">Carpentry</span>
+                          <span class="text-success fw-bold">$450</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                          <small class="text-muted"><i class="fas fa-map-marker-alt"></i> East Side</small>
+                          <small class="text-muted"><i class="fas fa-clock"></i> Posted 2 days ago</small>
+                        </div>
+                        <button class="btn btn-custom btn-sm w-100">Apply Now</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+      <!-- My Applications Section -->
+      <div id="worker-my-applications-content" class="dashboard-section">
+                <h2 class="mb-4">My Applications</h2>
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                      <th>Job Title</th>
+                      <th>Category</th>
+                      <th>Budget</th>
+                      <th>Applied Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>Kitchen Renovation</td>
+                      <td><span class="badge bg-primary">Plumbing</span></td>
+                      <td>$450</td>
+                      <td>2024-08-03</td>
+                      <td><span class="badge bg-warning">Under Review</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Bathroom Plumbing</td>
+                      <td><span class="badge bg-primary">Plumbing</span></td>
+                      <td>$320</td>
+                      <td>2024-08-01</td>
+                      <td><span class="badge bg-success">Accepted</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-success">Start Work</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Garden Fence Repair</td>
+                      <td><span class="badge bg-success">Carpentry</span></td>
+                      <td>$280</td>
+                      <td>2024-07-30</td>
+                      <td><span class="badge bg-danger">Declined</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-secondary" disabled>View</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Electrical Outlet Installation</td>
+                      <td><span class="badge bg-warning">Electrical</span></td>
+                      <td>$150</td>
+                      <td>2024-07-28</td>
+                      <td><span class="badge bg-info">Completed</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-info">Review</button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+      <!-- Active Jobs Section -->
+      <div id="worker-active-jobs-content" class="dashboard-section">
+                <h2 class="mb-4">Active Jobs</h2>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <div class="card job-card">
+                      <div class="card-body">
+                        <h5 class="card-title">Office Electrical Work</h5>
+                        <p class="card-text">Install additional power outlets in office space.</p>
+                        <div class="mb-3">
+                          <label class="form-label">Progress</label>
+                          <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 60%">60%</div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
+                            <small class="text-muted">Deadline</small>
+                            <p>2024-08-07</p>
+                          </div>
+                          <div class="col-6">
+                            <small class="text-muted">Payment</small>
+                            <p class="text-success fw-bold">$380</p>
+                          </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                          <button class="btn btn-outline-primary btn-sm">Update Progress</button>
+                          <button class="btn btn-success btn-sm">Mark Complete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card job-card">
+                      <div class="card-body">
+                        <h5 class="card-title">Home Carpentry</h5>
+                        <p class="card-text">Build custom shelving unit for home office.</p>
+                        <div class="mb-3">
+                          <label class="form-label">Progress</label>
+                          <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 25%">25%</div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
+                            <small class="text-muted">Deadline</small>
+                            <p>2024-08-11</p>
+                          </div>
+                          <div class="col-6">
+                            <small class="text-muted">Payment</small>
+                            <p class="text-success fw-bold">$520</p>
+                          </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                          <button class="btn btn-outline-primary btn-sm">Update Progress</button>
+                          <button class="btn btn-success btn-sm">Mark Complete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+      <!-- Worker Profile Section -->
+      <div id="worker-profile-content" class="dashboard-section">
+                <h2 class="mb-4">Worker Profile</h2>
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="card">
+                      <div class="card-body">
+                        <form>
+                          <div class="row">
+                            <div class="col-md-6 mb-3">
+                              <label for="workerFirstName" class="form-label">First Name</label>
+                              <input type="text" class="form-control" id="workerFirstName" value="Mike">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label for="workerLastName" class="form-label">Last Name</label>
+                              <input type="text" class="form-control" id="workerLastName" value="Smith">
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="workerEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="workerEmail" value="mike.smith@email.com">
+                          </div>
+                          <div class="mb-3">
+                            <label for="workerPhone" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="workerPhone" value="+1234567890">
+                          </div>
+                          <div class="mb-3">
+                            <label for="workerSkills" class="form-label">Skills</label>
+                            <select class="form-select" id="workerSkills" multiple>
+                              <option value="plumbing" selected>Plumbing</option>
+                              <option value="electrical" selected>Electrical</option>
+                              <option value="construction">Construction</option>
+                              <option value="carpentry">Carpentry</option>
+                              <option value="mechanical">Mechanical</option>
+                              <option value="painting">Painting</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label for="workerExperience" class="form-label">Years of Experience</label>
+                            <input type="number" class="form-control" id="workerExperience" value="7">
+                          </div>
+                          <div class="mb-3">
+                            <label for="workerBio" class="form-label">Bio</label>
+                            <textarea class="form-control" id="workerBio" rows="4">Experienced plumber and electrician with 7 years in residential and commercial work. Licensed and insured.</textarea>
+                          </div>
+                          <button type="submit" class="btn btn-custom">Update Profile</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  </body>
+  </html>
