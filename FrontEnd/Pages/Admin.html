@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeedItDone - You post it, they do it</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="HomePage.html">
+            <i class="fas fa-tools me-2"></i>NeedItDone
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="HomePage.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="LogIn.html">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="SignUpPage.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="HomeOwnerDashBoard.html">Homeowner</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="WorkersDashBoard.html">Worker</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Admin</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Backdrop overlay -->
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<!-- Floating circular button -->
+<div class="circle-menu-btn" id="circleMenuBtn">
+    <div class="hamburger-icon" id="hamburgerIcon">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+
+<!-- Enhanced navigation panel -->
+<div class="side-nav" id="sideNav">
+    <ul class="nav-menu">
+        <li><a href="#dashboard-post-job-content" data-target="add-job"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="#homeowner-post-job-content" data-section="homeowner-post-job-content" ><i class="fas fa-pen-square"></i> Post a Job</a></li>
+        <li><a href="#homeowner-my-jobs-content" ><i class="fas fa-briefcase"></i> My Jobs</a></li>
+        <li><a href="#homeowner-applications-content"><i class="fas fa-file-alt"></i> Applications</a></li>
+        <li><a href="#homeowner-profile-content"><i class="fas fa-user-circle"></i> Profile</a></li>
+    </ul>
+</div>
+<div class="demo-content">
+            <!-- Main Content -->
+            <div class="col-md-10 p-4">
+                <!-- Admin Dashboard Overview -->
+                <div id="admin-dashboard-content" class="dashboard-section active">
+                    <h2 class="mb-4">Admin Dashboard</h2>
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-users fa-2x mb-2"></i>
+                                    <h4>1,247</h4>
+                                    <p>Total Users</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-briefcase fa-2x mb-2"></i>
+                                    <h4>89</h4>
+                                    <p>Active Jobs</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-check-circle fa-2x mb-2"></i>
+                                    <h4>456</h4>
+                                    <p>Completed Jobs</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-dollar-sign fa-2x mb-2"></i>
+                                    <h4>$45,670</h4>
+                                    <p>Platform Revenue</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Recent Activities</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <strong>New user registered</strong>
+                                            <small class="text-muted d-block">Sarah Johnson joined as homeowner</small>
+                                        </div>
+                                        <small class="text-muted">2 hours ago</small>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <strong>Job completed</strong>
+                                            <small class="text-muted d-block">Kitchen plumbing repair finished</small>
+                                        </div>
+                                        <small class="text-muted">4 hours ago</small>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <strong>Payment processed</strong>
+                                            <small class="text-muted d-block">$320 payment completed</small>
+                                        </div>
+                                        <small class="text-muted">6 hours ago</small>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>Worker verified</strong>
+                                            <small class="text-muted d-block">Mike Thompson's credentials approved</small>
+                                        </div>
+                                        <small class="text-muted">1 day ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>System Alerts</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="alert alert-warning" role="alert">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>Payment Issue:</strong> 3 payments require manual review
+                                    </div>
+                                    <div class="alert alert-info" role="alert">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Server Update:</strong> Scheduled maintenance tonight at 2 AM
+                                    </div>
+                                    <div class="alert alert-success" role="alert">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <strong>Backup Complete:</strong> Daily backup completed successfully
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Management Section -->
+                <div id="admin-users-content" class="dashboard-section">
+                    <h2 class="mb-4">User Management</h2>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <select class="form-select" id="userTypeFilter">
+                                <option value="">All User Types</option>
+                                <option value="homeowner">Homeowners</option>
+                                <option value="worker">Workers</option>
+                                <option value="admin">Admins</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="userStatusFilter">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="suspended">Suspended</option>
+                                <option value="pending">Pending Verification</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" placeholder="Search users..." id="userSearch">
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                            <tr>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Email</th>
+                                <th>Join Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Jobs Management Section -->
+                <div id="admin-jobs-content" class="dashboard-section">
+                    <h2 class="mb-4">Job Management</h2>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <select class="form-select" id="jobCategoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="plumbing">Plumbing</option>
+                                <option value="electrical">Electrical</option>
+                                <option value="construction">Construction</option>
+                                <option value="carpentry">Carpentry</option>
+                                <option value="mechanical">Mechanical</option>
+                                <option value="painting">Painting</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="jobStatusFilter">
+                                <option value="">All Status</option>
+                                <option value="open">Open</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="jobDateFilter">
+                                <option value="">All Dates</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" placeholder="Search jobs..." id="jobSearchAdmin">
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                            <tr>
+                                <th>Job Details</th>
+                                <th>Homeowner</th>
+                                <th>Category</th>
+                                <th>Budget</th>
+                                <th>Status</th>
+                                <th>Posted Date</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</body>
+</html>
