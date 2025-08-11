@@ -1,0 +1,430 @@
+html {
+    scroll-padding-top: 70px;
+    font-family: 'Inter', sans-serif;
+
+}
+h2 {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+h5, h6 {
+    font-weight: 600;
+}
+body {
+    margin: 0;
+    position: relative;
+    background: linear-gradient(135deg, #010122, #000000);
+    color: white;
+}
+
+/*------------------------TOP NAV BAR----------------------------------*/
+.navbar{
+    background-color: #1f2937 !important;
+}
+.nav-link,.navbar-brand{
+    color: white!important;
+    overflow: hidden;
+}
+/*--------------------------SIDE NAVBAR--------------------------------*/
+
+/* Floating circle button with stunning design */
+.circle-menu-btn {
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #ffffff;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10000;
+    box-shadow:
+            0 10px 30px rgba(102, 126, 234, 0.4),
+            0 5px 15px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+/* Hamburger icon custom styling */
+.hamburger-icon {
+    position: relative;
+    width: 24px;
+    height: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hamburger-icon span {
+    display: block;
+    width: 100%;
+    height: 2.5px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.hamburger-icon span:nth-child(1) {
+    width: 100%;
+}
+.hamburger-icon span:nth-child(2) {
+    width: 85%;
+}
+.hamburger-icon span:nth-child(3) {
+    width: 70%;
+}
+
+/* Close icon transformation */
+.hamburger-icon.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+    width: 100%;
+}
+.hamburger-icon.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(20px);
+    width: 100%;
+}
+.hamburger-icon.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+    width: 100%;
+}
+
+.circle-menu-btn:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow:
+            0 15px 40px rgba(102, 126, 234, 0.5),
+            0 8px 25px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background: linear-gradient(135deg, #764ba2, #667eea);
+}
+
+.circle-menu-btn:hover .hamburger-icon span {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.circle-menu-btn.active {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow:
+            0 12px 35px rgba(255, 107, 107, 0.4),
+            0 6px 20px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Ripple effect */
+.circle-menu-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.circle-menu-btn:active::before {
+    width: 120px;
+    height: 120px;
+}
+
+.side-nav {
+    position: fixed;
+    top: 50%;
+    margin-top: 20px;
+    left: -220px;
+    transform: translateY(-50%);
+    width: 220px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgb(0, 6, 58);
+    color: #ffffff;
+    padding: 2.5rem 1.5rem;
+    border-radius: 0 30px 30px 0;
+    box-shadow:
+            0 20px 40px rgba(0,0,0,0.3),
+            inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.side-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgb(23, 1, 71), rgb(1, 7, 37));
+    pointer-events: none;
+}
+
+.side-nav.show {
+    left: 0;
+}
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-menu li {
+    margin: 0.5rem 0;
+}
+
+.nav-menu li a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.nav-menu li a i {
+    margin-right: 0.8rem;
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-menu li a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(32, 226, 243, 0.76), transparent);
+    transition: left 0.5s;
+}
+
+.nav-menu li a:hover {
+    background: rgba(5, 244, 223, 0.71);
+    color: #020d8c;
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.nav-menu li a:hover::before {
+    left: 100%;
+}
+
+/* Backdrop overlay */
+.nav-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 9998;
+}
+
+.nav-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/*------------------------Dashboard Cards and All Buttons--------------------------*/
+.dashboard-section{
+    height: auto;
+    margin-bottom: 45px;
+}
+.stats-card {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #06208e, #764ba2);
+    color: white;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.6s;
+}
+
+.stats-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(6, 32, 142, 0.4);
+}
+
+.stats-card:hover::before {
+    left: 100%;
+}
+
+.stats-card .card-body i {
+    transition: transform 0.3s ease;
+}
+
+.stats-card:hover .card-body i {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.card {
+    background-color: #001967;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            0 2px 8px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+            0 16px 48px rgba(0, 0, 0, 0.4),
+            0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+
+/*-----------------------------------------MEDIA QUERIES--------------------------------------*/
+
+/* Desktop styles - sidebar always visible */
+@media (min-width: 992px) {
+
+    #admin-dashboard-content{
+        padding-top: 65px!important;
+    }
+    .navbar{
+        position: fixed;
+        width: 100%;
+    }
+    .circle-menu-btn {
+        display: none; /* Hide hamburger on desktop */
+    }
+
+    .side-nav {
+        left: 0; /* Always visible */
+        top: 0;
+        transform: none;
+        height: 100vh;
+        width: 250px;
+        border-radius: 0 20px 20px 0;
+        transition: none;
+    }
+    .navbar{
+        z-index: 10001 !important;
+
+    }
+
+    .side-nav.show {
+        left: 0;
+    }
+
+    .nav-backdrop {
+        display: none; /* No backdrop needed on desktop */
+    }
+
+    /* Add padding to main content to account for sidebar */
+    .demo-content {
+        margin-left: 250px;
+        padding-left: 2rem;
+    }
+}
+
+/* Tablet and small devices - circular navigation */
+@media (max-width: 991px) {
+    .circle-menu-btn {
+        width: 60px;
+        height: 60px;
+    }
+
+    .side-nav {
+        width: 300px;
+        height: 300px;
+        left: -300px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 50%; /* Circular on smaller devices */
+        padding: 3rem 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .nav-menu li {
+        margin: 0.8rem 0;
+    }
+
+    .nav-menu li a {
+        justify-content: center;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .nav-menu li a i {
+        margin-right: 0.5rem;
+    }
+}
+
+/* Mobile phones - smaller circular nav */
+@media (max-width: 576px) {
+    .circle-menu-btn {
+        width: 55px;
+        height: 55px;
+        left: 15px;
+    }
+
+    .hamburger-icon {
+        width: 20px;
+        height: 15px;
+    }
+
+    .hamburger-icon span {
+        height: 2px;
+    }
+
+    .side-nav {
+        width: 300px;
+        height: 300px;
+        left: -300px;
+
+    }
+
+    .side-nav-header h3 {
+        font-size: 1rem;
+    }
+
+    .nav-menu li a {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.8rem;
+    }
+
+    .demo-content h1 {
+        font-size: 2rem;
+    }
+}
