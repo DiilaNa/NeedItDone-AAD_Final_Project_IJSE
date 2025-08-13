@@ -231,4 +231,6 @@
 .nav-link,.navbar-brand{
     color: white!important;
 }
-
+.navbar-toggler {
+    color: #ffffff !important;
+}

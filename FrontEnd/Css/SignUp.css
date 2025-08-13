@@ -231,7 +231,9 @@
 .nav-link,.navbar-brand{
     color: white!important;
 }
-
+.navbar-toggler {
+    color: #ffffff !important;
+}
 .text-center a {
     color: #32e1b6;
     text-decoration: none;

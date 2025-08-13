@@ -25,6 +25,9 @@ body {
     color: white!important;
     overflow: hidden;
 }
+.navbar-toggler {
+    color: #ffffff !important;
+}
 /*--------------------------SIDE NAVBAR--------------------------------*/
 
 /* Floating circle button with stunning design */
@@ -341,6 +344,7 @@ body {
 .application-card{
     margin-bottom: 45px;
 }
+
 
 /*-----------------------------------------MEDIA QUERIES--------------------------------------*/
 
