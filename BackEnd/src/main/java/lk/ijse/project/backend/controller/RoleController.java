@@ -16,17 +16,11 @@ public class RoleController {
         System.out.println("USER : " + authentication.getName());
         return "hello admin";
     }
-    @GetMapping("/worker")
-    @PreAuthorize("hasRole('WORKERS')")
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('USER')")
     public String worker(Authentication authentication) {
         System.out.println("USER : " + authentication.getName());
-        return "hello worker";
-    }
-    @GetMapping("/homeworker")
-    @PreAuthorize("hasRole('HOMEWORKERS')")
-    public String homeOwner(Authentication authentication) {
-        System.out.println("USER : " + authentication.getName());
-        return "hello homeworker";
+        return "hello user";
     }
 
 }

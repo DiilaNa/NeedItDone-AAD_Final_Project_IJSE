@@ -5,3 +5,12 @@ function navigateTo(page) {
         window.location.href = "Login.html";
     }
 }
+$(document).ready(function (){
+        f();
+})
+
+function f() {
+
+
+
+}
