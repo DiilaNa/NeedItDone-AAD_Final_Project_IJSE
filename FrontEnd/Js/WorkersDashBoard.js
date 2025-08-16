@@ -1,4 +1,9 @@
 $(document).ready(function() {
+    sideNav();
+});
+
+/*----------------------------Side Navigation Bar-----------------------*/
+function sideNav() {
     var $circleMenuBtn = $('#circleMenuBtn');
     var $hamburgerIcon = $('#hamburgerIcon');
     var $sideNav = $('#sideNav');
@@ -7,10 +12,10 @@ $(document).ready(function() {
 
     $circleMenuBtn.on('click', function() {
         if ($sideNav.hasClass('show')) {
-                $sideNav.removeClass('show');
-                $navBackdrop.removeClass('show');
-                $hamburgerIcon.removeClass('active');
-                $circleMenuBtn.removeClass('active');
+            $sideNav.removeClass('show');
+            $navBackdrop.removeClass('show');
+            $hamburgerIcon.removeClass('active');
+            $circleMenuBtn.removeClass('active');
         } else {
             $sideNav.addClass('show');
             $navBackdrop.addClass('show');
@@ -34,4 +39,34 @@ $(document).ready(function() {
             $circleMenuBtn.removeClass('active');
         }
     });
+}
+
+
+/*-----------------------------Switch Modes------------------------------------*/
+
+let currentMode = localStorage.getItem("mode") || "WORK";
+
+if (currentMode === "WORK") {
+    $("#switch").text("Switch to Hire Mode");
+} else {
+    $("#switch").text("Switch to Work Mode");
+}
+
+$("#switch").on('click', function () {
+    switchModes();
 });
+
+
+function switchModes() {
+    if (currentMode === "WORK") {
+
+        currentMode = "HIRE";
+        localStorage.setItem("mode", "HIRE");
+        window.location.href = "HomeOwnerDashBoard.html";
+    } else {
+
+        currentMode = "WORK";
+        localStorage.setItem("mode", "WORK");
+        window.location.href = "WorkersDashBoard.html";
+    }
+}

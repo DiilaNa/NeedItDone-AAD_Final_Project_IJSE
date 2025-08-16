@@ -4,3 +4,9 @@ function navigateTo(page) {
         window.location.href="LogIn.html"
     }
 }
+
+/*--------------Sign Up----------------------------*/
+
+function SignUp() {
+    const username =$("#")
+}

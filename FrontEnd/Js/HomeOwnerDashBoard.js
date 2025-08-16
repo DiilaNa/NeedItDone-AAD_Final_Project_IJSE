@@ -1,5 +1,10 @@
 $(document).ready(function() {
+    sideNav();
 
+});
+
+/*-----------------------Side Navigation Bar--------------------------------*/
+function sideNav() {
     var $circleMenuBtn = $('#circleMenuBtn');
     var $hamburgerIcon = $('#hamburgerIcon');
     var $sideNav = $('#sideNav');
@@ -35,4 +40,29 @@ $(document).ready(function() {
             $circleMenuBtn.removeClass('active');
         }
     });
+}
+
+/*---------------------Switch Modes------------------------*/
+let currentMode = localStorage.getItem("mode") || "HIRE";
+
+if (currentMode === "HIRE") {
+    $("#switch").text("Switch to Work Mode");
+} else {
+    $("#switch").text("Switch to Hire Mode");
+}
+
+$("#switch").on('click', function () {
+    switchModes();
 });
+
+function switchModes() {
+    if (currentMode === "HIRE") {
+        currentMode = "WORK";
+        localStorage.setItem("mode", "WORK");
+        window.location.href = "WorkersDashBoard.html";
+    } else {
+        currentMode = "HIRE";
+        localStorage.setItem("mode", "HIRE");
+        window.location.href = "HomeOwnerDashBoard.html";
+    }
+}
