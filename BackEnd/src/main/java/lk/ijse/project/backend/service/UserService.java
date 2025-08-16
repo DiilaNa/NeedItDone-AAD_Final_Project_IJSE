@@ -1,5 +1,7 @@
 package lk.ijse.project.backend.service;
 
+import lk.ijse.project.backend.dto.LogInDTO;
+import lk.ijse.project.backend.dto.LoginResponseDTO;
 import lk.ijse.project.backend.dto.SignUpDTO;
 import lk.ijse.project.backend.entity.Role;
 import lk.ijse.project.backend.entity.User;
@@ -30,5 +32,16 @@ public class UserService {
                 .build();
         userRepository.save(user);
         return "User Registered Successfully";
+    }
+
+    public LoginResponseDTO authenticate(LogInDTO logInDTO) {
+        User user = userRepository.findByUsername(logInDTO.getUsername())
+                .orElseThrow(() -> new RuntimeException("User Name not Found"));
+
+        if (!passwordEncoder.matches(logInDTO.getPassword(), user.getPassword())){
+            throw new RuntimeException("Invalid Credentials");
+        }
+        String token  = jwtUtil.generateToken(logInDTO.getUsername());
+        return new LoginResponseDTO(token);
     }
 }
