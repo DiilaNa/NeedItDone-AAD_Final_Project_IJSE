@@ -2,6 +2,13 @@ $(document).ready(function() {
 
 });
 
+/*---------------------------------[[]]]]*/
+
+$("#loginBtn").on('click', function(e) {
+    e.preventDefault();
+    window.location.href = "../Pages/HomeOwnerDashBoard.html";
+});
+
 /*--------Navigate to SignUp Page--------------*/
 
 function navigateTo(page) {
@@ -12,10 +19,12 @@ function navigateTo(page) {
 
 /*--------------------------LOGIN--------------------------------*/
 
+/*
 $("#loginForm").on('submit', function(e) {
     e.preventDefault();
-    LogIn();
+    LogIn;
 });
+*/
 
 function LogIn() {
     var username = $("#userNAME").val();

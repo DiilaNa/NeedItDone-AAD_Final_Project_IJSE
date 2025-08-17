@@ -41,6 +41,12 @@ function sideNav() {
         }
     });
 }
+/*---------------------SIGN OUT Button---------------------------*/
+$("#logoutBTN").on('click',function () {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("role")
+    window.location.href = "../Pages/HomePage.html";
+})
 
 /*---------------------Switch Modes------------------------*/
 let currentMode = localStorage.getItem("mode") || "HIRE";

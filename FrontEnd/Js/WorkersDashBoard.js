@@ -1,6 +1,12 @@
 $(document).ready(function() {
     sideNav();
 });
+/*---------------------SIGN OUT Button---------------------------*/
+$("#logoutBTN").on('click',function () {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("role")
+    window.location.href = "../Pages/HomePage.html";
+})
 
 /*----------------------------Side Navigation Bar-----------------------*/
 function sideNav() {
