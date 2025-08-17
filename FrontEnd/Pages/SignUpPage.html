@@ -7,6 +7,37 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../Css/SignUp.css">
+  <style>
+    .modal-content {
+      background-color: #0b1a38; /* dark blue */
+      border-radius: 12px;
+      color: #fff;
+      text-align: center;
+    }
+
+      .role-btn {
+        flex: 1 1 100px; /* responsive width */
+        max-width: 150px;
+        background-color: #142850;
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+    .role-btn:hover {
+      background-color: #1f2a57;
+    }
+    .role-btn-container {
+      display: flex;
+      justify-content: center; /* center horizontally */
+      gap: 20px; /* space between buttons */
+      flex-wrap: wrap; /* wrap on small screens */
+      margin-top: 20px;
+    }
+  </style>
 
 </head>
 <body>
@@ -110,11 +141,27 @@
 
     <div class="texture"></div>
   </form>
+
+  <!-- Role Selection Modal -->
+  <div class="modal fade" id="roleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center p-4">
+        <h3 class="mb-4">Choose Your Role</h3>
+        <div class="role-btn-container">
+          <button class="role-btn" id="homeownerBtn">Homeowner</button>
+          <button class="role-btn" id="workerBtn">Worker</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../Js/SignUp.js"></script>
+<script>
+
+</script>
 </body>
 </html>
