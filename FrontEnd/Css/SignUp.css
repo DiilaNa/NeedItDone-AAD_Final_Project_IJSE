@@ -242,3 +242,35 @@
 .text-center a:hover {
     color: #0acab3;
 }
+
+/*--------------------Role Selector----------------------*/
+
+.modal-content {
+    background-color: #0b1a38; /* dark blue */
+    border-radius: 12px;
+    color: #fff;
+    text-align: center;
+}
+
+.role-btn {
+    flex: 1 1 100px; /* responsive width */
+    max-width: 150px;
+    background-color: #142850;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.role-btn:hover {
+    background-color: #1f2a57;
+}
+.role-btn-container {
+    display: flex;
+    justify-content: center; /* center horizontally */
+    gap: 20px; /* space between buttons */
+    flex-wrap: wrap; /* wrap on small screens */
+    margin-top: 20px;
+}

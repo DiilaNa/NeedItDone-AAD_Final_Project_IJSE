@@ -41,3 +41,9 @@ function sideNavBar() {
     });
 
 }
+/*---------------------SIGN OUT Button---------------------------*/
+$("#logoutBTN").on('click',function () {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("role")
+    window.location.href = "../Pages/HomePage.html";
+})
