@@ -36,7 +36,7 @@
 </nav>
 
 <div class="wrapper">
-  <form class="form">
+  <form class="form" id="signUpForm">
     <span class="title">Register</span>
 
     <div class="input-container">
@@ -70,7 +70,8 @@
         <path d="M22 16.92V19.92C22.0011 20.1985 21.9441 20.4742 21.8325 20.7293C21.7209 20.9845 21.5573 21.2136 21.3521 21.4019C21.1468 21.5901 20.9046 21.7335 20.6407 21.8227C20.3769 21.9119 20.0974 21.9451 19.82 21.92C16.7428 21.5856 13.787 20.5341 11.19 18.85C8.77382 17.3147 6.72533 15.2662 5.19 12.85C3.49997 10.2412 2.44824 7.27099 2.12 4.18C2.09501 3.90347 2.12788 3.62476 2.21649 3.36162C2.3051 3.09849 2.44748 2.85669 2.63459 2.65162C2.8217 2.44655 3.04905 2.28271 3.30324 2.17052C3.55743 2.05833 3.83207 2.00026 4.11 2H7.11C7.59531 1.99522 8.06711 2.16708 8.43849 2.48353C8.80988 2.79999 9.05423 3.23945 9.13 3.72C9.27111 4.68007 9.52779 5.62273 9.89 6.53C10.0213 6.88792 10.0618 7.27691 10.0083 7.65382C9.95478 8.03073 9.80906 8.38785 9.58 8.69L8.62 9.65C10.1073 12.1383 12.2317 14.2627 14.72 15.75L15.68 14.79C15.9922 14.5609 16.3493 14.4152 16.7262 14.3617C17.1031 14.3082 17.4921 14.3487 17.85 14.48C18.7573 14.8422 19.6999 15.0989 20.66 15.24C21.1462 15.3168 21.5904 15.5651 21.9065 15.9451C22.2226 16.325 22.3904 16.8048 22.38 17.3V20.3L22 16.92Z"></path>
       </g>
       </svg>
-      <input id="contact" class="input" type="tel" placeholder="Phone Number" required />
+      <input id="contact" class="input" type="tel" placeholder="Phone Number" pattern="[0-9]{10}"
+             title="Phone number must be 10 digits" required />
     </div>
 
     <div class="input-container">
@@ -82,7 +83,8 @@
         <path d="M16 10.5L18 8.5L15 5.5H13L12 6.5L16 10.5Z"></path>
       </g>
       </svg>
-      <input id="password" class="input" type="password" placeholder="Password" required />
+      <input id="password" class="input" type="password" placeholder="Password" pattern=".{8,}"
+             title="Password must be at least 8 characters long" required />
     </div>
 
     <div class="input-container">
@@ -94,11 +96,12 @@
         <path d="M16 10.5L18 8.5L15 5.5H13L12 6.5L16 10.5Z"></path>
       </g>
       </svg>
-      <input id="confirmPassword" class="input" type="password" placeholder="Confirm Password" required />
+      <input id="confirmPassword" class="input" type="password" placeholder="Confirm Password" pattern=".{8,}"
+             title="Password must be at least 8 characters long" required />
     </div>
 
     <div class="signup-button">
-      <input id="signUpBTN" class="input" type="button" value="Sign Up" />
+      <input id="signUpBTN" class="input" type="submit" value="Sign Up" />
     </div>
 
     <div class="text-center mt-3">

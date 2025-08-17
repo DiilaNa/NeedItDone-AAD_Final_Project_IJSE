@@ -7,7 +7,8 @@ function navigateTo(page) {
 
 /*--------------Sign Up----------------------------*/
 
-$("#signUpBTN").on('click',function () {
+$("#signUpForm").on('submit',function (e) {
+    e.preventDefault();
     SignUp();
 });
 
@@ -35,16 +36,44 @@ function SignUp() {
         role: role
     }
     $.ajax({
-        url:'http://localhost:8080/auth/register',
-        method:'Post',
-        contentType:'application/json',
-        data:JSON.stringify(data),
+        url: 'http://localhost:8080/auth/register',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
         success: function (response) {
-            alert("Success")
-            window.location.href="../Pages/LogIn.html"
+            if (response.status === 200){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'User registered successfully!',
+                    background: '#2c2c2c',
+                    color: '#ffffff',
+                    confirmButtonColor: '#32e1b6'
+                }).then(() => {
+                    window.location.href = "../Pages/LogIn.html";
+                });
+            }
         },
-        error:function (x) {
-            alert("signUp Failed")
+        error: function (xhr) {
+            const status = xhr.responseJSON.status;
+            if (status === 401){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Token Expired...',
+                    background: '#2c2c2c',
+                    color: '#ffffff',
+                    confirmButtonColor: '#32e1b6'
+                });
+            }else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Internal Server Error...',
+                    background: '#2c2c2c',
+                    color: '#ffffff',
+                    confirmButtonColor: '#32e1b6'
+                });
+
+            }
         }
     });
 

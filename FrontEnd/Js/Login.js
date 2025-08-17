@@ -12,7 +12,7 @@ function navigateTo(page) {
 
 /*--------------------------LOGIN--------------------------------*/
 
-$("#loginBtn").on('click', function(e) {
+$("#loginForm").on('submit', function(e) {
     e.preventDefault();
     LogIn();
 });
