@@ -9,7 +9,6 @@ function navigateTo(page) {
 
 $("#signUpBTN").on('click',function () {
     SignUp();
-    console.log("clicked sign up")
 });
 
 function SignUp() {
@@ -35,7 +34,6 @@ function SignUp() {
         password:password,
         role: role
     }
-    console.log(data)
     $.ajax({
         url:'http://localhost:8080/auth/register',
         method:'Post',
@@ -43,11 +41,9 @@ function SignUp() {
         data:JSON.stringify(data),
         success: function (response) {
             alert("Success")
-            console.log("success")
             window.location.href="../Pages/LogIn.html"
         },
         error:function (x) {
-            console.log("failed")
             alert("signUp Failed")
         }
     });
