@@ -1,9 +1,6 @@
 package lk.ijse.project.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Application {
+public class Application implements SuperEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +21,14 @@ public class Application {
     private String category;
     private Date date;
     private String status;
-    private Date amount;
+    private Double amount;
+
+    @ManyToOne
+    @JoinColumn(name = "jobPost_id")
+    private JobPost jobPosts;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User users;
 
 }

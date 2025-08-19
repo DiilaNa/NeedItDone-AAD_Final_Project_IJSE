@@ -1,21 +1,20 @@
 package lk.ijse.project.backend.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class JobPost {
+public class JobPost implements SuperEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,5 +23,19 @@ public class JobPost {
     private String location;
     private String urgency;
     private String deadline;
+
+    @ManyToOne
+    @JoinColumn(name = "userID") /*User One to Many*/
+    private User users;
+
+    @OneToMany(mappedBy = "jobPosts")
+    private List<Rating> ratings; /*Rating One to many*/
+
+    @ManyToOne
+    @JoinColumn(name = "categoryID")
+    private Categories categories;
+
+    @OneToMany(mappedBy = "jobPosts")
+    private List<Application> applications;
 
 }

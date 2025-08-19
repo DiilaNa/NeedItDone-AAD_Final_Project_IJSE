@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Builder
-public class Rating {
+public class Rating implements SuperEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,4 +21,12 @@ public class Rating {
     private int stars;
     private String description;
     private Date date;
+
+    @OneToOne
+    @JoinColumn(name = "userID")  /*User One to One*/
+    private User users;
+
+    @ManyToOne
+    @JoinColumn(name = "jobPostID")/*JobPost  one to Many*/
+    private JobPost jobPosts;
 }
