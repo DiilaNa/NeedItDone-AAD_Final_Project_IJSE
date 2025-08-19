@@ -10,14 +10,14 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicationDTO {
-    @NotBlank(message = "can not be blank")
+    @NotBlank(message = "job title can not be blank")
     private String jobTitle;
-    @NotBlank(message = "can not be blank")
+    @NotBlank(message = "category can not be blank")
     private String category;
-    @NotBlank(message = "can not be blank")
+    @NotBlank(message = "date can not be blank")
     private Date date;
-    @NotBlank(message = "can not be blank")
+    @NotBlank(message = "status can not be blank")
     private String status;
-    @NotBlank(message = "can not be blank")
+    @NotBlank(message = "amount can not be blank")
     private Double amount;
 }
