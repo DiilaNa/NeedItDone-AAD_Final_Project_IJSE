@@ -1,4 +1,4 @@
-package lk.ijse.project.backend.dto;
+package lk.ijse.project.backend.dto.login;
 import lombok.Data;
 
 @Data

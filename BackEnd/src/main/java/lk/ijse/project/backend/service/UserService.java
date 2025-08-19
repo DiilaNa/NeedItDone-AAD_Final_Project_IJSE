@@ -1,8 +1,8 @@
 package lk.ijse.project.backend.service;
 
-import lk.ijse.project.backend.dto.LogInDTO;
-import lk.ijse.project.backend.dto.LoginResponseDTO;
-import lk.ijse.project.backend.dto.SignUpDTO;
+import lk.ijse.project.backend.dto.login.LogInDTO;
+import lk.ijse.project.backend.dto.login.LoginResponseDTO;
+import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.entity.Role;
 import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.repository.UserRepository;

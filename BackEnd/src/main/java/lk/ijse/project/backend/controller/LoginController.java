@@ -1,8 +1,8 @@
 package lk.ijse.project.backend.controller;
 
-import lk.ijse.project.backend.dto.ApiResponseDTO;
-import lk.ijse.project.backend.dto.LogInDTO;
-import lk.ijse.project.backend.dto.SignUpDTO;
+import lk.ijse.project.backend.dto.login.ApiResponseDTO;
+import lk.ijse.project.backend.dto.login.LogInDTO;
+import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
