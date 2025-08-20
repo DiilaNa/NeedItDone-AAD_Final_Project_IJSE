@@ -4,6 +4,7 @@ import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.LogInDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.service.UserService;
+import lk.ijse.project.backend.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class LoginController {
+    private final UserServiceImpl userServiceImpl;
     private final UserService userService;
 
     @PostMapping("/register")
@@ -20,7 +22,7 @@ public class LoginController {
                 new ApiResponseDTO(
                         200,
                         "User Registered Successfully",
-                        userService.Register(signUpDTO)
+                        userServiceImpl.Register(signUpDTO)
                 )
 
         );
@@ -31,7 +33,29 @@ public class LoginController {
                 new ApiResponseDTO(
                         200,
                         "ok",
-                        userService.authenticate(loginDTO)
+                        userServiceImpl.authenticate(loginDTO)
+                )
+        );
+    }
+    @PutMapping("/update")
+    public ResponseEntity<ApiResponseDTO> updateUser(@RequestBody SignUpDTO signUpDTO) {
+        return ResponseEntity.ok(
+                new ApiResponseDTO(
+                        200,
+                        "User Updated Successfully",
+                        userService.updateUser(signUpDTO)
+                )
+        );
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiResponseDTO> deleteUser(@RequestBody SignUpDTO signUpDTO) {
+        userService.deleteUser(signUpDTO);
+        return ResponseEntity.ok(
+                new ApiResponseDTO(
+                        200,
+                        "User Deleted",
+                        "ok"
                 )
         );
     }
