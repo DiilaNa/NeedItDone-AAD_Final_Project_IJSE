@@ -11,6 +11,10 @@ import lk.ijse.project.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -81,5 +85,12 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Users Not Found");
         }
         return modelMapper.map(list, new TypeToken<List<SignUpDTO>>(){}.getType());
+    }
+    @Override
+    public Page<SignUpDTO> getAllUsersPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        return userPage.map(user -> modelMapper.map(user, SignUpDTO.class));
     }
 }

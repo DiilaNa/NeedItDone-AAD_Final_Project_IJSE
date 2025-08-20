@@ -1,6 +1,7 @@
 package lk.ijse.project.backend.service;
 
 import lk.ijse.project.backend.dto.login.SignUpDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ public interface UserService {
     void deleteUser(SignUpDTO signUpDTO);
     List<SignUpDTO> getAllUsers();
     List<SignUpDTO> getAllUsersByKeyword(String keyword);
+    Page<SignUpDTO> getAllUsersPaginated(int page, int size);
 }

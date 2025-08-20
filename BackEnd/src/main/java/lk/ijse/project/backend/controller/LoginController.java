@@ -1,13 +1,12 @@
 package lk.ijse.project.backend.controller;
 
-import jdk.dynalink.linker.LinkerServices;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.LogInDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.service.UserService;
 import lk.ijse.project.backend.service.impl.UserServiceImpl;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,6 +84,19 @@ public class LoginController {
                 new ApiResponseDTO(
                         200,
                         "Searched All users successfully",
+                        users
+                )
+        );
+    }
+
+    @GetMapping("/pagination")
+    public ResponseEntity<ApiResponseDTO> getAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<SignUpDTO> users = userService.getAllUsersPaginated(page, size);
+
+        return ResponseEntity.ok(
+                new ApiResponseDTO(
+                        200,
+                        "Loaded users with pagination successfully",
                         users
                 )
         );
