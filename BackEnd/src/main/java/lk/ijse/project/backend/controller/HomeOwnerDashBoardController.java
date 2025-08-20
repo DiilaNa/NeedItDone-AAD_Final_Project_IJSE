@@ -8,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -35,9 +33,13 @@ public class HomeOwnerDashBoardController {
         );
     }
 
-    @PostMapping("/updateJob")
+    @PutMapping("/updateJob")
     public ResponseEntity<ApiResponseDTO> updateJob(@RequestBody JobPostDTO jobPostDTO) {
-        jobPost.updateJobPost(jobPostDTO);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if ("anonymousUser".equals(username)) {
+            throw new RuntimeException("User not authenticated");
+        }
+        jobPost.updateJobPost(jobPostDTO,username);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,

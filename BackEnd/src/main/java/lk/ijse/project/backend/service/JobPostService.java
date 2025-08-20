@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface JobPostService {
     void saveJobPost(JobPostDTO jobPostDTO,String username);
-    void updateJobPost(JobPostDTO jobPostDTO);
+    void updateJobPost(JobPostDTO jobPostDTO, String username );
     void deleteJobPost(JobPostDTO jobPostDTO);
 
     List<JobPostDTO> getAllJobPosts();

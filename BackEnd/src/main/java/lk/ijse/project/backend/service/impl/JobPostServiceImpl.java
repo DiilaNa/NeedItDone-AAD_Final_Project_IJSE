@@ -56,16 +56,36 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
-    public void updateJobPost(JobPostDTO jobPostDTO) {
-        jobPostRepository.save(modelMapper.map(jobPostDTO, JobPosts.class));
+    @Transactional
+    public void updateJobPost(JobPostDTO jobPostDTO, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Categories category = categoriesRepository
+                .findByName(jobPostDTO.getCategoryName())
+                .orElseGet(() -> {
+                    Categories categories = new Categories();
+                    categories.setName(jobPostDTO.getCategoryName());
+                    return categoriesRepository.save(categories);
+                });
+
+        JobPosts job = modelMapper.map(jobPostDTO, JobPosts.class);
+        job.setUsers(user);
+        job.setCategories(category);
+
+        jobPostRepository.save(job);
     }
 
+
     @Override
+    @Transactional
     public void deleteJobPost(JobPostDTO jobPostDTO) {
-        jobPostRepository.delete(modelMapper.map(jobPostDTO, JobPosts.class));
+        JobPosts job = modelMapper.map(jobPostDTO, JobPosts.class);
+        jobPostRepository.delete(job);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<JobPostDTO> getAllJobPosts() {
         List<JobPosts> list = jobPostRepository.findAll();
         if (list.isEmpty()) {
@@ -75,6 +95,7 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<JobPostDTO> getAllJobPostsByKeyword(String keyword) {
         List<JobPosts> list = jobPostRepository.findJobPostsByJobTitleContainingIgnoreCase(keyword);
         if (list.isEmpty()) {
@@ -84,6 +105,7 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<JobPostDTO> getAllJobPostsPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         Page<JobPosts> jobPostsPage = jobPostRepository.findAll(pageable);

@@ -37,7 +37,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/home/**").permitAll()
-                        .requestMatchers("/home/saveJob").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(
                         session -> session.
