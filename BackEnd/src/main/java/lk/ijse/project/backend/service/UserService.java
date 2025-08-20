@@ -8,7 +8,6 @@ import java.util.List;
 public interface UserService {
     String updateUser(SignUpDTO signUpDTO);
     void deleteUser(SignUpDTO signUpDTO);
-    String register(SignUpDTO signUpDTO);
-
     List<SignUpDTO> getAllUsers();
+    List<SignUpDTO> getAllUsersByKeyword(String keyword);
 }

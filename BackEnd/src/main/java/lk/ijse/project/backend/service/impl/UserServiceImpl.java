@@ -20,8 +20,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -67,11 +65,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String register(SignUpDTO signUpDTO) {
-        return "";
-    }
-
-    @Override
     public List<SignUpDTO> getAllUsers() {
         List<User> allUsers = userRepository.findAll();
         if (allUsers.isEmpty()){
@@ -79,5 +72,14 @@ public class UserServiceImpl implements UserService {
         }
 
         return modelMapper.map(allUsers, new TypeToken<List<SignUpDTO>>(){}.getType());
+    }
+
+    @Override
+    public List<SignUpDTO> getAllUsersByKeyword(String keyword) {
+        List<User> list = userRepository.findByUsernameContainingIgnoreCase(keyword);
+        if (list.isEmpty()){
+            throw new RuntimeException("Users Not Found");
+        }
+        return modelMapper.map(list, new TypeToken<List<SignUpDTO>>(){}.getType());
     }
 }
