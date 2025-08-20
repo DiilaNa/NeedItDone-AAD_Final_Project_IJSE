@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JobPostDTO {
+    private Long id;
     @NotBlank(message = "job title can not be blank")
     private String jobTitle;
     @NotBlank(message = "cost can not be blank")

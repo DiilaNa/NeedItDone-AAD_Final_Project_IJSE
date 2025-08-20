@@ -10,6 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicationDTO {
+    private Long id;
     @NotBlank(message = "job title can not be blank")
     private String jobTitle;
     @NotBlank(message = "category can not be blank")
@@ -20,4 +21,7 @@ public class ApplicationDTO {
     private String status;
     @NotBlank(message = "amount can not be blank")
     private Double amount;
+
+    private Long jobPostsId;   // <-- do you have this?
+    private Long userId;
 }

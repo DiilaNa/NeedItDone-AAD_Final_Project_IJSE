@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoriesDTO {
+    private Long id;
     @NotBlank(message = "name can not be blank")
     private String name;
     private String description;

@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RatingDTO {
+    private Long id;
     @NotBlank(message = "name can not be blank")
     private String name;
     @NotBlank(message = "message can not be blank")
