@@ -34,8 +34,11 @@ public class SecurityConfig {
                 .cors()
                 .and()
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/home/**").permitAll()
+                        .requestMatchers("/home/saveJob").authenticated()
+                        .anyRequest().authenticated())
                 .sessionManagement(
                         session -> session.
                                 sessionCreationPolicy(SessionCreationPolicy.STATELESS)

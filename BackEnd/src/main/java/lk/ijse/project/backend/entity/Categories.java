@@ -18,7 +18,6 @@ public class Categories implements SuperEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String description;
 
     @OneToMany(mappedBy = "categories")
     private List<JobPosts> jobPosts;

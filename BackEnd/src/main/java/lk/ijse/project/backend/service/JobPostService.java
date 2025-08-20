@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface JobPost {
-    void saveJobPost(JobPostDTO jobPostDTO);
+public interface JobPostService {
+    void saveJobPost(JobPostDTO jobPostDTO,String username);
     void updateJobPost(JobPostDTO jobPostDTO);
     void deleteJobPost(JobPostDTO jobPostDTO);
 

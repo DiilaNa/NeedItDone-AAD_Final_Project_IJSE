@@ -1,9 +1,13 @@
 package lk.ijse.project.backend.service.impl;
 
 import lk.ijse.project.backend.dto.JobPostDTO;
+import lk.ijse.project.backend.entity.Categories;
 import lk.ijse.project.backend.entity.JobPosts;
+import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.repository.CategoriesRepository;
 import lk.ijse.project.backend.repository.JobPostRepository;
-import lk.ijse.project.backend.service.JobPost;
+import lk.ijse.project.backend.repository.UserRepository;
+import lk.ijse.project.backend.service.JobPostService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -12,16 +16,43 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class JobPostImpl implements JobPost {
+public class JobPostServiceImpl implements JobPostService {
     private final JobPostRepository jobPostRepository;
+    private  final UserRepository userRepository;
     private final ModelMapper modelMapper;
+
+
+    private final CategoriesRepository categoriesRepository;
+
     @Override
-    public void saveJobPost(JobPostDTO jobPostDTO) {
-        jobPostRepository.save(modelMapper.map(jobPostDTO, JobPosts.class));
+    @Transactional
+    public void saveJobPost(JobPostDTO jobPostDTO, String username) {
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+
+        Categories category = categoriesRepository
+                .findByName(jobPostDTO.getCategoryName())
+                .orElseGet(() -> {
+                    Categories categories = new Categories();
+                    categories.setName(jobPostDTO.getCategoryName());
+                    return categoriesRepository.save(categories);
+                });
+
+
+        JobPosts job = modelMapper.map(jobPostDTO, JobPosts.class);
+        job.setUsers(user);
+        job.setCategories(category);
+
+        jobPostRepository.save(job);
+
     }
 
     @Override
