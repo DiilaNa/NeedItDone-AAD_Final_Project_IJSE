@@ -28,5 +28,5 @@ public class Rating implements SuperEntity{
 
     @ManyToOne
     @JoinColumn(name = "jobPostID")/*JobPost  one to Many*/
-    private JobPost jobPosts;
+    private JobPosts jobPosts;
 }

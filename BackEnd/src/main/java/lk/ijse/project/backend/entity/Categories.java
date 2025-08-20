@@ -21,5 +21,5 @@ public class Categories implements SuperEntity {
     private String description;
 
     @OneToMany(mappedBy = "categories")
-    private List<JobPost> jobPosts;
+    private List<JobPosts> jobPosts;
 }

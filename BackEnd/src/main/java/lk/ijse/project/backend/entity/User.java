@@ -25,11 +25,11 @@ public class User implements SuperEntity{
     private Role role;
 
     @OneToMany(mappedBy = "users")
-    private List<JobPost> jobPosts; /*JobPost One to Many*/
+    private List<JobPosts> jobPosts; /*JobPost One to Many*/
 
     @OneToOne(mappedBy = "users")
     private Rating ratings;  /*Rating one to one*/
 
     @OneToMany(mappedBy = "users")
-    private List<Application> applications;
+    private List<Applications> applications;
 }

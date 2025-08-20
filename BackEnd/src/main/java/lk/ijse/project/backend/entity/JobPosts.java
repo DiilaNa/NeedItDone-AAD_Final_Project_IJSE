@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class JobPost implements SuperEntity{
+public class JobPosts implements SuperEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,6 +36,6 @@ public class JobPost implements SuperEntity{
     private Categories categories;
 
     @OneToMany(mappedBy = "jobPosts")
-    private List<Application> applications;
+    private List<Applications> applications;
 
 }

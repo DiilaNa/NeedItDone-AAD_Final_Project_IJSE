@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Application implements SuperEntity{
+public class Applications implements SuperEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +25,7 @@ public class Application implements SuperEntity{
 
     @ManyToOne
     @JoinColumn(name = "jobPost_id")
-    private JobPost jobPosts;
+    private JobPosts jobPosts;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
