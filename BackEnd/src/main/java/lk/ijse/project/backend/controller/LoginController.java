@@ -1,13 +1,17 @@
 package lk.ijse.project.backend.controller;
 
+import jdk.dynalink.linker.LinkerServices;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.LogInDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.service.UserService;
 import lk.ijse.project.backend.service.impl.UserServiceImpl;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -58,5 +62,19 @@ public class LoginController {
                         "ok"
                 )
         );
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<ApiResponseDTO> getAllUsers() {
+        List<SignUpDTO> users =  userService.getAllUsers();
+        return ResponseEntity.ok(
+                new ApiResponseDTO(
+                        200,
+                        "Load All users",
+                        users
+                )
+        );
+
+
     }
 }

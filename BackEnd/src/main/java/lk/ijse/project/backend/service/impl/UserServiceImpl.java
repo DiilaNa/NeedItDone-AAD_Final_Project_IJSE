@@ -10,8 +10,12 @@ import lk.ijse.project.backend.service.UserService;
 import lk.ijse.project.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -65,5 +69,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public String register(SignUpDTO signUpDTO) {
         return "";
+    }
+
+    @Override
+    public List<SignUpDTO> getAllUsers() {
+        List<User> allUsers = userRepository.findAll();
+        if (allUsers.isEmpty()){
+            throw new RuntimeException("Users Not Found");
+        }
+
+        return modelMapper.map(allUsers, new TypeToken<List<SignUpDTO>>(){}.getType());
     }
 }
