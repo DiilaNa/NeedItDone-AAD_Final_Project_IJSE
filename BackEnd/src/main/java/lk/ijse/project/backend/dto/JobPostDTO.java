@@ -22,5 +22,6 @@ public class JobPostDTO {
     private String urgency;
     @NotBlank(message = " deadline can not be blank")
     private String deadline;
+
     private String categoryName;
 }

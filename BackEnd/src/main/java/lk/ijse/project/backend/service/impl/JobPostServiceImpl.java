@@ -37,15 +37,8 @@ public class JobPostServiceImpl implements JobPostService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-
-        Categories category = categoriesRepository
-                .findByName(jobPostDTO.getCategoryName())
-                .orElseGet(() -> {
-                    Categories categories = new Categories();
-                    categories.setName(jobPostDTO.getCategoryName());
-                    return categoriesRepository.save(categories);
-                });
-
+        Categories category = modelMapper.map(jobPostDTO, Categories.class);
+        categoriesRepository.save(category);
 
         JobPosts job = modelMapper.map(jobPostDTO, JobPosts.class);
         job.setUsers(user);
@@ -69,7 +62,10 @@ public class JobPostServiceImpl implements JobPostService {
                     return categoriesRepository.save(categories);
                 });
 
-        JobPosts job = modelMapper.map(jobPostDTO, JobPosts.class);
+        JobPosts job = (JobPosts) jobPostRepository.findById(jobPostDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Job post not found"));
+
+        modelMapper.map(jobPostDTO, job);
         job.setUsers(user);
         job.setCategories(category);
 

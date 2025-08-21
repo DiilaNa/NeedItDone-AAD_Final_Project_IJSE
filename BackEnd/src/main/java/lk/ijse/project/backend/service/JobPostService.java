@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface JobPostService {
-    void saveJobPost(JobPostDTO jobPostDTO,String username);
+    void saveJobPost(JobPostDTO jobPostDTO, String username);
     void updateJobPost(JobPostDTO jobPostDTO, String username );
     void deleteJobPost(JobPostDTO jobPostDTO);
 
