@@ -9,7 +9,7 @@ import java.util.List;
 public interface RatingService {
     void save(RatingDTO ratingDTO);
     void update(RatingDTO ratingDTO);
-    void delete(RatingDTO ratingDTO);
+   /* void delete(RatingDTO ratingDTO);*/
     List<RatingDTO> getAll();
     List<RatingDTO> getAllByKeyword(String keyword);
     Page<RatingDTO> getAlLPaginated(int page, int size);

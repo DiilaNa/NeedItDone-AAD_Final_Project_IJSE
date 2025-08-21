@@ -43,7 +43,7 @@ public class AdminController {
 
     }
 
-    @DeleteMapping("/deleteRating")
+   /* @DeleteMapping("/deleteRating")
     public ResponseEntity<ApiResponseDTO> deleteRating(@RequestBody RatingDTO ratingDTO) {
         ratingService.delete(ratingDTO);
         return ResponseEntity.ok(
@@ -55,7 +55,7 @@ public class AdminController {
 
         );
 
-    }
+    }*/
 
     @GetMapping("/get")
     public ResponseEntity<ApiResponseDTO> getALlRating() {
