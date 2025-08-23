@@ -37,8 +37,12 @@ public class JobPostServiceImpl implements JobPostService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Categories category = modelMapper.map(jobPostDTO, Categories.class);
-        categoriesRepository.save(category);
+        Categories category = categoriesRepository.findByName(jobPostDTO.getCategoryName())
+                .orElseGet(() -> {
+                    Categories newCat = new Categories();
+                    newCat.setName(jobPostDTO.getCategoryName());
+                    return categoriesRepository.save(newCat);
+                });
 
         JobPosts job = modelMapper.map(jobPostDTO, JobPosts.class);
         job.setUsers(user);

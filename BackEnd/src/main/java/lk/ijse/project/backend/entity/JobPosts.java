@@ -16,6 +16,7 @@ public class JobPosts implements SuperEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String jobTitle;
+    private String description;
     private Double cost;
     private String location;
     private String urgency;

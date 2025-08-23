@@ -1,9 +1,3 @@
-/*---------------------------------[[]]]]*/
-
-$("#loginBtn").on('click', function(e) {
-    e.preventDefault();
-    window.location.href = "../Pages/HomeOwnerDashBoard.html";
-});
 
 /*--------Navigate to SignUp Page--------------*/
 
@@ -17,7 +11,7 @@ function navigateTo(page) {
 
 $("#loginForm").on('submit', function(e) {
     e.preventDefault();
-   /* LogIn();*/
+    LogIn();
 });
 
 /*function LogIn() {

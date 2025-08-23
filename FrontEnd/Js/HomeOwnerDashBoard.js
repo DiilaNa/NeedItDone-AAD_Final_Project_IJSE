@@ -5,10 +5,10 @@ $(document).ready(function() {
 
 /*-----------------------Side Navigation Bar--------------------------------*/
 function sideNav() {
-    var $circleMenuBtn = $('#circleMenuBtn');
-    var $hamburgerIcon = $('#hamburgerIcon');
-    var $sideNav = $('#sideNav');
-    var $navBackdrop = $('#navBackdrop');
+    let $circleMenuBtn = $('#circleMenuBtn');
+    let $hamburgerIcon = $('#hamburgerIcon');
+    let $sideNav = $('#sideNav');
+    let $navBackdrop = $('#navBackdrop');
 
 
     $circleMenuBtn.on('click', function() {
@@ -72,3 +72,58 @@ function switchModes() {
         window.location.href = "HomeOwnerDashBoard.html";
     }
 }
+
+/* -------------------Post a Job/Save----------------------- */
+$("#saveJopPostForm").on('submit',function(e){
+    console.log("clk")
+    e.preventDefault();
+    console.log("clicked")
+    saveJobPosts();
+});
+
+function saveJobPosts() {
+    const JobData = {
+        jobTitle : $("#jobTitle").val(),
+        description : $("#jobDescription").val(),
+        cost : parseFloat($("#jobBudget").val()),
+        location : $("#jobLocation").val(),
+        urgency : $("#jobUrgency").val(),
+        deadline : $("#jobDeadline").val(),
+        categoryName : $("#jobCategory").val()
+    };
+
+    console.log(JobData)
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/home/saveJob",
+        data: JSON.stringify(JobData),
+        contentType: "application/json",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function () {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        },
+        error: function (){
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Failed to Save",
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+        }
+
+    })
+}
+
+
+

@@ -18,19 +18,28 @@ public class HomeOwnerDashBoardController {
 
     @PostMapping("/saveJob")
     public ResponseEntity<ApiResponseDTO> saveJob(@RequestBody JobPostDTO jobPostDTO) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if ("anonymousUser".equals(username)) {
-            throw new RuntimeException("User not authenticated");
-        }
-        jobPost.saveJobPost(jobPostDTO, username);
-        return ResponseEntity.ok(
-                new ApiResponseDTO(
-                        200,
-                        "Job saved Successfully",
-                        "ok"
-                )
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            if ("anonymousUser".equals(username)) {
+                throw new RuntimeException("User not authenticated");
+            }
 
-        );
+            jobPost.saveJobPost(jobPostDTO, username);
+
+            return ResponseEntity.ok(
+                    new ApiResponseDTO(
+                            200,
+                            "Job saved Successfully",
+                            "ok"
+                    ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .body(new ApiResponseDTO(
+                            500,
+                            "Failed to save job: " + e.getMessage(),
+                            null));
+        }
     }
 
     @PutMapping("/updateJob")

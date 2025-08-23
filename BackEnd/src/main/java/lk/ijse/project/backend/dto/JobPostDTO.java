@@ -1,6 +1,7 @@
 package lk.ijse.project.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,9 @@ public class JobPostDTO {
     private Long id;
     @NotBlank(message = "job title can not be blank")
     private String jobTitle;
-    @NotBlank(message = "cost can not be blank")
+    @NotBlank(message = "description can not be blank")
+    private String description;
+    @NotNull(message = "cost can not be blank")
     private Double cost;
     @NotBlank(message = "location can not be blank")
     private String location;

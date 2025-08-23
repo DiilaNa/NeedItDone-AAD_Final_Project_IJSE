@@ -7,7 +7,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../Css/HomeOwnerDashBoard.css">
+
 </head>
 <body>
 
@@ -155,7 +157,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
-                            <form>
+                            <form id="saveJopPostForm">
                                 <div class="mb-3">
                                     <label for="jobTitle" class="form-label">Job Title</label>
                                     <input type="text" class="form-control" id="jobTitle" placeholder="e.g., Kitchen Plumbing Repair" required>
@@ -176,7 +178,7 @@
                                     <label for="jobDescription" class="form-label">Description</label>
                                     <textarea class="form-control" id="jobDescription" rows="4" placeholder="Describe the work needed..." required></textarea>
                                 </div>
-                               <!-- <div class="row">
+                                <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="jobBudget" class="form-label">Budget ($)</label>
                                         <input type="number" class="form-control" id="jobBudget" placeholder="0.00" min="0" step="0.01">
@@ -185,7 +187,7 @@
                                         <label for="jobDeadline" class="form-label">Deadline</label>
                                         <input type="date" class="form-control" id="jobDeadline">
                                     </div>
-                                </div>-->
+                                </div>
                                 <div class="mb-3">
                                     <label for="jobLocation" class="form-label">Location</label>
                                     <input type="text" class="form-control" id="jobLocation" placeholder="Job location/address" required>
@@ -383,6 +385,7 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <script src="../Js/HomeOwnerDashBoard.js"></script>
 
 </body>
