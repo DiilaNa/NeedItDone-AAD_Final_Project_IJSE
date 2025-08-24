@@ -63,6 +63,18 @@ public class HomeOwnerDashBoardController {
         );
     }
 
+    @PutMapping("/updateUserHomeController")
+    public ResponseEntity<ApiResponseDTO> updateUser(@RequestBody SignUpDTO signUpDTO) {
+        String newToken = userService.updateUser(signUpDTO);
+        return ResponseEntity.ok(
+                new ApiResponseDTO(
+                        200,
+                        "User home Updated Successfully",
+                        newToken
+                )
+        );
+    }
+
 
 
     @PutMapping("/updateJob")

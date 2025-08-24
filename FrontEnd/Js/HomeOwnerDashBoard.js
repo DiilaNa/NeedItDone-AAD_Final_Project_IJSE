@@ -74,9 +74,7 @@ function switchModes() {
 
 /* -------------------Post a Job/Save----------------------- */
 $("#saveJopPostForm").on('submit',function(e){
-    console.log("clk")
     e.preventDefault();
-    console.log("clicked")
     saveJobPosts();
 });
 
@@ -142,6 +140,40 @@ function loadUserDetails() {
 }
 
 /*----------------------Update User/Home Owner details----------------------------*/
+$("#updateUserForm").on('submit', function(e) {
+    console.log("clkk")
+    e.preventDefault();
+    const updatedUser = {
+        username: $("#profileUserName").val(),
+        email: $("#profileEmail").val(),
+        phone: $("#profilePhone").val(),
+    };
+
+    $.ajax({
+        url: "http://localhost:8080/home/updateUserHomeController",
+        type: "PUT",
+        data: JSON.stringify(updatedUser),
+        contentType: "application/json",
+        headers: {
+            Authorization : "Bearer " + localStorage.getItem("token")
+        },
+        success: function (response) {
+            if (response.data) {
+                localStorage.setItem("token", response.data);
+            }
+            Swal.fire("Updated!", "Your details have been updated", "success");
+        },
+        error: function (e) {
+            Swal.fire(
+                "Update Failed!",
+                "Updating fields has been Failed!",
+                "error"
+
+            )
+            e.status
+        }
+});
+});
 
 
 

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,9 +61,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String updateUser(SignUpDTO signUpDTO) {
-        userRepository.save(modelMapper.map(signUpDTO, User.class));
-        return "User Updated Successfully";
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User existingUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        existingUser.setUsername(signUpDTO.getUsername());
+        existingUser.setEmail(signUpDTO.getEmail());
+        existingUser.setPhone(signUpDTO.getPhone());
+
+        userRepository.save(existingUser);
+        return jwtUtil.generateToken(existingUser.getUsername());
+
     }
+
 
     @Override
     public void deleteUser(SignUpDTO signUpDTO) {
