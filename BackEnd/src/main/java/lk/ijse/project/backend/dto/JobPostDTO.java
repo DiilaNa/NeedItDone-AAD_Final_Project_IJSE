@@ -26,5 +26,8 @@ public class JobPostDTO {
     @NotBlank(message = " deadline can not be blank")
     private String deadline;
 
+    @NotBlank
+    private int daysSincePosted;
+    private long applicationsCount;
     private String categoryName;
 }

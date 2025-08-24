@@ -1,7 +1,4 @@
-$(document).ready(function () {
-    loadUserDetails();
-    sideNav();
-});
+
 /*-----------------------Side Navigation Bar--------------------------------*/
 function sideNav() {
     let $circleMenuBtn = $('#circleMenuBtn');
@@ -174,6 +171,109 @@ $("#updateUserForm").on('submit', function(e) {
         }
 });
 });
+
+
+$(document).ready(function () {
+    loadMyJobs();
+
+    loadUserDetails();
+    sideNav();
+
+
+    function loadMyJobs() {
+        $.ajax({
+            url: "http://localhost:8080/home/get",
+            type: "GET",
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            },
+            success: function (res) {
+                const jobsContainer = $("#homeowner-my-jobs-content .row");
+                jobsContainer.empty(); // clear previous cards
+
+                if (res.data.length === 0) {
+                    jobsContainer.append(`<p class="text-muted">No job posts found.</p>`);
+                    return;
+                }
+
+                res.data.forEach(job => {
+                    let badgeText = job.applicationsCount > 0
+                        ? `${job.applicationsCount} Applications`
+                        : 'In Progress';
+
+                    let badgeClass = job.applicationsCount > 0
+                        ? (job.urgency === 'In Progress' ? 'bg-warning' : 'bg-success')
+                        : 'bg-warning text-white';
+
+                    let postedText = job.daysSincePosted > 0
+                        ? `Posted ${job.daysSincePosted} days ago`
+                        : 'Posted Today';
+
+                    const cardHtml = `
+                            <div class="col-md-4 mb-3">
+                                <div class="card job-card" data-id="${job.id}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${job.jobTitle}</h5>
+                                            <p class="card-text">${job.description}</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="badge ${badgeClass}">
+                                                    ${badgeText}
+                                                </span>
+                                                    <small class="text-muted" style="color: white !important;">${postedText}</small>
+                                            </div>
+                                            <div class="mt-3">
+                                                <button class="btn btn-sm btn-outline-primary view-job">View</button>
+                                                <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
+                                                <button class="btn btn-sm btn-outline-danger delete-job">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+                    $("#homeowner-my-jobs-content .row").append(cardHtml);
+                });
+            },
+            error: function (err) {
+                console.error("Failed to load jobs", err);
+            }
+        });
+    }
+
+    // Event delegation for dynamic content
+    $("#homeowner-my-jobs-content").on("click", ".view-job", function () {
+        const jobId = $(this).closest(".job-card").data("id");
+        console.log("View job", jobId);
+        // You can open a modal or redirect to job details page
+    });
+
+    $("#homeowner-my-jobs-content").on("click", ".edit-job", function () {
+        const jobId = $(this).closest(".job-card").data("id");
+        console.log("Edit job", jobId);
+        // Populate edit form modal with job data and allow update
+    });
+
+    $("#homeowner-my-jobs-content").on("click", ".delete-job", function () {
+        const jobId = $(this).closest(".job-card").data("id");
+        if (confirm("Are you sure you want to delete this job?")) {
+            $.ajax({
+                url: `http://localhost:8080/home/deleteJob/${jobId}`,
+                type: "DELETE",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                },
+                success: function () {
+                    alert("Job deleted successfully");
+                    loadMyJobs(); // reload after delete
+                },
+                error: function () {
+                    alert("Failed to delete job");
+                }
+            });
+        }
+    });
+});
+
 
 
 

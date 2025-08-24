@@ -18,7 +18,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +50,7 @@ public class JobPostServiceImpl implements JobPostService {
         JobPosts job = modelMapper.map(jobPostDTO, JobPosts.class);
         job.setUsers(user);
         job.setCategories(category);
+
 
         jobPostRepository.save(job);
 
@@ -85,14 +89,41 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<JobPostDTO> getAllJobPosts() {
+        return jobPostRepository.findAll()
+                .stream()
+                .map(job -> {
+                    JobPostDTO dto = new JobPostDTO();
+                    dto.setId(job.getId());
+                    dto.setJobTitle(job.getJobTitle());
+                    dto.setDescription(job.getDescription());
+                    dto.setUrgency(job.getUrgency());
+                    dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
+
+                    // Calculate days since posted
+                    if (job.getPostedDate() != null) {
+                        long days = ChronoUnit.DAYS.between(job.getPostedDate(), java.time.LocalDate.now());
+                        dto.setDaysSincePosted((int) days);
+                    } else {
+                        dto.setDaysSincePosted(0);
+                    }
+
+                    return dto;
+                }).collect(Collectors.toList());
+    }
+
+
+   /* @Override
+    @Transactional(readOnly = true)
+   *//* public List<JobPostDTO> getAllJobPosts() {
         List<JobPosts> list = jobPostRepository.findAll();
         if (list.isEmpty()) {
             throw new RuntimeException("not found");
         }
         return modelMapper.map(list,new TypeToken<List<JobPostDTO>>(){}.getType());
-    }
+    }*//**/
+
+
 
     @Override
     @Transactional(readOnly = true)

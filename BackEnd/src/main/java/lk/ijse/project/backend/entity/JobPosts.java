@@ -4,6 +4,7 @@ package lk.ijse.project.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,8 @@ public class JobPosts implements SuperEntity{
     private String urgency;
     private String deadline;
 
+    private LocalDate postedDate;
+
     @ManyToOne
     @JoinColumn(name = "userID") /*User One to Many*/
     private User users;
@@ -33,7 +36,7 @@ public class JobPosts implements SuperEntity{
     @JoinColumn(name = "categoryID")
     private Categories categories;
 
-    @OneToMany(mappedBy = "jobPosts")
+    @OneToMany(mappedBy = "jobPosts",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Applications> applications;
 
 }
