@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -92,5 +93,13 @@ public class UserServiceImpl implements UserService {
         Page<User> userPage = userRepository.findAll(pageable);
 
         return userPage.map(user -> modelMapper.map(user, SignUpDTO.class));
+    }
+
+    @Override
+    public SignUpDTO findByUserName(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+
+        return modelMapper.map(user, SignUpDTO.class);
     }
 }

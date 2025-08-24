@@ -1,8 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function () {
+    loadUserDetails();
     sideNav();
-
 });
-
 /*-----------------------Side Navigation Bar--------------------------------*/
 function sideNav() {
     let $circleMenuBtn = $('#circleMenuBtn');
@@ -124,6 +123,25 @@ function saveJobPosts() {
 
     })
 }
+
+/*-------------------Load User Details in the UI---------------------------------*/
+function loadUserDetails() {
+    $.ajax({
+        url: "http://localhost:8080/home/loadUserDetails",
+        type: "GET",
+        headers:{
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+
+        success: function (user) {
+            $("#profileUserName").val(user.data.username);
+            $("#profileEmail").val(user.data.email);
+            $("#profilePhone").val(user.data.phone);
+        }
+    });
+}
+
+/*----------------------Update User/Home Owner details----------------------------*/
 
 
 

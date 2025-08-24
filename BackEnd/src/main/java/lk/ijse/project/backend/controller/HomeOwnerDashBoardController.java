@@ -2,7 +2,10 @@ package lk.ijse.project.backend.controller;
 
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
+import lk.ijse.project.backend.dto.login.SignUpDTO;
+import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.service.JobPostService;
+import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +17,8 @@ import java.util.List;
 @RequestMapping("/home")
 @RequiredArgsConstructor
 public class HomeOwnerDashBoardController {
-    private final JobPostService jobPost;
+    private final JobPostService jobPostService;
+    private final UserService userService;
 
     @PostMapping("/saveJob")
     public ResponseEntity<ApiResponseDTO> saveJob(@RequestBody JobPostDTO jobPostDTO) {
@@ -24,7 +28,7 @@ public class HomeOwnerDashBoardController {
                 throw new RuntimeException("User not authenticated");
             }
 
-            jobPost.saveJobPost(jobPostDTO, username);
+            jobPostService.saveJobPost(jobPostDTO, username);
 
             return ResponseEntity.ok(
                     new ApiResponseDTO(
@@ -42,13 +46,32 @@ public class HomeOwnerDashBoardController {
         }
     }
 
+    @GetMapping("/loadUserDetails")
+    public ResponseEntity<ApiResponseDTO> getUserDetails() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if ("anonymousUser".equals(username)) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        SignUpDTO  list= userService.findByUserName(username);
+        return ResponseEntity.ok(
+                new ApiResponseDTO(
+                        200,
+                        "User details loaded Successfully",
+                        list
+                )
+        );
+    }
+
+
+
     @PutMapping("/updateJob")
     public ResponseEntity<ApiResponseDTO> updateJob(@RequestBody JobPostDTO jobPostDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if ("anonymousUser".equals(username)) {
             throw new RuntimeException("User not authenticated");
         }
-        jobPost.updateJobPost(jobPostDTO,username);
+        jobPostService.updateJobPost(jobPostDTO,username);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,
@@ -61,7 +84,7 @@ public class HomeOwnerDashBoardController {
 
     @DeleteMapping("/deleteJob")
     public ResponseEntity<ApiResponseDTO> deleteJob(@RequestBody JobPostDTO jobPostDTO) {
-        jobPost.deleteJobPost(jobPostDTO);
+        jobPostService.deleteJobPost(jobPostDTO);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,
@@ -74,7 +97,7 @@ public class HomeOwnerDashBoardController {
 
     @GetMapping("/get")
     public ResponseEntity<ApiResponseDTO> getAllJobs() {
-        List<JobPostDTO> jobPosts = jobPost.getAllJobPosts();
+        List<JobPostDTO> jobPosts = jobPostService.getAllJobPosts();
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,
@@ -86,7 +109,7 @@ public class HomeOwnerDashBoardController {
     }
     @GetMapping("search/{keyword}")
     public ResponseEntity<ApiResponseDTO> search(@PathVariable("keyword") String keyword) {
-        List<JobPostDTO> jobs =  jobPost.getAllJobPostsByKeyword(keyword);
+        List<JobPostDTO> jobs =  jobPostService.getAllJobPostsByKeyword(keyword);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,
@@ -97,7 +120,7 @@ public class HomeOwnerDashBoardController {
     }
     @GetMapping("/pagination")
     public ResponseEntity<ApiResponseDTO> getAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Page<JobPostDTO> jobs = jobPost.getAllJobPostsPaginated(page, size);
+        Page<JobPostDTO> jobs = jobPostService.getAllJobPostsPaginated(page, size);
 
         return ResponseEntity.ok(
                 new ApiResponseDTO(

@@ -12,4 +12,6 @@ public interface UserService {
     List<SignUpDTO> getAllUsers();
     List<SignUpDTO> getAllUsersByKeyword(String keyword);
     Page<SignUpDTO> getAllUsersPaginated(int page, int size);
+
+    SignUpDTO findByUserName(String username);
 }
