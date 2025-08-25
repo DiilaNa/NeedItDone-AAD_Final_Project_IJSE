@@ -18,4 +18,6 @@ public interface JobPostService {
     void deleteJobPostById(Long id);
 
     JobPostDTO getJobById(Long id);
+
+    List<JobPostDTO> getLatestJobPosts(int i);
 }

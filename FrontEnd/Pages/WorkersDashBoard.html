@@ -180,7 +180,7 @@
                   </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="jobs-container">
                   <div class="col-md-6 mb-3">
                     <div class="card job-card">
                       <div class="card-body">
@@ -198,57 +198,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="card job-card">
-                      <div class="card-body">
-                        <h5 class="card-title">Ceiling Fan Installation</h5>
-                        <p class="card-text">Install 3 ceiling fans in bedrooms. All materials provided.</p>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                          <span class="badge bg-warning">Electrical</span>
-                          <span class="text-success fw-bold">$180</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                          <small class="text-muted"><i class="fas fa-map-marker-alt"></i> Suburb Area</small>
-                          <small class="text-muted"><i class="fas fa-clock"></i> Posted 5 hours ago</small>
-                        </div>
-                        <button class="btn btn-custom btn-sm w-100">Apply Now</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="card job-card">
-                      <div class="card-body">
-                        <h5 class="card-title">Deck Staining</h5>
-                        <p class="card-text">Stain wooden deck approximately 200 sq ft. Weather dependent scheduling.</p>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                          <span class="badge bg-secondary">Painting</span>
-                          <span class="text-success fw-bold">$320</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                          <small class="text-muted"><i class="fas fa-map-marker-alt"></i> North Side</small>
-                          <small class="text-muted"><i class="fas fa-clock"></i> Posted 1 day ago</small>
-                        </div>
-                        <button class="btn btn-custom btn-sm w-100">Apply Now</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="card job-card">
-                      <div class="card-body">
-                        <h5 class="card-title">Cabinet Installation</h5>
-                        <p class="card-text">Install kitchen cabinets. Experience with cabinet hardware required.</p>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                          <span class="badge bg-success">Carpentry</span>
-                          <span class="text-success fw-bold">$450</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                          <small class="text-muted"><i class="fas fa-map-marker-alt"></i> East Side</small>
-                          <small class="text-muted"><i class="fas fa-clock"></i> Posted 2 days ago</small>
-                        </div>
-                        <button class="btn btn-custom btn-sm w-100">Apply Now</button>
-                      </div>
-                    </div>
-                  </div>
+
                 </div>
               </div>
 
@@ -378,54 +328,33 @@
 
       <!-- Worker Profile Section -->
       <div id="worker-profile-content" class="dashboard-section">
-        <h2 class="mb-4">Worker Profile</h2>
+        <h2 class="mb-4">Profile Settings</h2>
         <div class="row">
+          <!-- Profile form -->
           <div class="col-md-8">
-                    <div class="card">
-                      <div class="card-body">
-                        <form>
-                          <div class="row">
-                            <div class="col-md-6 mb-3">
-                              <label for="workerFirstName" class="form-label">First Name</label>
-                              <input type="text" class="form-control" id="workerFirstName" value="Mike">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <label for="workerLastName" class="form-label">Last Name</label>
-                              <input type="text" class="form-control" id="workerLastName" value="Smith">
-                            </div>
-                          </div>
-                          <div class="mb-3">
-                            <label for="workerEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="workerEmail" value="mike.smith@email.com">
-                          </div>
-                          <div class="mb-3">
-                            <label for="workerPhone" class="form-label">Phone</label>
-                            <input type="tel" class="form-control" id="workerPhone" value="+1234567890">
-                          </div>
-                          <div class="mb-3">
-                            <label for="workerSkills" class="form-label">Skills</label>
-                            <select class="form-select" id="workerSkills" multiple>
-                              <option value="plumbing" selected>Plumbing</option>
-                              <option value="electrical" selected>Electrical</option>
-                              <option value="construction">Construction</option>
-                              <option value="carpentry">Carpentry</option>
-                              <option value="mechanical">Mechanical</option>
-                              <option value="painting">Painting</option>
-                            </select>
-                          </div>
-                          <div class="mb-3">
-                            <label for="workerExperience" class="form-label">Years of Experience</label>
-                            <input type="number" class="form-control" id="workerExperience" value="7">
-                          </div>
-                          <div class="mb-3">
-                            <label for="workerBio" class="form-label">Bio</label>
-                            <textarea class="form-control" id="workerBio" rows="4">Experienced plumber and electrician with 7 years in residential and commercial work. Licensed and insured.</textarea>
-                          </div>
-                          <button type="submit" class="btn btn-custom">Update Profile</button>
-                        </form>
-                      </div>
+            <div class="card">
+              <div class="card-body">
+                <form id="updateUserForm">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="profileUserName" class="form-label">User Name</label>
+                      <input type="text" class="form-control" id="profileUserName">
                     </div>
                   </div>
+                  <div class="mb-3">
+                    <label for="profileEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="profileEmail">
+                  </div>
+                  <div class="mb-3">
+                    <label for="profilePhone" class="form-label">Phone</label>
+                    <input type="tel" class="form-control" id="profilePhone">
+                  </div>
+
+                  <button type="submit" class="btn btn-custom">Update Profile</button>
+                </form>
+              </div>
+            </div>
+          </div>
           <!-- Switch Mode card -->
           <div id="switchMode" class="col-md-4 mt-4 mt-md-0">
             <div class="card">

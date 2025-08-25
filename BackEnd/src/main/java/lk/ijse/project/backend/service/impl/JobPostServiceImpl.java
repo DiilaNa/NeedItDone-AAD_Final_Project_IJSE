@@ -154,4 +154,12 @@ public class JobPostServiceImpl implements JobPostService {
         return dto;
     }
 
+    @Override
+    public List<JobPostDTO> getLatestJobPosts(int i) {
+        return jobPostRepository.findDistinctTop10ByOrderByPostedDateDesc()
+                .stream()
+                .map(job -> modelMapper.map(job, JobPostDTO.class))
+                .collect(Collectors.toList());
+    }
+
 }

@@ -36,7 +36,7 @@ public class JobPosts implements SuperEntity{
     @JoinColumn(name = "categoryID")
     private Categories categories;
 
-    @OneToMany(mappedBy = "jobPosts",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "jobPosts",fetch = FetchType.LAZY)
     private List<Applications> applications;
 
 }

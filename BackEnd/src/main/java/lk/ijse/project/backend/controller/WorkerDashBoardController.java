@@ -1,8 +1,10 @@
 package lk.ijse.project.backend.controller;
 
 import lk.ijse.project.backend.dto.ApplicationDTO;
+import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.service.ApplicationService;
+import lk.ijse.project.backend.service.JobPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WorkerDashBoardController {
     private final ApplicationService applicationService;
+    private final JobPostService jobPostService;
+
+    @GetMapping("/latest")
+    public ResponseEntity<ApiResponseDTO> getLatestJobs() {
+        List<JobPostDTO> jobPosts = jobPostService.getLatestJobPosts(10);
+        return ResponseEntity.ok(new ApiResponseDTO(200, "Success", jobPosts));
+    }
+
 
     @GetMapping("/pagination")
     public ResponseEntity<ApiResponseDTO> getAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
