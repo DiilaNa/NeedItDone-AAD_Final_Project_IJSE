@@ -15,4 +15,6 @@ public interface JobPostService {
     List<JobPostDTO> getAllJobPostsByKeyword(String keyword);
 
     Page<JobPostDTO> getAllJobPostsPaginated(int page, int size);
+
+    void deleteJobPostById(Long id);
 }

@@ -256,7 +256,7 @@ $(document).ready(function () {
         const jobId = $(this).closest(".job-card").data("id");
         if (confirm("Are you sure you want to delete this job?")) {
             $.ajax({
-                url: `http://localhost:8080/home/deleteJob`,
+                url: `http://localhost:8080/home/deleteJob/${jobId}`,
                 type: "DELETE",
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")

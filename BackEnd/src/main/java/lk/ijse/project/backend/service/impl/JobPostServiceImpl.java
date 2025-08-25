@@ -135,4 +135,10 @@ public class JobPostServiceImpl implements JobPostService {
 
         return jobPostsPage.map(jobPosts -> modelMapper.map(jobPosts,JobPostDTO.class));
     }
+
+    @Override
+    @Transactional
+    public void deleteJobPostById(Long id) {
+        jobPostRepository.deleteById(id);
+    }
 }

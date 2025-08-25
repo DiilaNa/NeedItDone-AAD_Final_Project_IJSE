@@ -16,4 +16,5 @@ public interface JobPostRepository extends JpaRepository<JobPosts,Integer> {
     @Query("SELECT COUNT(a) FROM Applications a WHERE a.jobPosts.id = :jobId")
     long countApplicationsByJobId(Long jobId);
 
+    void deleteById(Long id);
 }
