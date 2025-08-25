@@ -240,12 +240,39 @@ $(document).ready(function () {
         });
     }
 
-    // Event delegation for dynamic content
     $("#homeowner-my-jobs-content").on("click", ".view-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
-        console.log("View job", jobId);
+        console.log("clicked")
 
+        $.ajax({
+            url: `http://localhost:8080/home/get/${jobId}`,
+            type: "GET",
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            },
+            success: function (job) {
+                console.log(job)
+                $("#jobModalTitle").text(job.data.jobTitle);
+                $("#jobModalDescription").text(job.data.description);
+                $("#jobModalLocation").text(job.data.location);
+                $("#jobModalCost").text(job.data.cost);
+                $("#jobModalDeadline").text(job.data.deadline);
+                $("#jobModalApplications").text(job.data.applicationsCount);
+
+                $("#jobModalUrgency").text(job.data.urgency);
+                console.log(job.data.urgency)
+                $("#jobModalDaysSincePosted").text(job.data.daysSincePosted === 0 ? "Today" : `${job.data.daysSincePosted} days ago`);
+
+
+                var jobModal = new bootstrap.Modal(document.getElementById('jobModal'));
+                jobModal.show()
+            },
+            error: function () {
+                alert("Failed to load job details");
+            }
+        });
     });
+
 
     $("#homeowner-my-jobs-content").on("click", ".edit-job", function () {
         const jobId = $(this).closest(".job-card").data("id");

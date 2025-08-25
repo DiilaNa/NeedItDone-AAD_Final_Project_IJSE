@@ -8,7 +8,6 @@ import java.util.List;
 public interface JobPostService {
     void saveJobPost(JobPostDTO jobPostDTO, String username);
     void updateJobPost(JobPostDTO jobPostDTO, String username );
-    void deleteJobPost(JobPostDTO jobPostDTO);
 
     List<JobPostDTO> getAllJobPosts();
 
@@ -17,4 +16,6 @@ public interface JobPostService {
     Page<JobPostDTO> getAllJobPostsPaginated(int page, int size);
 
     void deleteJobPostById(Long id);
+
+    JobPostDTO getJobById(Long id);
 }

@@ -100,6 +100,13 @@ public class HomeOwnerDashBoardController {
         return ResponseEntity.ok(new ApiResponseDTO(200, "Job deleted Successfully", "ok"));
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ApiResponseDTO> getJobById(@PathVariable Long id) {
+        JobPostDTO jobPostDTOS = jobPostService.getJobById(id);
+        return ResponseEntity.ok(new ApiResponseDTO(200, "Job Updated Successfully", jobPostDTOS));
+
+    }
+
     @GetMapping("/get")
     public ResponseEntity<ApiResponseDTO> getAllJobs() {
         List<JobPostDTO> jobPosts = jobPostService.getAllJobPosts();

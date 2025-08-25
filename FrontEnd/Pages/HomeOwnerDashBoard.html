@@ -215,6 +215,47 @@
             <div class="row">
             </div>
         </section>
+        <!-- Job Details Modal - Modern UI -->
+        <div class="modal fade" id="jobModal" tabindex="-1" aria-labelledby="jobModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="jobModalTitle">Job Title</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="color: #1f2937">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <p class="mb-2"><strong>Description:</strong> <span id="jobModalDescription" class="fw-normal"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Urgency:</strong> <span id="jobModalUrgency" class="badge bg-info text-dark"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Applications:</strong> <span id="jobModalApplications" class="badge bg-info text-dark"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Location:</strong> <span id="jobModalLocation" class="fw-normal"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Cost:</strong> $<span id="jobModalCost" class="fw-bold"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Deadline:</strong> <span id="jobModalDeadline" class="fw-normal"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Posted:</strong> <span id="jobModalDaysSincePosted" class="fw-normal"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="editJobBtn">Edit Job</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Applications Section -->
         <section id="homeowner-applications-content" class="dashboard-section">

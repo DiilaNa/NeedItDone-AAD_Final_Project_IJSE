@@ -84,14 +84,6 @@ public class JobPostServiceImpl implements JobPostService {
         jobPostRepository.save(job);
     }
 
-
-    @Override
-    @Transactional
-    public void deleteJobPost(JobPostDTO jobPostDTO) {
-        JobPosts job = modelMapper.map(jobPostDTO, JobPosts.class);
-        jobPostRepository.delete(job);
-    }
-
     @Override
     public List<JobPostDTO> getAllJobPosts() {
         return jobPostRepository.findAll()
@@ -141,4 +133,25 @@ public class JobPostServiceImpl implements JobPostService {
     public void deleteJobPostById(Long id) {
         jobPostRepository.deleteById(id);
     }
+    @Override
+    public JobPostDTO getJobById(Long id) {
+        System.out.println(id);
+        JobPosts job = (JobPosts) jobPostRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job post not found"));
+
+
+        JobPostDTO dto = modelMapper.map(job, JobPostDTO.class);
+        long count = jobPostRepository.countApplicationsByJobId(job.getId());
+        dto.setApplicationsCount(count);
+
+        if (job.getPostedDate() != null) {
+            long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
+            dto.setDaysSincePosted((int) days);
+        } else {
+            dto.setDaysSincePosted(0);
+        }
+
+        return dto;
+    }
+
 }
