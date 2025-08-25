@@ -189,7 +189,7 @@ $(document).ready(function () {
             },
             success: function (res) {
                 const jobsContainer = $("#homeowner-my-jobs-content .row");
-                jobsContainer.empty(); // clear previous cards
+                jobsContainer.empty();
 
                 if (res.data.length === 0) {
                     jobsContainer.append(`<p class="text-muted">No job posts found.</p>`);
@@ -244,27 +244,26 @@ $(document).ready(function () {
     $("#homeowner-my-jobs-content").on("click", ".view-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
         console.log("View job", jobId);
-        // You can open a modal or redirect to job details page
+
     });
 
     $("#homeowner-my-jobs-content").on("click", ".edit-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
         console.log("Edit job", jobId);
-        // Populate edit form modal with job data and allow update
     });
 
     $("#homeowner-my-jobs-content").on("click", ".delete-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
         if (confirm("Are you sure you want to delete this job?")) {
             $.ajax({
-                url: `http://localhost:8080/home/deleteJob/${jobId}`,
+                url: `http://localhost:8080/home/deleteJob`,
                 type: "DELETE",
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 },
                 success: function () {
                     alert("Job deleted successfully");
-                    loadMyJobs(); // reload after delete
+                    loadMyJobs();
                 },
                 error: function () {
                     alert("Failed to delete job");

@@ -50,6 +50,7 @@ public class JobPostServiceImpl implements JobPostService {
         JobPosts job = modelMapper.map(jobPostDTO, JobPosts.class);
         job.setUsers(user);
         job.setCategories(category);
+        job.setPostedDate(LocalDate.now());
 
 
         jobPostRepository.save(job);
@@ -73,9 +74,12 @@ public class JobPostServiceImpl implements JobPostService {
         JobPosts job = (JobPosts) jobPostRepository.findById(jobPostDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Job post not found"));
 
+        LocalDate existingPostedDate = job.getPostedDate();
+
         modelMapper.map(jobPostDTO, job);
         job.setUsers(user);
         job.setCategories(category);
+        job.setPostedDate(existingPostedDate);
 
         jobPostRepository.save(job);
     }
@@ -100,7 +104,6 @@ public class JobPostServiceImpl implements JobPostService {
                     dto.setUrgency(job.getUrgency());
                     dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
 
-                    // Calculate days since posted
                     if (job.getPostedDate() != null) {
                         long days = ChronoUnit.DAYS.between(job.getPostedDate(), java.time.LocalDate.now());
                         dto.setDaysSincePosted((int) days);
@@ -111,17 +114,6 @@ public class JobPostServiceImpl implements JobPostService {
                     return dto;
                 }).collect(Collectors.toList());
     }
-
-
-   /* @Override
-    @Transactional(readOnly = true)
-   *//* public List<JobPostDTO> getAllJobPosts() {
-        List<JobPosts> list = jobPostRepository.findAll();
-        if (list.isEmpty()) {
-            throw new RuntimeException("not found");
-        }
-        return modelMapper.map(list,new TypeToken<List<JobPostDTO>>(){}.getType());
-    }*//**/
 
 
 
