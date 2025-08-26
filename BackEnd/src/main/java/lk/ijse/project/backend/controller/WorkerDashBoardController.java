@@ -89,9 +89,9 @@ public class WorkerDashBoardController {
         );
 
     }
-    @GetMapping("search/{keyword}")
-    public ResponseEntity<ApiResponseDTO> search(@PathVariable("keyword") String keyword) {
-        List<ApplicationDTO> applications =  applicationService.getAllApplicationsByKeyword(keyword);
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponseDTO> search(@RequestParam(required = false) String keyword) {
+        List<JobPostDTO> applications =  jobPostService.getFilteredJobs(keyword);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,
@@ -100,4 +100,5 @@ public class WorkerDashBoardController {
                 )
         );
     }
+
 }

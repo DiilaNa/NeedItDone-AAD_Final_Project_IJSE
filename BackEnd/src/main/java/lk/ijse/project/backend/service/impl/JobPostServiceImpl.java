@@ -1,5 +1,6 @@
 package lk.ijse.project.backend.service.impl;
 
+import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.entity.Categories;
 import lk.ijse.project.backend.entity.JobPosts;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -196,5 +198,58 @@ public class JobPostServiceImpl implements JobPostService {
                 })
                 .collect(Collectors.toList());
     }
+
+/*    @Override
+    public List<ApplicationDTO> getFilteredJobs(String keyword) {
+        List<JobPosts> jobs = jobPostRepository.searchJobs(
+                (keyword == null || keyword.isEmpty()) ? null : keyword
+        );
+
+        // Convert to DTOs
+        List<ApplicationDTO> dtos = new ArrayList<>();
+        for (JobPosts job : jobs) {
+            dtos.add(modelMapper.map(job, ApplicationDTO.class));
+        }
+
+        return dtos;
+    }*/
+@Override
+public List<JobPostDTO> getFilteredJobs(String keyword) {
+    List<JobPosts> jobs = jobPostRepository.searchJobs(
+            (keyword == null || keyword.isEmpty()) ? null : keyword
+    );
+
+    List<JobPostDTO> dtos = new ArrayList<>();
+    for (JobPosts job : jobs) {
+        JobPostDTO dto = new JobPostDTO();
+        dto.setId(job.getId());
+        dto.setJobTitle(job.getJobTitle());
+        dto.setDescription(job.getDescription());
+        dto.setCost(job.getCost());
+        dto.setLocation(job.getLocation());
+        dto.setUrgency(job.getUrgency());
+        dto.setDeadline(job.getDeadline());
+
+        // category name
+        dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
+
+        // days since posted
+        if (job.getPostedDate() != null) {
+            long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
+            dto.setDaysSincePosted((int) days);
+        } else {
+            dto.setDaysSincePosted(0);
+        }
+
+        // number of applications
+        dto.setApplicationsCount(job.getApplications() != null ? job.getApplications().size() : 0);
+
+        dtos.add(dto);
+    }
+
+    return dtos;
+}
+
+
 
 }

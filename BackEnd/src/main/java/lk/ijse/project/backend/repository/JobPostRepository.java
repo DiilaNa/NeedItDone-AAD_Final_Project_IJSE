@@ -4,6 +4,7 @@ import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,9 @@ public interface JobPostRepository extends JpaRepository<JobPosts,Integer> {
   List<JobPosts> findDistinctTop10ByOrderByPostedDateDesc();
 
     List<JobPosts> findByUsers(User user);
+
+    @Query("SELECT j FROM JobPosts j " +
+            "WHERE (:keyword IS NULL OR j.jobTitle LIKE %:keyword% OR j.description LIKE %:keyword%)")
+    List<JobPosts> searchJobs(@Param("keyword") String keyword);
+
 }

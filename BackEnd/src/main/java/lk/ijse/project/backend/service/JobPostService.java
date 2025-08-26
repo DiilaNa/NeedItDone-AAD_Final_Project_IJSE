@@ -20,4 +20,7 @@ public interface JobPostService {
     JobPostDTO getJobById(Long id);
 
     List<JobPostDTO> getLatestJobPosts(int i);
+
+
+    List<JobPostDTO> getFilteredJobs(String keyword);
 }

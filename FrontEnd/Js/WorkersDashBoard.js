@@ -184,3 +184,48 @@ $("#worker-browse-jobs-content").on("click", ".apply-job", function () {
         }
     });
 });
+
+/*----------------- Load Jobs with Filters -----------------*/
+$("#jobSearch").on("keyup", function () {
+    let searchValue = $(this).val();
+
+    $.ajax({
+        url: `http://localhost:8080/worker/search?keyword=${searchValue}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        data: { search: searchValue },
+        success: function (response) {
+            $("#jobs-container").empty();
+
+            // Response has { status, message, data }
+            let jobs = response.data;
+            console.log(jobs)
+
+            jobs.forEach(job => {
+                console.log(job)
+                let card = `
+                    <div class="col-md-6 mb-3">
+                        <div class="card job-card">
+                            <div class="card-body">
+                                <h5 class="card-title">${job.jobTitle}</h5>
+                                <p class="card-text">${job.description}</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-primary">${job.categoryName}</span>
+                                      <span class="text-success fw-bold">$${job.cost}</span>
+                                 </div>
+                                   <div class="d-flex justify-content-between align-items-center mb-3">
+                              <small class="text-muted"><i class="fas fa-map-marker-alt"></i> ${job.location}</small>
+                                  <small class="text-muted"><i class="fas fa-clock"></i> ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}</small>
+                            </div>
+                                 <button id="applyBTN" class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>
+                            </div>
+                        </div>
+                    </div>`;
+                     $("#jobs-container").append(card);
+            });
+        }
+    });
+});
+
