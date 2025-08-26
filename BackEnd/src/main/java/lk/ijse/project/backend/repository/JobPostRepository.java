@@ -1,6 +1,7 @@
 package lk.ijse.project.backend.repository;
 
 import lk.ijse.project.backend.entity.JobPosts;
+import lk.ijse.project.backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,5 @@ public interface JobPostRepository extends JpaRepository<JobPosts,Integer> {
 
   List<JobPosts> findDistinctTop10ByOrderByPostedDateDesc();
 
+    List<JobPosts> findByUsers(User user);
 }

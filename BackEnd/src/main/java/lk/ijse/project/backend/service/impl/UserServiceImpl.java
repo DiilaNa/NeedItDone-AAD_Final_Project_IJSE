@@ -55,7 +55,12 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Invalid Credentials");
         }
         String token  = jwtUtil.generateToken(logInDTO.getUsername());
-        return new LoginResponseDTO(token);
+        return new LoginResponseDTO(
+                token,
+                user.getId(),
+                user.getUsername(),
+                user.getRole().name()
+        );
     }
 
 

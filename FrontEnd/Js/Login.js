@@ -103,7 +103,10 @@ async function LogIn() {
             return;
         }
 
+        const userID = resp.data.userId
+        console.log(userID)
         localStorage.setItem("token", token);
+        localStorage.setItem("userID",userID)
 
         await redirectBasedOnRole(token);
 

@@ -9,7 +9,7 @@ public interface JobPostService {
     void saveJobPost(JobPostDTO jobPostDTO, String username);
     void updateJobPost(JobPostDTO jobPostDTO, String username );
 
-    List<JobPostDTO> getAllJobPosts();
+    List<JobPostDTO> getAllJobPosts(Long id);
 
     List<JobPostDTO> getAllJobPostsByKeyword(String keyword);
 

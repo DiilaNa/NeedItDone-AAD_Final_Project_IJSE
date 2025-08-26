@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,13 +34,18 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void saveApplications(ApplicationDTO applicationDTO) {
         JobPosts posts = (JobPosts) jobPostRepository.findById(applicationDTO.getJobPostsId())
                 .orElseThrow(() -> new RuntimeException("JobPost not found"));
-
         User user = (User) userRepository.findById(applicationDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if(applicationRepository.existsByUsersIdAndJobPostsId(user.getId(), posts.getId())) {
+            throw new RuntimeException("You already applied for this job");
+        }
 
         Applications applications = modelMapper.map(applicationDTO, Applications.class);
         applications.setJobPosts(posts);
         applications.setUsers(user);
+        applications.setStatus("PENDING");
+        applications.setDate(new Date());
 
         applicationRepository.save(applications);
 

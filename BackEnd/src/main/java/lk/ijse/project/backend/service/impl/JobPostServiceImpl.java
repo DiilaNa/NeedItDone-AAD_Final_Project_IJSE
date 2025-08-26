@@ -85,6 +85,27 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<JobPostDTO> getAllJobPosts(Long userId) {
+        User user = (User) userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<JobPosts> jobs = jobPostRepository.findByUsers(user);
+
+        return jobs.stream()
+                .map(job -> {
+                    JobPostDTO dto = modelMapper.map(job, JobPostDTO.class);
+                    long daysSincePosted = job.getPostedDate() != null ?
+                            ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now()) : 0;
+                    dto.setDaysSincePosted((int) daysSincePosted);
+                    dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
+                    dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+  /*  @Override
     public List<JobPostDTO> getAllJobPosts() {
         return jobPostRepository.findAll()
                 .stream()
@@ -95,6 +116,7 @@ public class JobPostServiceImpl implements JobPostService {
                     dto.setDescription(job.getDescription());
                     dto.setUrgency(job.getUrgency());
                     dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
+                    dto.setCategoryName(job.getCategories().getName());
 
                     if (job.getPostedDate() != null) {
                         long days = ChronoUnit.DAYS.between(job.getPostedDate(), java.time.LocalDate.now());
@@ -105,7 +127,7 @@ public class JobPostServiceImpl implements JobPostService {
 
                     return dto;
                 }).collect(Collectors.toList());
-    }
+    }*/
 
 
 
@@ -133,9 +155,9 @@ public class JobPostServiceImpl implements JobPostService {
     public void deleteJobPostById(Long id) {
         jobPostRepository.deleteById(id);
     }
+
     @Override
     public JobPostDTO getJobById(Long id) {
-        System.out.println(id);
         JobPosts job = (JobPosts) jobPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job post not found"));
 
@@ -158,7 +180,20 @@ public class JobPostServiceImpl implements JobPostService {
     public List<JobPostDTO> getLatestJobPosts(int i) {
         return jobPostRepository.findDistinctTop10ByOrderByPostedDateDesc()
                 .stream()
-                .map(job -> modelMapper.map(job, JobPostDTO.class))
+                .map(job -> {
+                    JobPostDTO dto = modelMapper.map(job, JobPostDTO.class);
+                    dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : "Uncategorized");
+                    dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
+
+                    if (job.getPostedDate() != null) {
+                        long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
+                        dto.setDaysSincePosted((int) days);
+                    } else {
+                        dto.setDaysSincePosted(0);
+                    }
+
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 

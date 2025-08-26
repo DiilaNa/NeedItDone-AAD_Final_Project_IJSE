@@ -107,9 +107,9 @@ public class HomeOwnerDashBoardController {
 
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<ApiResponseDTO> getAllJobs() {
-        List<JobPostDTO> jobPosts = jobPostService.getAllJobPosts();
+    @GetMapping("/get{userID}")
+    public ResponseEntity<ApiResponseDTO> getAllJobs(@PathVariable Long userID) {
+        List<JobPostDTO> jobPosts = jobPostService.getAllJobPosts(userID);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,

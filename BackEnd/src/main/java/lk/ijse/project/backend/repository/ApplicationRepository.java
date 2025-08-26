@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ApplicationRepository extends JpaRepository<Applications,Integer> {
     List<Applications> findApplicationsByJobTitleContainingIgnoreCase(String jobTitle);
     Optional<Object> findById(Long id);
+
+    boolean existsByUsersIdAndJobPostsId(Long userId, Long jobPostId);
 }

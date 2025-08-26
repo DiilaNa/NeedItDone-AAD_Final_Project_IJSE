@@ -5,6 +5,7 @@ $(document).ready(function () {
 
     $("#homeowner-my-jobs-content").on("click", ".view-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
+        console.log(jobId)
         viewJobPostsDetails(jobId);
     });
 
@@ -199,8 +200,9 @@ $("#updateUserForm").on('submit', function(e) {
 
 /*-----------------Load Job Posts-------------------------------------*/
 function loadMyJobs() {
+    const userID = localStorage.getItem("userID")
     $.ajax({
-        url: "http://localhost:8080/home/get",
+        url: `http://localhost:8080/home/get${userID}`,
         type: "GET",
         headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
