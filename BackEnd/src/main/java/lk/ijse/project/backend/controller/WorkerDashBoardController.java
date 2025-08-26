@@ -77,9 +77,9 @@ public class WorkerDashBoardController {
         );
     }
 
-    @GetMapping("/getApplication")
-    public ResponseEntity<ApiResponseDTO> getAllJobs() {
-        List<ApplicationDTO> applications = applicationService.getAllApplications();
+    @GetMapping("/getApplication/{userID}")
+    public ResponseEntity<ApiResponseDTO> getAllJobs(@PathVariable Long userID) {
+        List<ApplicationDTO> applications = applicationService.getAllApplications(userID);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,

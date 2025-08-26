@@ -2,6 +2,7 @@ $(document).ready(function() {
     sideNav();
     loadUserDetails();
     loadLatestJobs();
+    loadMyApplications();
 });
 /*---------------------SIGN OUT Button---------------------------*/
 $("#logoutBTN").on('click',function () {
@@ -228,4 +229,50 @@ $("#jobSearch").on("keyup", function () {
         }
     });
 });
+
+/*-------------------------------------------------------------------------------------------*/
+function loadMyApplications() {
+    const userId = localStorage.getItem("userID");
+
+    $.ajax({
+        url: `http://localhost:8080/worker/getApplication/${userId}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            const tbody = $("#myApplicationTbody");
+            tbody.empty();
+
+            res.data.forEach(app => {
+                const row = `
+                    <tr>
+                        <td>${app.jobTitle}</td>
+                        <td><span class="badge bg-primary">${app.category}</span></td>
+                        <td>$${app.amount}</td>
+                        <td>${new Date(app.date).toLocaleDateString()}</td>
+                        <td><span class="badge ${getStatusBadgeClass(app.status)}">${app.status}</span></td>
+<!--                        <td><button class="btn btn-sm btn-outline-primary">View</button></td>-->
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        },
+        error: function (err) {
+            console.error("Failed to load applications", err);
+        }
+    });
+}
+
+// Helper to assign badge color based on status
+function getStatusBadgeClass(status) {
+    switch(status.toLowerCase()) {
+        case 'pending': return 'bg-warning';
+        case 'approved': return 'bg-success';
+        case 'rejected': return 'bg-danger';
+        default: return 'bg-secondary';
+    }
+}
+
+
 

@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -88,15 +89,32 @@ public class ApplicationServiceImpl implements ApplicationService {
         applicationRepository.delete(existing);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<ApplicationDTO> getAllApplications() {
-        List<Applications> list = applicationRepository.findAll();
-        if (list.isEmpty()){
-            throw new RuntimeException("No applications found");
-        }
-        return modelMapper.map(list, new TypeToken<List<ApplicationDTO>>() {}.getType());
+@Override
+@Transactional(readOnly = true)
+public List<ApplicationDTO> getAllApplications(Long userID) {
+    List<Applications> list = applicationRepository.findByUsersId(userID);
+
+    if (list.isEmpty()){
+        throw new RuntimeException("No applications found");
     }
+
+    List<ApplicationDTO> dtos = new ArrayList<>();
+    for (Applications app : list) {
+        ApplicationDTO dto = modelMapper.map(app, ApplicationDTO.class);
+        dto.setJobTitle(app.getJobPosts().getJobTitle());
+        dto.setCategory(app.getJobPosts().getCategories() != null
+                ? app.getJobPosts().getCategories().getName() : "");
+        dto.setAmount(app.getJobPosts().getCost());
+        dto.setDate(app.getDate());
+        dto.setStatus(app.getStatus());
+        dto.setJobPostsId(app.getJobPosts().getId());
+        dto.setUserId(app.getUsers().getId());
+        dtos.add(dto);
+    }
+
+    return dtos;
+}
+
 
     @Override
     @Transactional(readOnly = true)
