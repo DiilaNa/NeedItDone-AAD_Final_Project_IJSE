@@ -2,15 +2,13 @@ package lk.ijse.project.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class JobPostDTO {
     private Long id;
     @NotBlank(message = "job title can not be blank")
@@ -25,7 +23,7 @@ public class JobPostDTO {
     private String urgency;
     @NotBlank(message = " deadline can not be blank")
     private String deadline;
-
+    private boolean applied;
     @NotBlank
     private int daysSincePosted;
     private long applicationsCount;

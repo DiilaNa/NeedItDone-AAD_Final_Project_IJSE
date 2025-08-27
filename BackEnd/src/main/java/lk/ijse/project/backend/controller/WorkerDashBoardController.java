@@ -19,9 +19,10 @@ public class WorkerDashBoardController {
     private final ApplicationService applicationService;
     private final JobPostService jobPostService;
 
-    @GetMapping("/latest")
-    public ResponseEntity<ApiResponseDTO> getLatestJobs() {
-        List<JobPostDTO> jobPosts = jobPostService.getLatestJobPosts(10);
+    @GetMapping("/latest/{userId}") /*LOAD Applications/below search*/
+    public ResponseEntity<ApiResponseDTO> getLatestJobs(@PathVariable Long userId) {
+
+        List<JobPostDTO> jobPosts = jobPostService.getLatestJobPosts(userId,10);
         return ResponseEntity.ok(new ApiResponseDTO(200, "Success", jobPosts));
     }
 
@@ -38,6 +39,7 @@ public class WorkerDashBoardController {
                 )
         );
     }
+
     @PostMapping("/saveApplication")
     public ResponseEntity<ApiResponseDTO> saveJob(@RequestBody ApplicationDTO applicationDTO) {
         applicationService.saveApplications(applicationDTO);
@@ -89,9 +91,10 @@ public class WorkerDashBoardController {
         );
 
     }
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponseDTO> search(@RequestParam(required = false) String keyword) {
-        List<JobPostDTO> applications =  jobPostService.getFilteredJobs(keyword);
+
+    @GetMapping("/search")/*SEARCH pplications*/
+    public ResponseEntity<ApiResponseDTO> search(@RequestParam(required = false) String keyword , @RequestParam Long userID ) {
+        List<JobPostDTO> applications =  jobPostService.getFilteredJobs(keyword,userID);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,

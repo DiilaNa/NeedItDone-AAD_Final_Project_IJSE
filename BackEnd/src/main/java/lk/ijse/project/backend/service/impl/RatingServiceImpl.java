@@ -63,14 +63,6 @@ public class RatingServiceImpl implements RatingService {
 
     }
 
-//    @Override
-//    @Transactional
-//    public void delete(RatingDTO ratingDTO) {
-//        Rating rating = ratingRepository.findById(ratingDTO.getId());
-//        ratingRepository.delete(rating);
-//
-//    }
-
     @Override
     @Transactional(readOnly = true)
     public List<RatingDTO> getAll() {

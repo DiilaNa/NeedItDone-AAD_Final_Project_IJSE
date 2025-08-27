@@ -103,9 +103,10 @@ function loadUserDetails() {
 /*----------------- Load Latest Jobs for Workers -----------------*/
 function loadLatestJobs() {
     $("#jobs-container").empty();
+    const userID = localStorage.getItem("userID");
 
     $.ajax({
-        url: "http://localhost:8080/worker/latest",
+        url: `http://localhost:8080/worker/latest/${userID}`,
         type: "GET",
         headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
@@ -115,28 +116,40 @@ function loadLatestJobs() {
             jobsContainer.empty();
 
             res.data.forEach(job => {
+                // build button depending on applied flag
+                let buttonHtml;
+                if (job.applied) {
+                    buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;
+                } else {
+                    buttonHtml = `<button class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>`;
+                }
+
                 const cardHtml = `
                     <div class="col-md-6 mb-3">
-                         <div class="card job-card shadow-sm" data-id="${job.id}">
-                           <div class="card-body">
-                          <h5 class="card-title">${job.jobTitle}</h5>
-                              <p class="card-text">${job.description}</p>
-                              <div class="d-flex justify-content-between align-items-center mb-2">
-                               <span class="badge bg-primary">${job.categoryName}</span>
-                                <span class="text-success fw-bold">$${job.cost}</span>
-                             </div>
-                             <div class="d-flex justify-content-between align-items-center mb-3">
-                              <small class="text-muted"><i class="fas fa-map-marker-alt"></i> ${job.location}</small>
-                                  <small class="text-muted"><i class="fas fa-clock"></i> ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}</small>
+                        <div class="card job-card shadow-sm" data-id="${job.id}">
+                            <div class="card-body">
+                                <h5 class="card-title">${job.jobTitle}</h5>
+                                <p class="card-text">${job.description}</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-primary">${job.categoryName}</span>
+                                    <span class="text-success fw-bold">$${job.cost}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-map-marker-alt"></i> ${job.location}
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock"></i> 
+                                        ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}
+                                    </small>
+                                </div>
+                                ${buttonHtml}
                             </div>
-                             <button id="applyBTN" class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>
-                         </div>
-                     </div>
-                </div>
-                        `;
+                        </div>
+                    </div>
+                `;
                 jobsContainer.append(cardHtml);
             });
-
         },
         error: function (err) {
             console.error("Failed to load latest jobs", err);
@@ -189,46 +202,57 @@ $("#worker-browse-jobs-content").on("click", ".apply-job", function () {
 /*----------------- Load Jobs with Filters -----------------*/
 $("#jobSearch").on("keyup", function () {
     let searchValue = $(this).val();
+    const userID = localStorage.getItem("userID"); // optional if needed
 
     $.ajax({
-        url: `http://localhost:8080/worker/search?keyword=${searchValue}`,
+        url: `http://localhost:8080/worker/search?keyword=${searchValue}&userID=${userID}`, // make sure backend accepts userId
         type: "GET",
         headers: {
-            Authorization: "Bearer " + localStorage.getItem("token")
+            Authorization: "Bearer " + localStorage.getItem("token") // <-- must be correct
         },
         data: { search: searchValue },
         success: function (response) {
             $("#jobs-container").empty();
 
-            // Response has { status, message, data }
             let jobs = response.data;
-            console.log(jobs)
 
             jobs.forEach(job => {
-                console.log(job)
+                // build button based on applied flag
+                let buttonHtml;
+                if (job.applied) {
+                    buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;
+                } else {
+                    buttonHtml = `<button class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>`;
+                }
+
                 let card = `
                     <div class="col-md-6 mb-3">
-                        <div class="card job-card">
+                        <div class="card job-card" data-id="${job.id}">
                             <div class="card-body">
                                 <h5 class="card-title">${job.jobTitle}</h5>
                                 <p class="card-text">${job.description}</p>
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-primary">${job.categoryName}</span>
-                                      <span class="text-success fw-bold">$${job.cost}</span>
-                                 </div>
-                                   <div class="d-flex justify-content-between align-items-center mb-3">
-                              <small class="text-muted"><i class="fas fa-map-marker-alt"></i> ${job.location}</small>
-                                  <small class="text-muted"><i class="fas fa-clock"></i> ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}</small>
-                            </div>
-                                 <button id="applyBTN" class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>
+                                    <span class="text-success fw-bold">$${job.cost}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <small class="text-muted"><i class="fas fa-map-marker-alt"></i> ${job.location}</small>
+                                    <small class="text-muted"><i class="fas fa-clock"></i> ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}</small>
+                                </div>
+                                ${buttonHtml} <!-- use buttonHtml here -->
                             </div>
                         </div>
                     </div>`;
-                     $("#jobs-container").append(card);
+
+                $("#jobs-container").append(card);
             });
+        },
+        error: function(err) {
+            console.error("Failed to load filtered jobs", err);
         }
     });
 });
+
 
 /*-------------------------------------------------------------------------------------------*/
 function loadMyApplications() {

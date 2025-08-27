@@ -1,10 +1,10 @@
 package lk.ijse.project.backend.service.impl;
 
-import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.entity.Categories;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.repository.ApplicationRepository;
 import lk.ijse.project.backend.repository.CategoriesRepository;
 import lk.ijse.project.backend.repository.JobPostRepository;
 import lk.ijse.project.backend.repository.UserRepository;
@@ -31,8 +31,7 @@ public class JobPostServiceImpl implements JobPostService {
     private final JobPostRepository jobPostRepository;
     private  final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
-
+    private final ApplicationRepository applicationRepository;
     private final CategoriesRepository categoriesRepository;
 
     @Override
@@ -107,32 +106,6 @@ public class JobPostServiceImpl implements JobPostService {
                 .collect(Collectors.toList());
     }
 
-  /*  @Override
-    public List<JobPostDTO> getAllJobPosts() {
-        return jobPostRepository.findAll()
-                .stream()
-                .map(job -> {
-                    JobPostDTO dto = new JobPostDTO();
-                    dto.setId(job.getId());
-                    dto.setJobTitle(job.getJobTitle());
-                    dto.setDescription(job.getDescription());
-                    dto.setUrgency(job.getUrgency());
-                    dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
-                    dto.setCategoryName(job.getCategories().getName());
-
-                    if (job.getPostedDate() != null) {
-                        long days = ChronoUnit.DAYS.between(job.getPostedDate(), java.time.LocalDate.now());
-                        dto.setDaysSincePosted((int) days);
-                    } else {
-                        dto.setDaysSincePosted(0);
-                    }
-
-                    return dto;
-                }).collect(Collectors.toList());
-    }*/
-
-
-
     @Override
     @Transactional(readOnly = true)
     public List<JobPostDTO> getAllJobPostsByKeyword(String keyword) {
@@ -179,77 +152,63 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
-    public List<JobPostDTO> getLatestJobPosts(int i) {
+    public List<JobPostDTO> getLatestJobPosts(Long userId, int i) {
         return jobPostRepository.findDistinctTop10ByOrderByPostedDateDesc()
-                .stream()
-                .map(job -> {
-                    JobPostDTO dto = modelMapper.map(job, JobPostDTO.class);
-                    dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : "Uncategorized");
-                    dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
+            .stream()
+            .map(job -> {
+                boolean applied = applicationRepository.existsByUsers_IdAndJobPosts_Id(userId, job.getId());
 
-                    if (job.getPostedDate() != null) {
-                        long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
-                        dto.setDaysSincePosted((int) days);
-                    } else {
-                        dto.setDaysSincePosted(0);
-                    }
+                JobPostDTO dto = modelMapper.map(job, JobPostDTO.class);
+                dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : "Uncategorized");
+                dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
+                dto.setApplied(applied);
 
-                    return dto;
-                })
-                .collect(Collectors.toList());
+                if (job.getPostedDate() != null) {
+                    long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
+                    dto.setDaysSincePosted((int) days);
+                } else {
+                    dto.setDaysSincePosted(0);
+                }
+
+                return dto;
+            })
+            .collect(Collectors.toList());
     }
 
-/*    @Override
-    public List<ApplicationDTO> getFilteredJobs(String keyword) {
-        List<JobPosts> jobs = jobPostRepository.searchJobs(
-                (keyword == null || keyword.isEmpty()) ? null : keyword
-        );
+    @Override
+   public List<JobPostDTO> getFilteredJobs(String keyword, Long userId) {
+       List<JobPosts> jobs = jobPostRepository.searchJobs(
+               (keyword == null || keyword.isEmpty()) ? null : keyword
+       );
 
-        // Convert to DTOs
-        List<ApplicationDTO> dtos = new ArrayList<>();
-        for (JobPosts job : jobs) {
-            dtos.add(modelMapper.map(job, ApplicationDTO.class));
-        }
+       List<JobPostDTO> dtos = new ArrayList<>();
+       for (JobPosts job : jobs) {
+           boolean applied = applicationRepository.existsByUsers_IdAndJobPosts_Id(userId, job.getId());
 
-        return dtos;
-    }*/
-@Override
-public List<JobPostDTO> getFilteredJobs(String keyword) {
-    List<JobPosts> jobs = jobPostRepository.searchJobs(
-            (keyword == null || keyword.isEmpty()) ? null : keyword
-    );
+           JobPostDTO dto = new JobPostDTO();
+           dto.setId(job.getId());
+           dto.setJobTitle(job.getJobTitle());
+           dto.setDescription(job.getDescription());
+           dto.setCost(job.getCost());
+           dto.setLocation(job.getLocation());
+           dto.setUrgency(job.getUrgency());
+           dto.setDeadline(job.getDeadline());
+           dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
 
-    List<JobPostDTO> dtos = new ArrayList<>();
-    for (JobPosts job : jobs) {
-        JobPostDTO dto = new JobPostDTO();
-        dto.setId(job.getId());
-        dto.setJobTitle(job.getJobTitle());
-        dto.setDescription(job.getDescription());
-        dto.setCost(job.getCost());
-        dto.setLocation(job.getLocation());
-        dto.setUrgency(job.getUrgency());
-        dto.setDeadline(job.getDeadline());
+           if (job.getPostedDate() != null) {
+               long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
+               dto.setDaysSincePosted((int) days);
+           } else {
+               dto.setDaysSincePosted(0);
+           }
 
-        // category name
-        dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
+           dto.setApplicationsCount(job.getApplications() != null ? job.getApplications().size() : 0);
+           dto.setApplied(applied);
 
-        // days since posted
-        if (job.getPostedDate() != null) {
-            long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
-            dto.setDaysSincePosted((int) days);
-        } else {
-            dto.setDaysSincePosted(0);
-        }
+           dtos.add(dto);
+       }
 
-        // number of applications
-        dto.setApplicationsCount(job.getApplications() != null ? job.getApplications().size() : 0);
-
-        dtos.add(dto);
-    }
-
-    return dtos;
-}
-
-
+       return dtos;
+   }
 
 }

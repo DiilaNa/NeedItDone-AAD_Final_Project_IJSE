@@ -75,10 +75,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         existing.setUsers(user);
 
         applicationRepository.save(existing);
-
-
-
-
     }
 
     @Override
@@ -89,9 +85,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         applicationRepository.delete(existing);
     }
 
-@Override
-@Transactional(readOnly = true)
-public List<ApplicationDTO> getAllApplications(Long userID) {
+    @Override
+    @Transactional(readOnly = true)
+    public List<ApplicationDTO> getAllApplications(Long userID) {
     List<Applications> list = applicationRepository.findByUsersId(userID);
 
     if (list.isEmpty()){

@@ -13,12 +13,15 @@ import java.util.Optional;
 @Repository
 public interface JobPostRepository extends JpaRepository<JobPosts,Integer> {
     List<JobPosts> findJobPostsByJobTitleContainingIgnoreCase(String jobTitle);
+
     Optional<Object> findById(Long jobPostsId);
+
     @Query("SELECT COUNT(a) FROM Applications a WHERE a.jobPosts.id = :jobId")
     long countApplicationsByJobId(Long jobId);
+
     void deleteById(Long id);
 
-  List<JobPosts> findDistinctTop10ByOrderByPostedDateDesc();
+    List<JobPosts> findDistinctTop10ByOrderByPostedDateDesc();
 
     List<JobPosts> findByUsers(User user);
 

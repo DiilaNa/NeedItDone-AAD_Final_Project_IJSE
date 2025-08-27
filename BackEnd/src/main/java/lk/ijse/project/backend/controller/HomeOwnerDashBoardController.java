@@ -75,8 +75,6 @@ public class HomeOwnerDashBoardController {
         );
     }
 
-
-
     @PutMapping("/updateJob")
     public ResponseEntity<ApiResponseDTO> updateJob(@RequestBody JobPostDTO jobPostDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -119,6 +117,7 @@ public class HomeOwnerDashBoardController {
         );
 
     }
+
     @GetMapping("search/{keyword}")
     public ResponseEntity<ApiResponseDTO> search(@PathVariable("keyword") String keyword) {
         List<JobPostDTO> jobs =  jobPostService.getAllJobPostsByKeyword(keyword);
@@ -130,6 +129,7 @@ public class HomeOwnerDashBoardController {
                 )
         );
     }
+
     @GetMapping("/pagination")
     public ResponseEntity<ApiResponseDTO> getAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Page<JobPostDTO> jobs = jobPostService.getAllJobPostsPaginated(page, size);

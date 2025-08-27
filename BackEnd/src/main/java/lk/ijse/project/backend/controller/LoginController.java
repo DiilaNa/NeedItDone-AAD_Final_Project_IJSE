@@ -29,6 +29,7 @@ public class LoginController {
 
         );
     }
+
     @PostMapping("/login")
     public ResponseEntity<ApiResponseDTO> login(@RequestBody LogInDTO loginDTO) {
         return ResponseEntity.ok(
@@ -39,6 +40,7 @@ public class LoginController {
                 )
         );
     }
+
     @PutMapping("/update")
     public ResponseEntity<ApiResponseDTO> updateUser(@RequestBody SignUpDTO signUpDTO) {
         return ResponseEntity.ok(
