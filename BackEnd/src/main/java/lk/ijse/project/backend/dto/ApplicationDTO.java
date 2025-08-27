@@ -22,6 +22,10 @@ public class ApplicationDTO {
     @NotBlank(message = "amount can not be blank")
     private Double amount;
 
+    private String description;
+    private String skills;
+    private Integer experience;
+
     private Long jobPostsId;
     private Long userId;
 }

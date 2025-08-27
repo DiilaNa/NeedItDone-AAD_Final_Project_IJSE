@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+
     @Override
     public String updateUser(SignUpDTO signUpDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -77,6 +78,7 @@ public class UserServiceImpl implements UserService {
         return jwtUtil.generateToken(existingUser.getUsername());
 
     }
+
 
     @Override
     public void deleteUser(SignUpDTO signUpDTO) {
@@ -101,7 +103,6 @@ public class UserServiceImpl implements UserService {
         }
         return modelMapper.map(list, new TypeToken<List<SignUpDTO>>(){}.getType());
     }
-
     @Override
     public Page<SignUpDTO> getAllUsersPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());

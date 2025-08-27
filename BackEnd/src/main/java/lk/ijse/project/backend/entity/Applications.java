@@ -23,6 +23,10 @@ public class Applications implements SuperEntity{
     private String status;
     private Double amount;
 
+    private String description;
+    private String skills;
+    private Integer experience;
+
     @ManyToOne
     @JoinColumn(name = "jobPost_id")
     private JobPosts jobPosts;

@@ -158,6 +158,7 @@ function loadLatestJobs() {
 }
 
 /*---------------------Apply Job-----------------------------------------*/
+/*
 $("#worker-browse-jobs-content").on("click", ".apply-job", function () {
     const $card = $(this).closest(".job-card");
     const $button = $(this)
@@ -198,6 +199,7 @@ $("#worker-browse-jobs-content").on("click", ".apply-job", function () {
         }
     });
 });
+*/
 
 /*----------------- Load Jobs with Filters -----------------*/
 $("#jobSearch").on("keyup", function () {
@@ -298,5 +300,59 @@ function getStatusBadgeClass(status) {
     }
 }
 
+/*---------------*/
+$("#worker-browse-jobs-content").on("click", ".apply-job", function () {
+    const $card = $(this).closest(".job-card");
+
+    // save job details in modal hidden fields
+    $("#modalJobId").val($card.data("id"));
+    $("#applyJobModal").modal("show");
+});
+
+$("#applyJobForm").submit(function (e) {
+    e.preventDefault();
+
+    const jobId = $("#modalJobId").val();
+    const userId = localStorage.getItem("userID");
+
+    // You can fetch job details from the card again if needed
+    const $card = $(`[data-id=${jobId}]`);
+    const jobTitle = $card.find(".card-title").text();
+    const category = $card.find(".badge").text();
+    const amountText = $card.find(".text-success").text();
+    const amount = parseFloat(amountText.replace('$',''));
+
+    const applicationDTO = {
+        jobPostsId: jobId,
+        userId: userId,
+        jobTitle: jobTitle,
+        category: category,
+        date: new Date(),
+        status: "PENDING",
+        amount: amount,
+        description: $("#modalDescription").val(),
+        skills: $("#modalSkills").val(),
+        experience: $("#modalExperience").val()
+    };
+
+    $.ajax({
+        url: "http://localhost:8080/worker/saveApplication",
+        type: "POST",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        contentType: "application/json",
+        data: JSON.stringify(applicationDTO),
+        success: function () {
+            alert("Application submitted successfully!");
+            $("#applyJobModal").modal("hide");
+            const $button = $card.find(".apply-job");
+            $button.text("APPLIED").prop("disabled", true).removeClass("btn-custom").addClass("btn-secondary");
+        },
+        error: function () {
+            alert("Failed to apply. Try again.");
+        }
+    });
+});
 
 

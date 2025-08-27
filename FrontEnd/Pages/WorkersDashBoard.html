@@ -182,6 +182,36 @@
                 </div>
               </div>
 
+      <!--Apply for Jobs Modal-->
+      <div class="modal fade" style="color: rgba(255,255,255,0.92);" id="applyJobModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" >
+          <div class="modal-content p-4" style="background-color: #000547">
+            <h5 class="mb-3">Apply for Job</h5>
+            <form id="applyJobForm">
+              <!-- hidden field for job id -->
+              <input type="hidden" id="modalJobId">
+
+              <div class="mb-3">
+                <label for="modalDescription" class="form-label">Describe Yourself</label>
+                <textarea class="form-control" id="modalDescription" rows="3" required></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="modalSkills" class="form-label">Your Skills</label>
+                <input type="text" class="form-control" id="modalSkills" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="modalExperience" class="form-label">Experience (Years)</label>
+                <input type="number" class="form-control" id="modalExperience" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Submit Application</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <!-- My Applications Section -->
       <div id="worker-my-applications-content" class="dashboard-section">
                 <h2 class="mb-4">My Applications</h2>
