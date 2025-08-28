@@ -2,6 +2,7 @@ $(document).ready(function () {
     loadMyJobs();
     loadUserDetails();
     sideNav();
+    loadApplications();
 
     $("#homeowner-my-jobs-content").on("click", ".view-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
@@ -356,3 +357,121 @@ function deleteJobPosts(jobId) {
         });
     }
 }
+
+/*------------------------Load Job Applications--------------------------------*/
+function loadApplications() {
+    const userID = localStorage.getItem("userID");
+
+    $.ajax({
+        url: `http://localhost:8080/home/getApplications/${userID}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            const container = $("#applications-container");
+            container.empty();
+
+            if (!res.data || res.data.length === 0) {
+                container.append("<p>No applications found.</p>");
+                return;
+            }
+
+            res.data.forEach(app => {
+                const isPending = app.status === "PENDING";
+
+                const statusClass = app.status === "ACCEPTED" ? "btn-success" :
+                    app.status === "DECLINED" ? "btn-danger" : "btn-warning text-dark";
+
+                const applicationCard = `
+        <div class="application-card mb-4 p-4 rounded-3 shadow" data-id="${app.id}" 
+             style="background-color: #0b0b3b; color: #f1f1f1; border-left: 4px solid ${
+                    app.status === "ACCEPTED" ? "#28a745" : app.status === "DECLINED" ? "#dc3545" : "#ffc107"
+                };">
+
+           
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0 fw-bold">${app.jobTitle}</h5>
+                ${
+                    !isPending
+                        ? `<button class="btn ${statusClass} btn-sm text-uppercase px-3 py-1" disabled>${app.status}</button>`
+                        : `<span class="badge bg-warning text-dark px-3 py-1">PENDING</span>`
+                }
+            </div>
+            <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+                
+                <div class="d-flex flex-column flex-md-row align-items-start gap-3 flex-grow-1">
+                    <div class="avatar rounded-circle text-center fw-bold" 
+                         style="width:50px; height:50px; background-color:#1f1f70; display:flex; align-items:center; justify-content:center; font-size:18px; color:white;">
+                        ${app.workerName.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                        <strong class="fs-6">${app.workerName}</strong>
+                        <div class="small mb-1">${app.skills || "No skills listed"} • ${app.experience} yrs exp</div>
+                        <p class="mb-0 fst-italic" style="color:#dcdcdc;">"${app.description}"</p>
+                    </div>
+                </div>
+                ${
+                    isPending
+                        ? `<div class="d-flex flex-column flex-md-column gap-2 mt-3 mt-md-0">
+                               <button class="btn btn-success btn-sm accept-app w-100">Accept</button>
+                               <button class="btn btn-outline-danger btn-sm decline-app w-100">Decline</button>
+                           </div>`
+                        : ""
+                }
+            </div>
+        </div>
+    `;
+
+                container.append(applicationCard);
+            });
+        },
+        error: function () {
+            alert("Failed to load applications");
+        }
+    });
+}
+/*-------------------------------Handle Accept or decline--------------------------*/
+$("#applications-container").on("click", ".accept-app", function () {
+    const appId = $(this).closest(".application-card").data("id");
+
+    $.ajax({
+        url: `http://localhost:8080/home/updateApplicationStatus/${appId}`,
+        type: "PUT",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        contentType: "application/json",
+        data: JSON.stringify({
+            status: "ACCEPTED" }
+        ),
+        success: function () {
+            alert("Application Accepted!");
+            loadApplications(); // reload list
+        },
+        error: function () {
+            alert("Failed to accept application.");
+        }
+    });
+});
+
+$("#applications-container").on("click", ".decline-app", function () {
+    const appId = $(this).closest(".application-card").data("id");
+
+    $.ajax({
+        url: `http://localhost:8080/home/updateApplicationStatus/${appId}`,
+        type: "PUT",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        contentType: "application/json",
+        data: JSON.stringify({ status: "DECLINED" }),
+        success: function () {
+            alert("Application Declined!");
+            loadApplications();
+        },
+        error: function () {
+            alert("Failed to decline application.");
+        }
+    });
+});

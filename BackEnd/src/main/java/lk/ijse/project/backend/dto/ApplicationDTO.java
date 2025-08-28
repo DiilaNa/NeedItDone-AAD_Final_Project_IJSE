@@ -25,7 +25,7 @@ public class ApplicationDTO {
     private String description;
     private String skills;
     private Integer experience;
-
+    private String workerName;
     private Long jobPostsId;
     private Long userId;
 }

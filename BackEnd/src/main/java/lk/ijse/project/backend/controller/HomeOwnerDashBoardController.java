@@ -1,9 +1,11 @@
 package lk.ijse.project.backend.controller;
 
+import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.service.ApplicationService;
 import lk.ijse.project.backend.service.JobPostService;
 import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/home")
@@ -19,6 +22,7 @@ import java.util.List;
 public class HomeOwnerDashBoardController {
     private final JobPostService jobPostService;
     private final UserService userService;
+    private final ApplicationService applicationService;
 
     @PostMapping("/saveJob")
     public ResponseEntity<ApiResponseDTO> saveJob(@RequestBody JobPostDTO jobPostDTO) {
@@ -140,6 +144,28 @@ public class HomeOwnerDashBoardController {
                         "Loaded job posts with pagination successfully",
                         jobs
                 )
+        );
+    }
+
+    @GetMapping("/getApplications/{homeownerId}")
+    public ResponseEntity<ApiResponseDTO> getApplications(@PathVariable Long homeownerId) {
+        List<ApplicationDTO> apps = applicationService.getApplicationsForHomeowner(homeownerId);
+        return ResponseEntity.ok(
+                new ApiResponseDTO(200, "Applications fetched successfully", apps)
+        );
+    }
+
+    @PutMapping("/updateApplicationStatus/{applicationId}")
+    public ResponseEntity<ApiResponseDTO> updateApplicationStatus(
+            @PathVariable Long applicationId,
+            @RequestBody Map<String, String> body) {
+
+        String status = body.get("status");
+        System.out.println(status);
+        applicationService.updateApplicationStatus(applicationId, status);
+
+        return ResponseEntity.ok(
+                new ApiResponseDTO(200, "Application status updated successfully", null)
         );
     }
 }

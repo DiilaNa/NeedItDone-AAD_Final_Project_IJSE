@@ -14,4 +14,8 @@ public interface ApplicationService {
     Page<ApplicationDTO> getAllApplicationsPaginated(int page, int size);
 
     List<ApplicationDTO> getAllApplications(Long userID);
+
+    List<ApplicationDTO> getApplicationsForHomeowner(Long homeownerId);
+
+    void updateApplicationStatus(Long applicationId, String status);
 }

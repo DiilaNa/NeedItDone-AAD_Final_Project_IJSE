@@ -15,11 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -111,7 +111,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     return dtos;
 }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<ApplicationDTO> getAllApplicationsByKeyword(String keyword) {
@@ -130,4 +129,37 @@ public class ApplicationServiceImpl implements ApplicationService {
         Page<Applications> applications = applicationRepository.findAll(pageable);
         return applications.map(application -> modelMapper.map(application, ApplicationDTO.class));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ApplicationDTO> getApplicationsForHomeowner(Long homeownerId) {
+        List<Applications> apps = applicationRepository.findAllApplicationsForHomeowner(homeownerId);
+
+        if (apps.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return apps.stream().map(app -> {
+            ApplicationDTO dto = modelMapper.map(app, ApplicationDTO.class);
+            dto.setJobTitle(app.getJobPosts().getJobTitle());
+            dto.setWorkerName(app.getUsers().getUsername());
+            dto.setSkills(app.getSkills());
+            dto.setExperience(app.getExperience());
+            dto.setDescription(app.getDescription());
+            dto.setWorkerName(app.getUsers().getUsername());
+            return dto;
+        }).toList();
+    }
+
+    @Override
+    @Transactional
+    public void updateApplicationStatus(Long applicationId, String status) {
+        Applications application = (Applications) applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new RuntimeException("Application not found"));
+
+        application.setStatus(status);
+        applicationRepository.save(application);
+    }
+
 }
+
