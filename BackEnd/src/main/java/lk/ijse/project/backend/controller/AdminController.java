@@ -2,7 +2,9 @@ package lk.ijse.project.backend.controller;
 
 import lk.ijse.project.backend.dto.RatingDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
+import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.service.RatingService;
+import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
     private final RatingService ratingService;
+    private final UserService userService;
 
     @PostMapping("/saveRating")
     public ResponseEntity<ApiResponseDTO> saveRating(@RequestBody RatingDTO ratingDTO) {
@@ -69,9 +72,9 @@ public class AdminController {
 
     }
 
-    @GetMapping("/pagination")
+    @GetMapping("/getAllUserPagination")
     public ResponseEntity<ApiResponseDTO> getAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Page<RatingDTO> ratings = ratingService.getAlLPaginated(page, size);
+        Page<SignUpDTO> ratings = userService.getAllUsersPaginated(page, size);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,

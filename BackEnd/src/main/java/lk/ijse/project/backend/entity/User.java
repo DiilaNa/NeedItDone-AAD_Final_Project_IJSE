@@ -1,11 +1,14 @@
 package lk.ijse.project.backend.entity;
 
 import jakarta.persistence.*;
+import lk.ijse.project.backend.entity.enums.Role;
+import lk.ijse.project.backend.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -23,6 +26,17 @@ public class User implements SuperEntity {
     private String phone;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(updatable = false)
+    private LocalDate joinDate;
+
+    @PrePersist
+    protected void onCreate() {
+        this.joinDate = LocalDate.now();
+    }
 
     @OneToMany(mappedBy = "users")
     private List<JobPosts> jobPosts; /*JobPost One to Many*/

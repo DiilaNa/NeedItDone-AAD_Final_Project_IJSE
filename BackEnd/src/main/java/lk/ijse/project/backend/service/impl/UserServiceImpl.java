@@ -3,8 +3,9 @@ package lk.ijse.project.backend.service.impl;
 import lk.ijse.project.backend.dto.login.LogInDTO;
 import lk.ijse.project.backend.dto.login.LoginResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
-import lk.ijse.project.backend.entity.Role;
+import lk.ijse.project.backend.entity.enums.Role;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.entity.enums.Status;
 import lk.ijse.project.backend.repository.UserRepository;
 import lk.ijse.project.backend.service.UserService;
 import lk.ijse.project.backend.util.JwtUtil;
@@ -19,9 +20,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
                 .email(signUpDTO.getEmail())
                 .phone(signUpDTO.getPhone())
                 .role(Role.valueOf(signUpDTO.getRole()))
+                .status(Status.ACTIVE)
                 .build();
         userRepository.save(user);
         return "User Registered Successfully";
@@ -63,7 +64,6 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-
     @Override
     public String updateUser(SignUpDTO signUpDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -78,7 +78,6 @@ public class UserServiceImpl implements UserService {
         return jwtUtil.generateToken(existingUser.getUsername());
 
     }
-
 
     @Override
     public void deleteUser(SignUpDTO signUpDTO) {
@@ -103,13 +102,6 @@ public class UserServiceImpl implements UserService {
         }
         return modelMapper.map(list, new TypeToken<List<SignUpDTO>>(){}.getType());
     }
-    @Override
-    public Page<SignUpDTO> getAllUsersPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<User> userPage = userRepository.findAll(pageable);
-
-        return userPage.map(user -> modelMapper.map(user, SignUpDTO.class));
-    }
 
     @Override
     public SignUpDTO findByUserName(String username) {
@@ -117,5 +109,20 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
 
         return modelMapper.map(user, SignUpDTO.class);
+    }
+
+    @Override
+    public Page<SignUpDTO> getAllUsersPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<User> userPage = userRepository.findAll(pageable);
+
+
+        Page<SignUpDTO> dtoPage = userPage.map(user -> {
+            SignUpDTO dto = modelMapper.map(user, SignUpDTO.class);
+            dto.setJoinDate(user.getJoinDate());
+            return dto;
+        });
+        return dtoPage;
+
     }
 }
