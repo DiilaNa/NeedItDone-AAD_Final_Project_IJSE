@@ -52,7 +52,7 @@ public class JobPostServiceImpl implements JobPostService {
         job.setUsers(user);
         job.setCategories(category);
         job.setPostedDate(LocalDate.now());
-        job.setJobPostStatus(JobPostStatus.ENABLED);
+        job.setJobPostStatus(JobPostStatus.ENABLE);
 
 
         jobPostRepository.save(job);
@@ -127,6 +127,7 @@ public class JobPostServiceImpl implements JobPostService {
             JobPostDTO dto = modelMapper.map(jobPosts,JobPostDTO.class);
             dto.setUsername(jobPosts.getUsers().getUsername());
             dto.setPostedDate(jobPosts.getPostedDate());
+            dto.setJobPostStatus(jobPosts.getJobPostStatus());
             return dto;
         });
 
@@ -214,10 +215,10 @@ public class JobPostServiceImpl implements JobPostService {
         JobPosts job = (JobPosts) jobPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found"));
 
-        if (job.getJobPostStatus() == JobPostStatus.ENABLED) {
-            job.setJobPostStatus(JobPostStatus.DISABLED);
+        if (job.getJobPostStatus() == JobPostStatus.ENABLE) {
+            job.setJobPostStatus(JobPostStatus.DISABLE);
         }else {
-            job.setJobPostStatus(JobPostStatus.ENABLED);
+            job.setJobPostStatus(JobPostStatus.ENABLE);
         }
         jobPostRepository.save(job);
     }

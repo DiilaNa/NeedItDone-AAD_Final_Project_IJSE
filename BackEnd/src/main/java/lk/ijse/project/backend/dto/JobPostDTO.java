@@ -2,6 +2,7 @@ package lk.ijse.project.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lk.ijse.project.backend.entity.enums.JobPostStatus;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class JobPostDTO {
     private boolean applied;
     private LocalDate postedDate;
     private String username;
+    private JobPostStatus jobPostStatus;
     @NotBlank
     private int daysSincePosted;
     private long applicationsCount;

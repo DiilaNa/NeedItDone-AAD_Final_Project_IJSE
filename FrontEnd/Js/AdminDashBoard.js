@@ -77,7 +77,7 @@ function loadUsers(page = 0) {
                             <td>${new Date(user.joinDate).toLocaleDateString()}</td>
                          
                             <td>
-                                 <button class="btn btn-sm ${user.status === 'ACTIVE' ? 'btn-danger' : 'btn-success'} disable-job-btn" data-id="${user.id}">
+                                 <button class="btn btn-sm ${user.status === 'ACTIVE' ? 'btn-danger' : 'btn-success'} disable-btn" data-id="${user.id}">
                                         ${user.status === 'ACTIVE' ? "Disable" : "Enable"}
                                 </button>
                             </td>
@@ -152,7 +152,7 @@ $(document).on("click", ".disable-btn", function () {
     });
 });
 
-/*--------------------------Search Byy Keyword------------------------------------------*/
+/*--------------------------Search By Keyword------------------------------------------*/
 $("#userSearch").on("keyup", function () {
     const keyword = $(this).val().trim();
 
@@ -212,6 +212,7 @@ function loadJobs(page = 0) {
                 const jobs = res.data.content;
                 const tbody = $("#jobTableBody");
                 tbody.empty();
+                console.log(jobs.status)
 
                 jobs.forEach(job => {
                     tbody.append(`
@@ -223,10 +224,11 @@ function loadJobs(page = 0) {
                             <td>${job.urgency}</td>
                             <td>${job.postedDate ? new Date(job.postedDate).toLocaleDateString() : 'N/A'}</td>
                             <td>
-                               <button class="btn btn-sm ${job.status === 'ACTIVE' ? 'btn-danger' : 'btn-success'} disable-job-btn" data-id="${job.id}">
-                                      ${job.status === 'ACTIVE' ? "Disable" : "Enable"}
+                               <button class="btn btn-sm ${job.jobPostStatus  === 'ENABLE' ? 'btn-danger' : 'btn-success'} disable-job-btn" data-id="${job.id}">
+                                      ${job.jobPostStatus  === 'ENABLE' ? "Disable" : "Enable"}
                                 </button>
                             </td>
+
                         </tr>
                     `);
                 });
