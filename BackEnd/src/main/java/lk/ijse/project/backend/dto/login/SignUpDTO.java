@@ -1,4 +1,5 @@
 package lk.ijse.project.backend.dto.login;
+import lk.ijse.project.backend.entity.enums.Status;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,5 +12,6 @@ public class SignUpDTO {
     private String phone;
     private String role;
     private LocalDate joinDate;
+    private Status status;
 
 }

@@ -42,6 +42,7 @@ function sideNavBar() {
     });
 
 }
+
 /*---------------------SIGN OUT Button---------------------------*/
 $("#logoutBTN").on('click',function () {
     localStorage.removeItem("accessToken");
@@ -54,6 +55,7 @@ let currentPage = 0;
 const pageSize = 10;
 
 function loadUsers(page = 0) {
+    currentPage = page
     $.ajax({
         url: `http://localhost:8080/admin/getAllUserPagination?page=${page}&size=${pageSize}`,
         type: "GET",
@@ -67,7 +69,7 @@ function loadUsers(page = 0) {
                 tbody.empty();
                 console.log(users)
                 users.forEach(user => {
-                    console.log(user)
+                    console.log(user.active)
                     tbody.append(`
                         <tr>
                             <td>${user.username}</td>
@@ -76,7 +78,9 @@ function loadUsers(page = 0) {
                             <td>${new Date(user.joinDate).toLocaleDateString()}</td>
                          
                             <td>
-                                <button class="btn btn-sm btn-danger">Delete</button>
+                                 <button class="btn btn-sm btn-danger disable-btn" data-id="${user.id}">
+                                        ${user.status === 'ACTIVE' ? "Disable" : "Enable"}
+                                </button>
                             </td>
                         </tr>
                     `);
@@ -102,13 +106,29 @@ function renderPagination(totalPages, current) {
     const container = $("#paginationControls");
     container.empty();
 
-    for (let i = 0; i < totalPages; i++) {
-        container.append(`
-            <button class="btn btn-sm ${i === current ? 'btn-primary' : 'btn-outline-primary'} me-1"
-                onclick="loadUsers(${i})">
-                ${i + 1}
-            </button>
-        `);
-    }
+    // Prev link
+    container.append(`
+        <span class="pagination-link me-3 ${current === 0 ? 'disabled' : ''}"
+            onclick="${current > 0 ? `loadUsers(${current - 1})` : ''}">
+            ⬅ Prev
+        </span>
+    `);
+
+    // Current page indicator
+    container.append(`
+        <span class="pagination-info me-3">
+            Page ${current + 1} of ${totalPages}
+        </span>
+    `);
+
+    // Next link
+    container.append(`
+        <span class="pagination-link ${current === totalPages - 1 ? 'disabled' : ''}"
+            onclick="${current < totalPages - 1 ? `loadUsers(${current + 1})` : ''}">
+            Next ➡
+        </span>
+    `);
 }
+
+
 

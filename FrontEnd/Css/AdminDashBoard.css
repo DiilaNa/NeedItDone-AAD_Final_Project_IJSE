@@ -431,3 +431,36 @@ body {
         font-size: 2rem;
     }
 }
+
+/*-------------------Pagination Buttons ----------------------------*/
+#paginationControls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    font-family: "Inter", sans-serif;
+}
+
+#paginationControls .pagination-link {
+    cursor: pointer;
+    color: #0d6efd; /* bootstrap primary blue */
+    font-weight: 500;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#paginationControls .pagination-link:hover {
+    color: #66b2ff; /* lighter blue on hover */
+    transform: translateY(-2px); /* smooth lift */
+}
+
+#paginationControls .pagination-info {
+    color: #ffffff; /* subtle gray text */
+    font-weight: 400;
+}
+
+#paginationControls .disabled {
+    color: #555 !important;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+

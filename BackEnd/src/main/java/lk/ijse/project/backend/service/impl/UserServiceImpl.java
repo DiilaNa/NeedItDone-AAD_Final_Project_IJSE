@@ -20,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -110,19 +109,16 @@ public class UserServiceImpl implements UserService {
 
         return modelMapper.map(user, SignUpDTO.class);
     }
-
     @Override
     public Page<SignUpDTO> getAllUsersPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         Page<User> userPage = userRepository.findAll(pageable);
 
-
-        Page<SignUpDTO> dtoPage = userPage.map(user -> {
+        return userPage.map(user -> {
             SignUpDTO dto = modelMapper.map(user, SignUpDTO.class);
             dto.setJoinDate(user.getJoinDate());
+            dto.setStatus(user.getStatus());
             return dto;
         });
-        return dtoPage;
-
     }
 }

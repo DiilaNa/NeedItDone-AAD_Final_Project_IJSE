@@ -28,6 +28,8 @@ $(document).ready(function () {
     });
 
 });
+
+
 /*-----------------------Side Navigation Bar--------------------------------*/
 function sideNav() {
     let $circleMenuBtn = $('#circleMenuBtn');
@@ -131,6 +133,7 @@ function saveJobPosts() {
                 showConfirmButton: false,
                 timer: 1500
             });
+            loadMyJobs();
         },
         error: function (){
             Swal.fire({
@@ -165,7 +168,6 @@ function loadUserDetails() {
 
 /*----------------------Update User/Home Owner details----------------------------*/
 $("#updateUserForm").on('submit', function(e) {
-    console.log("clkk")
     e.preventDefault();
     const updatedUser = {
         username: $("#profileUserName").val(),
@@ -186,6 +188,8 @@ $("#updateUserForm").on('submit', function(e) {
                 localStorage.setItem("token", response.data);
             }
             Swal.fire("Updated!", "Your details have been updated", "success");
+            loadMyJobs();
+            loadUserDetails()
         },
         error: function (e) {
             Swal.fire(
@@ -310,7 +314,7 @@ function loadsToUpdate(jobId) {
     });
 }
 
-/*-------------------------------------------Update Job Posts(edit button inside job post cards)---------------------------*/
+/*------------Update Job Posts(edit button inside job post cards)------------------*/
 function updateJobPosts() {
     const jobData = {
         id: $("#editJobId").val(),

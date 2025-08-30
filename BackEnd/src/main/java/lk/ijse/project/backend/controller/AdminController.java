@@ -3,6 +3,7 @@ package lk.ijse.project.backend.controller;
 import lk.ijse.project.backend.dto.RatingDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
+import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.service.RatingService;
 import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -73,13 +74,17 @@ public class AdminController {
     }
 
     @GetMapping("/getAllUserPagination")
-    public ResponseEntity<ApiResponseDTO> getAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Page<SignUpDTO> ratings = userService.getAllUsersPaginated(page, size);
+    public ResponseEntity<ApiResponseDTO> getAllPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<SignUpDTO> users = userService.getAllUsersPaginated(page, size);
+
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,
-                        "Loaded ratings with pagination successfully",
-                        ratings
+                        "Loaded users with pagination successfully",
+                        users
                 )
         );
     }
