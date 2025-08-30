@@ -1,6 +1,7 @@
 $(document).ready(function() {
     sideNavBar();
     loadUsers();
+    loadJobs();
 
 });
 
@@ -67,9 +68,7 @@ function loadUsers(page = 0) {
                 const users = res.data.content;
                 const tbody = $("#userTableBody");
                 tbody.empty();
-                console.log(users)
                 users.forEach(user => {
-                    console.log(user.active)
                     tbody.append(`
                         <tr>
                             <td>${user.username}</td>
@@ -196,6 +195,70 @@ $("#userSearch").on("keyup", function () {
         }
     });
 });
+/*-------------------------LOAD ALL JOB POSTS----------------------------------------------*/
+let currentJobPage = 0;
+const jobPageSize = 10;
+
+function loadJobs(page = 0) {
+    currentJobPage = page;
+    $.ajax({
+        url: `http://localhost:8080/admin/getAllJobPostsPagination?page=${page}&size=${jobPageSize}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            if (res.status === 200) {
+                const jobs = res.data.content;
+                const tbody = $("#jobTableBody");
+                tbody.empty();
+
+                jobs.forEach(job => {
+                    tbody.append(`
+                        <tr>
+                            <td>${job.jobTitle}</td>
+                            <td>${job.username || 'N/A'}</td>
+                            <td>${job.description}</td>
+                            <td>${job.location}</td>
+                            <td>${job.urgency}</td>
+                            <td>${job.postedDate ? new Date(job.postedDate).toLocaleDateString() : 'N/A'}</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger disable-job-btn" data-id="${job.id}">
+                                    Disable
+                                </button>
+                            </td>
+                        </tr>
+                    `);
+                });
+
+                renderJobPagination(res.data.totalPages, page);
+            }
+        },
+        error: function (err) {
+            console.error("Failed to load jobs", err);
+        }
+    });
+}
+
+function renderJobPagination(totalPages, current) {
+    const container = $("#jobPaginationControls");
+    container.empty();
+
+    container.append(`
+        <span class="pagination-link me-3 ${current === 0 ? 'disabled' : ''}"
+            onclick="${current > 0 ? `loadJobs(${current - 1})` : ''}">
+            ⬅ Prev
+        </span>
+        <span class="pagination-info me-3">
+            Page ${current + 1} of ${totalPages}
+        </span>
+        <span class="pagination-link ${current === totalPages - 1 ? 'disabled' : ''}"
+            onclick="${current < totalPages - 1 ? `loadJobs(${current + 1})` : ''}">
+            Next ➡
+        </span>
+    `);
+}
+
 
 
 

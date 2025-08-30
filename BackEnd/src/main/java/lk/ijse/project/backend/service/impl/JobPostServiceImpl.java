@@ -122,7 +122,13 @@ public class JobPostServiceImpl implements JobPostService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         Page<JobPosts> jobPostsPage = jobPostRepository.findAll(pageable);
 
-        return jobPostsPage.map(jobPosts -> modelMapper.map(jobPosts,JobPostDTO.class));
+        return jobPostsPage.map(jobPosts ->{
+            JobPostDTO dto = modelMapper.map(jobPosts,JobPostDTO.class);
+            dto.setUsername(jobPosts.getUsers().getUsername());
+            dto.setPostedDate(jobPosts.getPostedDate());
+            return dto;
+        });
+
     }
 
     @Override
@@ -177,38 +183,29 @@ public class JobPostServiceImpl implements JobPostService {
 
     @Override
    public List<JobPostDTO> getFilteredJobs(String keyword, Long userId) {
-       List<JobPosts> jobs = jobPostRepository.searchJobs(
-               (keyword == null || keyword.isEmpty()) ? null : keyword
-       );
+        List<JobPosts> jobs = jobPostRepository.searchJobs(
+                (keyword == null || keyword.isEmpty()) ? null : keyword
+        );
 
-       List<JobPostDTO> dtos = new ArrayList<>();
-       for (JobPosts job : jobs) {
-           boolean applied = applicationRepository.existsByUsers_IdAndJobPosts_Id(userId, job.getId());
+        return jobs.stream()
+                .map(job -> {
+                    JobPostDTO dto = modelMapper.map(job, JobPostDTO.class);
 
-           JobPostDTO dto = new JobPostDTO();
-           dto.setId(job.getId());
-           dto.setJobTitle(job.getJobTitle());
-           dto.setDescription(job.getDescription());
-           dto.setCost(job.getCost());
-           dto.setLocation(job.getLocation());
-           dto.setUrgency(job.getUrgency());
-           dto.setDeadline(job.getDeadline());
-           dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
+                    boolean applied = applicationRepository.existsByUsers_IdAndJobPosts_Id(userId, job.getId());
+                    dto.setApplied(applied);
+                    dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
 
-           if (job.getPostedDate() != null) {
-               long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
-               dto.setDaysSincePosted((int) days);
-           } else {
-               dto.setDaysSincePosted(0);
-           }
+                    if (job.getPostedDate() != null) {
+                        long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
+                        dto.setDaysSincePosted((int) days);
+                    } else {
+                        dto.setDaysSincePosted(0);
+                    }
 
-           dto.setApplicationsCount(job.getApplications() != null ? job.getApplications().size() : 0);
-           dto.setApplied(applied);
+                    dto.setApplicationsCount(job.getApplications() != null ? job.getApplications().size() : 0);
 
-           dtos.add(dto);
-       }
-
-       return dtos;
-   }
-
+                    return dto;
+                })
+                .toList();
+    }
 }

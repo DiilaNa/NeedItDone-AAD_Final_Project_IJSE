@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,6 +26,8 @@ public class JobPostDTO {
     @NotBlank(message = " deadline can not be blank")
     private String deadline;
     private boolean applied;
+    private LocalDate postedDate;
+    private String username;
     @NotBlank
     private int daysSincePosted;
     private long applicationsCount;

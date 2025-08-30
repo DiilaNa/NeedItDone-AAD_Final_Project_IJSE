@@ -134,19 +134,6 @@ public class HomeOwnerDashBoardController {
         );
     }
 
-    @GetMapping("/pagination")
-    public ResponseEntity<ApiResponseDTO> getAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Page<JobPostDTO> jobs = jobPostService.getAllJobPostsPaginated(page, size);
-
-        return ResponseEntity.ok(
-                new ApiResponseDTO(
-                        200,
-                        "Loaded job posts with pagination successfully",
-                        jobs
-                )
-        );
-    }
-
     @GetMapping("/getApplications/{homeownerId}")
     public ResponseEntity<ApiResponseDTO> getApplications(@PathVariable Long homeownerId) {
         List<ApplicationDTO> apps = applicationService.getApplicationsForHomeowner(homeownerId);

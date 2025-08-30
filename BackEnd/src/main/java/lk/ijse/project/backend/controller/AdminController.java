@@ -1,9 +1,10 @@
 package lk.ijse.project.backend.controller;
 
+import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.dto.RatingDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
-import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.service.JobPostService;
 import lk.ijse.project.backend.service.RatingService;
 import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class AdminController {
     private final RatingService ratingService;
     private final UserService userService;
+    private final JobPostService jobPostService;
 
     @PostMapping("/saveRating")
     public ResponseEntity<ApiResponseDTO> saveRating(@RequestBody RatingDTO ratingDTO) {
@@ -94,5 +96,22 @@ public class AdminController {
         userService.disableUser(id);
         return ResponseEntity.ok(new ApiResponseDTO(200, "User disabled successfully", null));
     }
+
+    @GetMapping("/getAllJobPostsPagination")
+    public ResponseEntity<ApiResponseDTO> getAllJobPostsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        Page<JobPostDTO> posts = jobPostService.getAllJobPostsPaginated(page, size);
+
+        return ResponseEntity.ok(
+                new ApiResponseDTO(
+                        200,
+                        "Loaded Job Posts Successfully",
+                        posts
+                )
+        );
+    }
+
 
 }

@@ -196,34 +196,6 @@
                 <div id="admin-jobs-content" class="dashboard-section">
                     <h2 class="mb-4">Job Management</h2>
                     <div class="row mb-3">
-                        <div class="col-md-3 mb-3">
-                            <select class="form-select" id="jobCategoryFilter">
-                                <option value="">All Categories</option>
-                                <option value="plumbing">Plumbing</option>
-                                <option value="electrical">Electrical</option>
-                                <option value="construction">Construction</option>
-                                <option value="carpentry">Carpentry</option>
-                                <option value="mechanical">Mechanical</option>
-                                <option value="painting">Painting</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <select class="form-select" id="jobStatusFilter">
-                                <option value="">All Status</option>
-                                <option value="open">Open</option>
-                                <option value="in-progress">In Progress</option>
-                                <option value="completed">Completed</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <select class="form-select" id="jobDateFilter">
-                                <option value="">All Dates</option>
-                                <option value="today">Today</option>
-                                <option value="week">This Week</option>
-                                <option value="month">This Month</option>
-                            </select>
-                        </div>
                         <div class="col-md-3">
                             <input type="text" class="form-control" placeholder="Search jobs..." id="jobSearchAdmin">
                         </div>
@@ -235,14 +207,19 @@
                             <tr>
                                 <th>Job Details</th>
                                 <th>Homeowner</th>
-                                <th>Category</th>
-                                <th>Budget</th>
-                                <th>Status</th>
+                                <th>Description</th>
+                                <th>Location</th>
+                                <th>Urgency</th>
                                 <th>Posted Date</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
+                            <tbody id="jobTableBody"></tbody>
+
                         </table>
+                        <div class="d-flex justify-content-center mt-3">
+                            <div id="jobPaginationControls"></div>
+                        </div>
                     </div>
                 </div>
             </div>

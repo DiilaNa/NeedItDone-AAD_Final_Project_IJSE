@@ -6,7 +6,6 @@ $(document).ready(function () {
 
     $("#homeowner-my-jobs-content").on("click", ".view-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
-        console.log(jobId)
         viewJobPostsDetails(jobId);
     });
 
