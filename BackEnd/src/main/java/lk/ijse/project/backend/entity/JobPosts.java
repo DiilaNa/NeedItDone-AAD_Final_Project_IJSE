@@ -2,6 +2,8 @@ package lk.ijse.project.backend.entity;
 
 
 import jakarta.persistence.*;
+import lk.ijse.project.backend.entity.enums.JobPostStatus;
+import lk.ijse.project.backend.entity.enums.Status;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -24,6 +26,9 @@ public class JobPosts implements SuperEntity{
     private String deadline;
 
     private LocalDate postedDate;
+
+    @Enumerated(EnumType.STRING)
+    private JobPostStatus jobPostStatus;
 
     @ManyToOne
     @JoinColumn(name = "userID") /*User One to Many*/

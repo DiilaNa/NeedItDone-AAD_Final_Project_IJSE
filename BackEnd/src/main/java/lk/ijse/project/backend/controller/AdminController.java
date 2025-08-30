@@ -113,5 +113,13 @@ public class AdminController {
         );
     }
 
+    @PutMapping("/disableJob/{id}")
+    public ResponseEntity<ApiResponseDTO> disableJob(@PathVariable Long id) {
+        jobPostService.disableJob(id);
+        return ResponseEntity.ok(
+                new ApiResponseDTO(200, "Job disabled successfully", null)
+        );
+    }
+
 
 }

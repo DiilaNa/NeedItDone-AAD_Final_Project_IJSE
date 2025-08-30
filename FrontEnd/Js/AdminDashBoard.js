@@ -77,7 +77,7 @@ function loadUsers(page = 0) {
                             <td>${new Date(user.joinDate).toLocaleDateString()}</td>
                          
                             <td>
-                                 <button class="btn btn-sm btn-danger disable-btn" data-id="${user.id}">
+                                 <button class="btn btn-sm ${user.status === 'ACTIVE' ? 'btn-danger' : 'btn-success'} disable-job-btn" data-id="${user.id}">
                                         ${user.status === 'ACTIVE' ? "Disable" : "Enable"}
                                 </button>
                             </td>
@@ -223,8 +223,8 @@ function loadJobs(page = 0) {
                             <td>${job.urgency}</td>
                             <td>${job.postedDate ? new Date(job.postedDate).toLocaleDateString() : 'N/A'}</td>
                             <td>
-                                <button class="btn btn-sm btn-danger disable-job-btn" data-id="${job.id}">
-                                    Disable
+                               <button class="btn btn-sm ${job.status === 'ACTIVE' ? 'btn-danger' : 'btn-success'} disable-job-btn" data-id="${job.id}">
+                                      ${job.status === 'ACTIVE' ? "Disable" : "Enable"}
                                 </button>
                             </td>
                         </tr>
@@ -258,6 +258,27 @@ function renderJobPagination(totalPages, current) {
         </span>
     `);
 }
+/*-----------------Disable Job Post----------------------------*/
+$(document).on("click", ".disable-job-btn", function () {
+    const jobId = $(this).data("id");
+
+    $.ajax({
+        url: `http://localhost:8080/admin/disableJob/${jobId}`,
+        type: "PUT",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            alert(res.message || "Job disabled successfully!");
+            loadJobs(currentJobPage);
+        },
+        error: function (err) {
+            console.error("Failed to disable job", err);
+            alert("Error disabling job");
+        }
+    });
+});
+
 
 
 

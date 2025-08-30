@@ -4,6 +4,7 @@ import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.entity.Categories;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.entity.enums.JobPostStatus;
 import lk.ijse.project.backend.repository.ApplicationRepository;
 import lk.ijse.project.backend.repository.CategoriesRepository;
 import lk.ijse.project.backend.repository.JobPostRepository;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +52,7 @@ public class JobPostServiceImpl implements JobPostService {
         job.setUsers(user);
         job.setCategories(category);
         job.setPostedDate(LocalDate.now());
+        job.setJobPostStatus(JobPostStatus.ENABLED);
 
 
         jobPostRepository.save(job);
@@ -207,5 +208,17 @@ public class JobPostServiceImpl implements JobPostService {
                     return dto;
                 })
                 .toList();
+    }
+    @Override
+    public void disableJob(Long id) {
+        JobPosts job = (JobPosts) jobPostRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job not found"));
+
+        if (job.getJobPostStatus() == JobPostStatus.ENABLED) {
+            job.setJobPostStatus(JobPostStatus.DISABLED);
+        }else {
+            job.setJobPostStatus(JobPostStatus.ENABLED);
+        }
+        jobPostRepository.save(job);
     }
 }
