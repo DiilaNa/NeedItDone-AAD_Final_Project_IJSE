@@ -222,4 +222,10 @@ public class JobPostServiceImpl implements JobPostService {
         }
         jobPostRepository.save(job);
     }
+
+    @Override
+    public List<JobPostDTO> searchJobs(String keyword) {
+        List<JobPosts> jobs = jobPostRepository.findByJobTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrLocationContainingIgnoreCase(keyword, keyword, keyword);
+        return modelMapper.map(jobs, new TypeToken<List<JobPostDTO>>(){}.getType());
+    }
 }

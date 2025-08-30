@@ -281,6 +281,52 @@ $(document).on("click", ".disable-job-btn", function () {
     });
 });
 
+/*--------------------------Search Jobs------------------------------------------*/
+$("#jobSearchAdmin").on("keyup", function () {
+    const keyword = $(this).val().trim();
+
+    if (keyword === "") {
+        loadJobs(0);
+        return;
+    }
+
+    $.ajax({
+        url: `http://localhost:8080/admin/searchJobs/${keyword}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            const jobs = res.data;
+            const tbody = $("#jobTableBody");
+            tbody.empty();
+
+            jobs.forEach(job => {
+                tbody.append(`
+                    <tr>
+                        <td>${job.jobTitle}</td>
+                        <td>${job.users?.username || 'N/A'}</td>
+                        <td>${job.description}</td>
+                        <td>${job.location}</td>
+                        <td>${job.urgency}</td>
+                        <td>${new Date(job.postedDate).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger disable-job-btn" data-id="${job.id}">
+                                Disable
+                            </button>
+                        </td>
+                    </tr>
+                `);
+            });
+
+            $("#jobPaginationControls").empty();
+        },
+        error: function (err) {
+            console.error("Job search failed", err);
+        }
+    });
+});
+
 
 
 

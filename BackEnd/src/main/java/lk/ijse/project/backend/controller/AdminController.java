@@ -121,5 +121,13 @@ public class AdminController {
         );
     }
 
+    @GetMapping("/searchJobs/{keyword}")
+    public ResponseEntity<ApiResponseDTO> searchJobs(@PathVariable String keyword) {
+        List<JobPostDTO> jobs = jobPostService.searchJobs(keyword);
+        return ResponseEntity.ok(
+                new ApiResponseDTO(200, "Search jobs successfully", jobs)
+        );
+    }
+
 
 }

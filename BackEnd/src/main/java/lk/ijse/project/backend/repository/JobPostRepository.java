@@ -29,4 +29,8 @@ public interface JobPostRepository extends JpaRepository<JobPosts,Integer> {
             "WHERE (:keyword IS NULL OR j.jobTitle LIKE %:keyword% OR j.description LIKE %:keyword%)")
     List<JobPosts> searchJobs(@Param("keyword") String keyword);
 
+    List<JobPosts> findByJobTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrLocationContainingIgnoreCase(
+            String title, String description, String location
+    );
+
 }

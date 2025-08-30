@@ -24,4 +24,6 @@ public interface JobPostService {
     List<JobPostDTO> getFilteredJobs(String keyword, Long userId);
 
     void disableJob(Long id);
+
+    List<JobPostDTO> searchJobs(String keyword);
 }
