@@ -14,4 +14,6 @@ public interface UserService {
     Page<SignUpDTO> getAllUsersPaginated(int page, int size);
 
     SignUpDTO findByUserName(String username);
+
+    void disableUser(Long id);
 }

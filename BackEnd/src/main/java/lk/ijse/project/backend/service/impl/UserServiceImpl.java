@@ -95,8 +95,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<SignUpDTO> getAllUsersByKeyword(String keyword) {
-        List<User> list = userRepository.findByUsernameContainingIgnoreCase(keyword);
-        if (list.isEmpty()){
+        List<User> list = userRepository
+                .findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(
+                        keyword, keyword
+                );
+
+        if (list.isEmpty()) {
             throw new RuntimeException("Users Not Found");
         }
         return modelMapper.map(list, new TypeToken<List<SignUpDTO>>(){}.getType());
@@ -109,6 +113,21 @@ public class UserServiceImpl implements UserService {
 
         return modelMapper.map(user, SignUpDTO.class);
     }
+
+    @Override
+    public void disableUser(Long id) {
+        User user = (User) userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getStatus() == Status.ACTIVE){
+            user.setStatus(Status.BANNED);
+        }else {
+            user.setStatus(Status.ACTIVE);
+        }
+        userRepository.save(user);
+
+    }
+
     @Override
     public Page<SignUpDTO> getAllUsersPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());

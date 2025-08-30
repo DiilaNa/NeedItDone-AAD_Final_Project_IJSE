@@ -78,17 +78,7 @@ public class LoginController {
 
     }
 
-    @GetMapping("search/{keyword}")
-    public ResponseEntity<ApiResponseDTO> search(@PathVariable("keyword") String keyword) {
-        List<SignUpDTO> users =  userService.getAllUsersByKeyword(keyword);
-        return ResponseEntity.ok(
-                new ApiResponseDTO(
-                        200,
-                        "Searched All users successfully",
-                        users
-                )
-        );
-    }
+
 
 
 }

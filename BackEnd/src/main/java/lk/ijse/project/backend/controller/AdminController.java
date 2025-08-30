@@ -62,12 +62,12 @@ public class AdminController {
 
     @GetMapping("search/{keyword}")
     public ResponseEntity<ApiResponseDTO> search(@PathVariable String keyword) {
-        List<RatingDTO> ratings = ratingService.getAllByKeyword(keyword);
+        List<SignUpDTO> users = userService.getAllUsersByKeyword(keyword);
         return ResponseEntity.ok(
                 new ApiResponseDTO(
                         200,
                         "Search ratings successfully",
-                        ratings
+                        users
                 )
         );
 
@@ -88,4 +88,11 @@ public class AdminController {
                 )
         );
     }
+
+    @PutMapping("/disableUser/{id}")
+    public ResponseEntity<ApiResponseDTO> disableUser(@PathVariable Long id) {
+        userService.disableUser(id);
+        return ResponseEntity.ok(new ApiResponseDTO(200, "User disabled successfully", null));
+    }
+
 }

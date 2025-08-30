@@ -130,5 +130,73 @@ function renderPagination(totalPages, current) {
     `);
 }
 
+/*-----------------Set Account Status / Disable or Enable Account----------------------------*/
+$(document).on("click", ".disable-btn", function () {
+    const userId = $(this).data("id");
+    const button = $(this);
+    console.log(userId)
+
+    $.ajax({
+        url: `http://localhost:8080/admin/disableUser/${userId}`,
+        type: "PUT",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            alert(res.message || "User disabled successfully!");
+            loadUsers(currentPage);
+        },
+        error: function (err) {
+            console.error("Failed to disable user", err);
+            alert("Error disabling user");
+        }
+    });
+});
+
+/*--------------------------Search Byy Keyword------------------------------------------*/
+$("#userSearch").on("keyup", function () {
+    const keyword = $(this).val().trim();
+
+    if (keyword === "") {
+        loadUsers(0);
+        return;
+    }
+
+    $.ajax({
+        url: `http://localhost:8080/admin/search/${keyword}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            const users = res.data;
+            const tbody = $("#userTableBody");
+            tbody.empty();
+
+            users.forEach(user => {
+                tbody.append(`
+                    <tr>
+                        <td>${user.username}</td>
+                        <td>${user.role}</td>
+                        <td>${user.email}</td>
+                        <td>${new Date(user.joinDate).toLocaleDateString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger disable-btn" data-id="${user.id}">
+                                ${user.status === 'ACTIVE' ? "Disable" : "Enable"}
+                            </button>
+                        </td>
+                    </tr>
+                `);
+            });
+
+            $("#paginationControls").empty();
+        },
+        error: function (err) {
+            console.error("User search failed", err);
+        }
+    });
+});
+
+
 
 
