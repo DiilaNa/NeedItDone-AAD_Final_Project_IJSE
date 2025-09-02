@@ -274,3 +274,17 @@
     flex-wrap: wrap; /* wrap on small screens */
     margin-top: 20px;
 }
+
+/*-------------------AUTO FILL Suggestions BG Color-------------------------*/
+/* Chrome, Safari, Edge autofill fix */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #000000 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* For Firefox */
+input:autofill {
+    box-shadow: 0 0 0px 1000px #000000 inset !important;
+    -webkit-text-fill-color: #fff !important;
+}

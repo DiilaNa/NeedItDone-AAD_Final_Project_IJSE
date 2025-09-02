@@ -74,30 +74,6 @@ $("#logoutBTN").on('click',function () {
     localStorage.removeItem("role")
     window.location.href = "../Pages/HomePage.html";
 })
-/*---------------------Switch Modes------------------------*/
-
-let currentMode = localStorage.getItem("mode") || "HIRE";
-if (currentMode === "HIRE") {
-    $("#switch").text("Switch to Work Mode");
-} else {
-    $("#switch").text("Switch to Hire Mode");
-}
-
-$("#switch").on('click', function () {
-    switchModes();
-});
-function switchModes() {
-    if (currentMode === "HIRE") {
-        currentMode = "WORK";
-        localStorage.setItem("mode", "WORK");
-        window.location.href = "WorkersDashBoard.html";
-    } else {
-        currentMode = "HIRE";
-        localStorage.setItem("mode", "HIRE");
-        window.location.href = "HomeOwnerDashBoard.html";
-    }
-}
-
 /* -------------------Post a Job/Save----------------------- */
 $("#saveJopPostForm").on('submit',function(e){
     e.preventDefault();

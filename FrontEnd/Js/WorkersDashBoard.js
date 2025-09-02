@@ -52,37 +52,6 @@ function sideNav() {
     });
 }
 
-
-/*-----------------------------Switch Modes------------------------------------*/
-
-let currentMode = localStorage.getItem("mode") || "WORK";
-
-if (currentMode === "WORK") {
-    $("#switch").text("Switch to Hire Mode");
-} else {
-    $("#switch").text("Switch to Work Mode");
-}
-
-$("#switch").on('click', function () {
-    switchModes();
-});
-
-
-function switchModes() {
-    if (currentMode === "WORK") {
-
-        currentMode = "HIRE";
-        localStorage.setItem("mode", "HIRE");
-        window.location.href = "HomeOwnerDashBoard.html";
-    } else {
-
-        currentMode = "WORK";
-        localStorage.setItem("mode", "WORK");
-        window.location.href = "WorkersDashBoard.html";
-    }
-}
-
-
 function loadUserDetails() {
 
     $.ajax({

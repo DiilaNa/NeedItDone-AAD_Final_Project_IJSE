@@ -7,16 +7,20 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../Css/HomePage.css">
-    <style>
-
-    </style>
 </head>
 <body>
+<!-- Page Loader -->
+<div class="page-loader" id="pageLoader">
+    <div class="loader-content">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+</div>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="HomePage.html">
+        <a class="navbar-brand" href="#home">
             <i class="fas fa-tools me-2"></i>NeedItDone
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -25,7 +29,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="HomePage.html">Home</a>
+                    <a class="nav-link" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="LogIn.html">Login</a>
@@ -37,97 +47,151 @@
         </div>
     </div>
 </nav>
-<!-- Home Page -->
-<div id="login" class="page-section active">
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container">
-            <h1 class="typewriter display-4 mb-4" id="typewriterText">You Post It,
-                They Do It</h1>
-            <p class="lead mb-4">Connect with skilled professionals for all your home service needs</p>
-            <div class="row justify-content-center">
-                <div class="col-md-4 mb-3">
-                    <button class="btn btn-light btn-lg w-100" onclick="navigateTo('register')">
-                        <i class="fas fa-home me-2"></i>I Need Services
-                    </button>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <button class="btn btn-outline-light btn-lg w-100" onclick="navigateTo('register')">
-                        <i class="fas fa-wrench me-2"></i>I Provide Services
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div id="loader">
-        <div id="box"></div>
-        <div id="hill"></div>
+
+<!-- Hero Section -->
+<section class="hero-section" id="home">
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
     </div>
+    <div class="container">
+        <div class="hero-content fade-in">
+            <h1 class="hero-title typewriter">You Post It, They Do It</h1>
+            <p class="hero-subtitle">Connect with skilled professionals for all your home service needs. Fast, reliable, and affordable solutions at your fingertips.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-modern btn-primary-modern" onclick="navigateTo('register')">
+                    <i class="fas fa-home me-2"></i>I Need Services
+                </button>
+                <button class="btn btn-modern btn-outline-modern" onclick="navigateTo('register')">
+                    <i class="fas fa-wrench me-2"></i>I Provide Services
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <!-- Services Section -->
-    <section class="py-5" id="serviceSection">
-        <div class="container">
-            <h2 class="text-center mb-5">Our Services</h2>
+<!-- Services Section -->
+<section class="services-section" id="services">
+    <div class="container">
+        <div class="section-title fade-in">
+            <h2>Our Services</h2>
+            <p>We connect you with trusted professionals across various home service categories</p>
+        </div>
 
-            <div class="row">
-                <div class="col-md-4 mb-4" >
-                    <div class="card service-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-wrench fa-3x text-primary mb-3"></i>
-                            <h5 class="card-title">Plumbing</h5>
-                            <p class="card-text">Professional plumbing services for all your water and pipe needs.</p>
-                        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card fade-in">
+                    <div class="service-icon plumbing">
+                        <i class="fas fa-wrench"></i>
                     </div>
+                    <h5>Plumbing Services</h5>
+                    <p>Professional plumbing solutions for leaks, installations, and repairs. Available 24/7 for emergencies.</p>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-bolt fa-3x text-warning mb-3"></i>
-                            <h5 class="card-title">Electrical</h5>
-                            <p class="card-text">Certified electricians for safe and reliable electrical work.</p>
-                        </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card fade-in">
+                    <div class="service-icon electrical">
+                        <i class="fas fa-bolt"></i>
                     </div>
+                    <h5>Electrical Work</h5>
+                    <p>Certified electricians for safe installations, repairs, and maintenance of all electrical systems.</p>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-hammer fa-3x text-success mb-3"></i>
-                            <h5 class="card-title">Construction</h5>
-                            <p class="card-text">Skilled construction workers for your building projects.</p>
-                        </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card fade-in">
+                    <div class="service-icon construction">
+                        <i class="fas fa-hammer"></i>
                     </div>
+                    <h5>Construction</h5>
+                    <p>Skilled construction workers for residential and commercial building projects of all sizes.</p>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-cog fa-3x text-info mb-3"></i>
-                            <h5 class="card-title">Carpentry</h5>
-                            <p class="card-text">Expert carpenters for furniture and woodwork projects.</p>
-                        </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card fade-in">
+                    <div class="service-icon carpentry">
+                        <i class="fas fa-cog"></i>
                     </div>
+                    <h5>Carpentry</h5>
+                    <p>Expert carpenters for custom furniture, cabinets, and all your woodworking needs.</p>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-cogs fa-3x text-danger mb-3"></i>
-                            <h5 class="card-title">Mechanical</h5>
-                            <p class="card-text">Professional mechanics for all your mechanical needs.</p>
-                        </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card fade-in">
+                    <div class="service-icon mechanical">
+                        <i class="fas fa-cogs"></i>
                     </div>
+                    <h5>Mechanical Services</h5>
+                    <p>Professional mechanics for HVAC, appliance repair, and mechanical system maintenance.</p>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card service-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-paint-brush fa-3x text-secondary mb-3"></i>
-                            <h5 class="card-title">Painting</h5>
-                            <p class="card-text">Professional painters for interior and exterior work.</p>
-                        </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card fade-in">
+                    <div class="service-icon painting">
+                        <i class="fas fa-paint-brush"></i>
                     </div>
+                    <h5>Painting Services</h5>
+                    <p>Professional painters for interior and exterior projects with quality materials and finishes.</p>
                 </div>
             </div>
         </div>
-    </section>
-</div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" id="contact">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4><i class="fas fa-tools me-2"></i>NeedItDone</h4>
+                <p>Connecting homeowners with skilled professionals for all your service needs. Quality work, fair prices, and reliable service guaranteed.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="LogIn.html">Login</a></li>
+                    <li><a href="SignUpPage.html">Register</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#services">Plumbing</a></li>
+                    <li><a href="#services">Electrical</a></li>
+                    <li><a href="#services">Construction</a></li>
+                    <li><a href="#services">Carpentry</a></li>
+                    <li><a href="#services">Mechanical</a></li>
+                    <li><a href="#services">Painting</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <ul>
+                    <li><i class="fas fa-phone me-2"></i>+1 (555) 123-4567</li>
+                    <li><i class="fas fa-envelope me-2"></i>info@needitdone.com</li>
+                    <li><i class="fas fa-map-marker-alt me-2"></i>123 Service Street, City, State 12345</li>
+                    <li><i class="fas fa-clock me-2"></i>24/7 Available</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 NeedItDone. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </div>
+</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
