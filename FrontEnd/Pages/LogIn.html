@@ -6,9 +6,7 @@
   <title>NeedItDone - You post it, they do it</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../Css/Login.css">
-
-
+  <link rel="stylesheet" href="../Css/Login.css">
 </head>
 <body>
 <!-- Navigation -->
@@ -36,7 +34,7 @@
   </div>
 </nav>
 <div class="wrapper">
-  <form class="form" id="loginForm">
+  <form class="form" id="loginForm" >
     <span class="title">Login</span>
 
     <div class="input-container">
@@ -66,8 +64,8 @@
     <div class="login-button">
       <input id="loginBtn" class="input" type="submit" value="Login" />
     </div>
-
-    <div class="text-center mt-3">
+    <div id="loginError" class="text-danger mt-1 " style="min-height: 10px; font-size: small; font-family: Bahnschrift"></div>
+    <div class="text-center mt-1">
       <a href="#" onclick="navigateTo('register')">Don't have an account? Register here</a>
     </div>
 

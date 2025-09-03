@@ -1,5 +1,13 @@
-/*--------------------------LOGIN--------------------------------*/
+/*--------Navigate to SignUp Page--------------*/
+function navigateTo(page) {
+    if (page==='register'){
+        window.location.href="SignUpPage.html"
+    }
+}
 
+
+
+/*--------------------------LOGIN--------------------------------*/
 $("#loginForm").on('submit', function(e) {
     e.preventDefault();
     LogIn();
@@ -23,12 +31,24 @@ async function LogIn() {
         });
 
         if (!response.ok) {
-            alert("Failed to login");
+            const loginError = document.getElementById("loginError");
+            loginError.style.display = "block";
+            loginError.innerText = "Invalid Credentials.";
+            setTimeout(() => loginError.classList.remove("visible"), 5000);
             return;
         }
 
         const resp = await response.json();
         const token = resp.data.accessToken;
+        const AccountStatus = resp.data.status
+
+        if (AccountStatus !== 'ACTIVE' ){
+            const loginError = document.getElementById("loginError");
+            loginError.style.display = "block";
+            loginError.innerText = "Your account is disabled.";
+            setTimeout(() => loginError.classList.remove("visible"), 5000);
+            return;
+        }
 
         if (!token) {
             window.location.href = "../Pages/HomePage.html";

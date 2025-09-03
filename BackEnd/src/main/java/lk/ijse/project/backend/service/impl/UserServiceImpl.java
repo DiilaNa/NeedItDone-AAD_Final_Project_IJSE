@@ -59,7 +59,8 @@ public class UserServiceImpl implements UserService {
                 token,
                 user.getId(),
                 user.getUsername(),
-                user.getRole().name()
+                user.getRole().name(),
+                user.getStatus()
         );
     }
 

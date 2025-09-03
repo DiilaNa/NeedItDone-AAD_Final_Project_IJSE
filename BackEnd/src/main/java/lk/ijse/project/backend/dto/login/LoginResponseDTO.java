@@ -1,5 +1,6 @@
 package lk.ijse.project.backend.dto.login;
 
+import lk.ijse.project.backend.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,7 +8,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoginResponseDTO {
     private String accessToken;
-    private Long userId;       // new
-    private String username;   // optional
+    private Long userId;
+    private String username;
     private String role;
+    private Status status;
 }
