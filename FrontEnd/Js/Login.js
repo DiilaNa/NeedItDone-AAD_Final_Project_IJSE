@@ -1,12 +1,3 @@
-
-/*--------Navigate to SignUp Page--------------*/
-
-function navigateTo(page) {
-    if (page==='register'){
-        window.location.href="SignUpPage.html"
-    }
-}
-
 /*--------------------------LOGIN--------------------------------*/
 
 $("#loginForm").on('submit', function(e) {
@@ -45,7 +36,8 @@ async function LogIn() {
         }
 
         const userID = resp.data.userId
-        console.log(userID)
+        const role = resp.data.role;
+        localStorage.setItem("role", role);
         localStorage.setItem("token", token);
         localStorage.setItem("userID",userID)
 

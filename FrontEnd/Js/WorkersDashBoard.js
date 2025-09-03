@@ -8,8 +8,13 @@ $(document).ready(function() {
 
 function checkToken() {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
     if (!token) {
         window.location.href = "../Pages/LogIn.html";
+    }
+    if (role !== "WORKER") {
+        window.location.href = "../Pages/LogIn.html";
+        return;
     }
 }
 
