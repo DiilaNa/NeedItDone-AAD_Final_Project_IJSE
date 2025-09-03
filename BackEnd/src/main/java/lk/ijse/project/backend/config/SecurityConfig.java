@@ -36,9 +36,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/home/**").permitAll()
-                        .requestMatchers("/worker/**").permitAll()
-                        .requestMatchers("/admin/**").permitAll()
+                        .requestMatchers("/home/**").hasRole("HOMEOWNER")
+                        .requestMatchers("/worker/**").hasRole("WORKER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(
                         session -> session.
@@ -46,6 +46,7 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

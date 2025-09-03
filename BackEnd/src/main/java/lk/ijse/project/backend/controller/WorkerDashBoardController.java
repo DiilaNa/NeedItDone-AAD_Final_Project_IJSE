@@ -3,11 +3,14 @@ package lk.ijse.project.backend.controller;
 import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
+import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.service.ApplicationService;
 import lk.ijse.project.backend.service.JobPostService;
+import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.List;
 public class WorkerDashBoardController {
     private final ApplicationService applicationService;
     private final JobPostService jobPostService;
+    private final UserService userService;
 
     @GetMapping("/latest/{userId}") /*LOAD Applications/below search*/
     public ResponseEntity<ApiResponseDTO> getLatestJobs(@PathVariable Long userId) {
@@ -36,6 +40,23 @@ public class WorkerDashBoardController {
                         200,
                         "Loaded Applications with pagination successfully",
                         applications
+                )
+        );
+    }
+
+    @GetMapping("/loadUserDetails")
+    public ResponseEntity<ApiResponseDTO> getUserDetails() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if ("anonymousUser".equals(username)) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        SignUpDTO list= userService.findByUserName(username);
+        return ResponseEntity.ok(
+                new ApiResponseDTO(
+                        200,
+                        "User details loaded Successfully",
+                        list
                 )
         );
     }
@@ -92,7 +113,7 @@ public class WorkerDashBoardController {
 
     }
 
-    @GetMapping("/search")/*SEARCH pplications*/
+    @GetMapping("/search")/*SEARCH applications*/
     public ResponseEntity<ApiResponseDTO> search(@RequestParam(required = false) String keyword , @RequestParam Long userID ) {
         List<JobPostDTO> applications =  jobPostService.getFilteredJobs(keyword,userID);
         return ResponseEntity.ok(

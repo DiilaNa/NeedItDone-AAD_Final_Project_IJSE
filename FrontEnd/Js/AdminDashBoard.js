@@ -1,9 +1,19 @@
 $(document).ready(function() {
+    checkToken();
     sideNavBar();
     loadUsers();
     loadJobs();
 
 });
+function checkToken() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        window.location.href = "../Pages/LogIn.html";
+    }
+}
+
+
+/*----------------------SIDE NAV BAR-------------------------------------------*/
 
 function sideNavBar() {
     var $circleMenuBtn = $('#circleMenuBtn');

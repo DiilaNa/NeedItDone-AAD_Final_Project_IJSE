@@ -1,9 +1,18 @@
 $(document).ready(function() {
+    checkToken();
     sideNav();
     loadUserDetails();
     loadLatestJobs();
     loadMyApplications();
 });
+
+function checkToken() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        window.location.href = "../Pages/LogIn.html";
+    }
+}
+
 /*---------------------SIGN OUT Button---------------------------*/
 $("#logoutBTN").on('click',function () {
     localStorage.removeItem("accessToken");
@@ -55,7 +64,7 @@ function sideNav() {
 function loadUserDetails() {
 
     $.ajax({
-        url: "http://localhost:8080/home/loadUserDetails",
+        url: "http://localhost:8080/worker/loadUserDetails",
         type: "GET",
         headers:{
             Authorization: "Bearer " + localStorage.getItem("token")
@@ -125,51 +134,6 @@ function loadLatestJobs() {
         }
     });
 }
-
-/*---------------------Apply Job-----------------------------------------*/
-/*
-$("#worker-browse-jobs-content").on("click", ".apply-job", function () {
-    const $card = $(this).closest(".job-card");
-    const $button = $(this)
-    const jobId = $(this).closest(".job-card").data("id");
-    const userId = localStorage.getItem("userID");
-    const jobTitle = $card.find(".card-title").text();
-    const category = $card.find(".badge").text();
-    const amountText = $card.find(".text-success").text(); // e.g., "$250"
-    const amount = parseFloat(amountText.replace('$','')); // remove $ and convert to number
-
-
-    const applicationDTO = {
-        jobPostsId: jobId,
-        userId: userId,
-        jobTitle: jobTitle,
-        category: category,
-        date: new Date(),
-        status: "PENDING",
-        amount: amount
-    };
-
-    $.ajax({
-        url: "http://localhost:8080/worker/saveApplication",
-        type: "POST",
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("token")
-        },
-        contentType: "application/json",
-        data: JSON.stringify(applicationDTO),
-        success: function () {
-            alert("Application submitted successfully!");
-            $button.text("APPLIED");
-            $button.prop("disabled", true);
-            $button.removeClass("btn-custom").addClass("btn-secondary");
-        },
-        error: function () {
-            alert("Failed to apply. Try again.");
-        }
-    });
-});
-*/
-
 /*----------------- Load Jobs with Filters -----------------*/
 $("#jobSearch").on("keyup", function () {
     let searchValue = $(this).val();
@@ -228,7 +192,7 @@ $("#jobSearch").on("keyup", function () {
 /*-------------------------------------------------------------------------------------------*/
 function loadMyApplications() {
     const userId = localStorage.getItem("userID");
-
+    console.log(userId)
     $.ajax({
         url: `http://localhost:8080/worker/getApplication/${userId}`,
         type: "GET",
@@ -239,6 +203,12 @@ function loadMyApplications() {
             const tbody = $("#myApplicationTbody");
             tbody.empty();
 
+            if (!res.data || res.data.length === 0) {
+                tbody.append('<tr><td colspan="5">No applications found</td></tr>');
+                return;
+            }
+
+
             res.data.forEach(app => {
                 const row = `
                     <tr>
@@ -247,7 +217,6 @@ function loadMyApplications() {
                         <td>$${app.amount}</td>
                         <td>${new Date(app.date).toLocaleDateString()}</td>
                         <td><span class="badge ${getStatusBadgeClass(app.status)}">${app.status}</span></td>
-<!--                        <td><button class="btn btn-sm btn-outline-primary">View</button></td>-->
                     </tr>
                 `;
                 tbody.append(row);
@@ -269,11 +238,10 @@ function getStatusBadgeClass(status) {
     }
 }
 
-/*---------------*/
+/*-----------------------------Applying For the Job-----------------------------*/
 $("#worker-browse-jobs-content").on("click", ".apply-job", function () {
     const $card = $(this).closest(".job-card");
 
-    // save job details in modal hidden fields
     $("#modalJobId").val($card.data("id"));
     $("#applyJobModal").modal("show");
 });
@@ -284,7 +252,6 @@ $("#applyJobForm").submit(function (e) {
     const jobId = $("#modalJobId").val();
     const userId = localStorage.getItem("userID");
 
-    // You can fetch job details from the card again if needed
     const $card = $(`[data-id=${jobId}]`);
     const jobTitle = $card.find(".card-title").text();
     const category = $card.find(".badge").text();
@@ -317,6 +284,7 @@ $("#applyJobForm").submit(function (e) {
             $("#applyJobModal").modal("hide");
             const $button = $card.find(".apply-job");
             $button.text("APPLIED").prop("disabled", true).removeClass("btn-custom").addClass("btn-secondary");
+            loadMyApplications();
         },
         error: function () {
             alert("Failed to apply. Try again.");

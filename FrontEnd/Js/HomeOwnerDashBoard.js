@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    checkToken();
     loadMyJobs();
     loadUserDetails();
     sideNav();
@@ -27,6 +28,14 @@ $(document).ready(function () {
     });
 
 });
+
+function checkToken() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        window.location.href = "../Pages/LogIn.html";
+    }
+}
+
 
 
 /*-----------------------Side Navigation Bar--------------------------------*/
