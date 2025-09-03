@@ -145,11 +145,9 @@ public class HomeOwnerDashBoardController {
     @PutMapping("/updateApplicationStatus/{applicationId}")
     public ResponseEntity<ApiResponseDTO> updateApplicationStatus(
             @PathVariable Long applicationId,
-            @RequestBody Map<String, String> body) {
+            @RequestBody ApplicationDTO dto) {
 
-        String status = body.get("status");
-        System.out.println(status);
-        applicationService.updateApplicationStatus(applicationId, status);
+        applicationService.updateApplicationStatus(applicationId,dto.getStatus());
 
         return ResponseEntity.ok(
                 new ApiResponseDTO(200, "Application status updated successfully", null)

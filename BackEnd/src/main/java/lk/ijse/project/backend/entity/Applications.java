@@ -1,6 +1,7 @@
 package lk.ijse.project.backend.entity;
 
 import jakarta.persistence.*;
+import lk.ijse.project.backend.entity.enums.ApplicationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class Applications implements SuperEntity{
     private String jobTitle;
     private String category;
     private Date date;
-    private String status;
+    private ApplicationStatus status;
     private Double amount;
 
     private String description;

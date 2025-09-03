@@ -4,6 +4,7 @@ import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.entity.Applications;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.entity.enums.ApplicationStatus;
 import lk.ijse.project.backend.repository.ApplicationRepository;
 import lk.ijse.project.backend.repository.JobPostRepository;
 import lk.ijse.project.backend.repository.UserRepository;
@@ -45,7 +46,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Applications applications = modelMapper.map(applicationDTO, Applications.class);
         applications.setJobPosts(posts);
         applications.setUsers(user);
-        applications.setStatus("PENDING");
+        applications.setStatus(ApplicationStatus.PENDING);
         applications.setDate(new Date());
 
         applicationRepository.save(applications);
@@ -153,7 +154,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional
-    public void updateApplicationStatus(Long applicationId, String status) {
+    public void updateApplicationStatus(Long applicationId, ApplicationStatus status) {
         Applications application = (Applications) applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
