@@ -1,5 +1,6 @@
 package lk.ijse.project.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +21,6 @@ public class Categories implements SuperEntity {
     private String name;
 
     @OneToMany(mappedBy = "categories")
+    @JsonIgnore
     private List<JobPosts> jobPosts;
 }

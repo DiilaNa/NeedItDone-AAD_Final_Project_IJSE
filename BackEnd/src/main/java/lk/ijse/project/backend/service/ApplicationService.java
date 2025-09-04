@@ -1,5 +1,6 @@
 package lk.ijse.project.backend.service;
 
+import lk.ijse.project.backend.dto.ActiveJobDTO;
 import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.entity.Applications;
@@ -22,7 +23,7 @@ public interface ApplicationService {
 
     void updateApplicationStatus(Long applicationId, ApplicationStatus status);
 
-    List<JobPostDTO> findActiveJobs(Long workerId);
+    List<ActiveJobDTO> findActiveJobs(Long workerId);
 
-    Applications markAsComplete(Long applicationId, Long userId);
+    Applications markAsComplete(Long ApplicationID, Long userId);
 }

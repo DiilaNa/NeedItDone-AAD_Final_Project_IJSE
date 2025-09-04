@@ -1,11 +1,13 @@
 package lk.ijse.project.backend.service.impl;
 
+import lk.ijse.project.backend.dto.ActiveJobDTO;
 import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.entity.Applications;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.entity.enums.ApplicationStatus;
+import lk.ijse.project.backend.entity.enums.JobPostStatus;
 import lk.ijse.project.backend.repository.ApplicationRepository;
 import lk.ijse.project.backend.repository.JobPostRepository;
 import lk.ijse.project.backend.repository.UserRepository;
@@ -164,23 +166,36 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<JobPostDTO> findActiveJobs(Long workerId) {
-        List<Applications> apps = applicationRepository
-                .findByUsersIdAndStatus(workerId, ApplicationStatus.ACCEPTED);
+    public List<ActiveJobDTO> findActiveJobs(Long workerId) {
+        List<Applications> apps = applicationRepository.findByUsersIdAndStatus(workerId, ApplicationStatus.ACCEPTED);
 
         return apps.stream()
-                .map(app -> modelMapper.map(app.getJobPosts(), JobPostDTO.class))
+                .map(app -> ActiveJobDTO.builder()
+                        .applicationId(app.getId())
+                        .jobPostId(app.getJobPosts().getId())
+                        .jobTitle(app.getJobTitle())
+                        .description(app.getDescription())
+                        .cost(app.getAmount())
+                        .deadline(app.getJobPosts().getDeadline().toString())
+                        .build())
                 .toList();
     }
 
-    @Override
-    public Applications markAsComplete(Long applicationId, Long userId) {
-            Applications application = applicationRepository
-                    .findByIdAndUsersId(applicationId, userId)
-                    .orElseThrow(() -> new RuntimeException("Application not found"));
 
-            application.setStatus(ApplicationStatus.COMPLETED);
-            return applicationRepository.save(application);
+    @Override
+    @Transactional
+    public Applications markAsComplete(Long applicationID,Long userId) {
+        Applications application = applicationRepository
+                .findByIdAndUsers_Id(applicationID, userId)
+                .orElseThrow(() -> new RuntimeException("Application not found"));
+
+        application.setStatus(ApplicationStatus.COMPLETED);
+
+        JobPosts jobPost = application.getJobPosts();
+        jobPost.setJobPostStatus(JobPostStatus.COMPLETED);
+
+        jobPostRepository.save(jobPost);
+        return applicationRepository.save(application);
 
     }
 

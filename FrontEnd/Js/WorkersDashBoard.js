@@ -349,6 +349,7 @@ function renderJobs(jobs) {
 
 
     jobs.forEach(job => {
+        console.log(job)
         container.innerHTML += `
           <div class="col-md-6 mb-3">
             <div class="card job-card">
@@ -366,8 +367,8 @@ function renderJobs(jobs) {
                   </div>
                 </div>
                  <button class="btn btn-success btn-sm" 
-                    onclick="markComplete(${job.id})">
-              Mark Complete
+                        onclick="markComplete(${job.applicationId}, ${job.jobPostId})">
+                            Mark Complete
             </button>
               </div>
             </div>
@@ -376,14 +377,17 @@ function renderJobs(jobs) {
     });
 }
 
-function markComplete(applicationId) {
+function markComplete(applicationID) {
     const userID = localStorage.getItem("userID")
+    const token = localStorage.getItem("token")
+
     $.ajax({
-        url: `http://localhost:8080/worker/mark-complete?applicationId=${applicationId}&userId=${userID}`,
+        url: `http://localhost:8080/worker/mark-complete?applicationId=${applicationID}&userId=${userID}`,
         method: "PUT",
         headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token")
+            "Authorization": "Bearer " + token
         },
+        contentType: "application/json",
         success: function(response) {
             alert("Job marked complete!");
             loadActiveJobs();

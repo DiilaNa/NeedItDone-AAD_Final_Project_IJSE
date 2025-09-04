@@ -1,5 +1,6 @@
 package lk.ijse.project.backend.controller;
 
+import lk.ijse.project.backend.dto.ActiveJobDTO;
 import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
@@ -128,8 +129,8 @@ public class WorkerDashBoardController {
     }
 
     @GetMapping("/{workerId}/active-jobs")
-    public ResponseEntity<List<JobPostDTO>> getActiveJobs(@PathVariable Long workerId) {
-        List<JobPostDTO> jobs = applicationService.findActiveJobs(workerId);
+    public ResponseEntity<List<ActiveJobDTO>> getActiveJobs(@PathVariable Long workerId) {
+        List<ActiveJobDTO> jobs = applicationService.findActiveJobs(workerId);
         return ResponseEntity.ok(jobs);
     }
 

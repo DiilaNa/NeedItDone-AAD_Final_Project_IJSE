@@ -40,6 +40,7 @@ public class User implements SuperEntity {
     }
 
     @OneToMany(mappedBy = "users")
+    @JsonIgnore
     private List<JobPosts> jobPosts; /*JobPost One to Many*/
 
     @OneToOne(mappedBy = "users")

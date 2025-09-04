@@ -1,6 +1,7 @@
 package lk.ijse.project.backend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lk.ijse.project.backend.entity.enums.JobPostStatus;
 import lk.ijse.project.backend.entity.enums.Status;
@@ -35,6 +36,7 @@ public class JobPosts implements SuperEntity{
     private User users;
 
     @OneToMany(mappedBy = "jobPosts")
+    @JsonIgnore
     private List<Rating> ratings; /*Rating One to many*/
 
     @ManyToOne
@@ -42,6 +44,7 @@ public class JobPosts implements SuperEntity{
     private Categories categories;
 
     @OneToMany(mappedBy = "jobPosts",fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Applications> applications;
 
 }
