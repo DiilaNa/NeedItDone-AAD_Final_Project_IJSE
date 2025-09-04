@@ -108,6 +108,11 @@ function loadLatestJobs() {
                     buttonHtml = `<button class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>`;
                 }
 
+
+                if (job.jobPostStatus === 'COMPLETED' || job.jobPostStatus === 'ACCEPTED') {
+                    buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>This Job is Closed</button>`;
+                }
+
                 const cardHtml = `
                     <div class="col-md-6 mb-3">
                         <div class="card job-card shadow-sm" data-id="${job.id}">
@@ -119,10 +124,10 @@ function loadLatestJobs() {
                                     <span class="text-success fw-bold">$${job.cost}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <small class="text-muted">
+                                    <small>
                                         <i class="fas fa-map-marker-alt"></i> ${job.location}
                                     </small>
-                                    <small class="text-muted">
+                                    <small>
                                         <i class="fas fa-clock"></i> 
                                         ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}
                                     </small>
@@ -158,6 +163,8 @@ $("#jobSearch").on("keyup", function () {
 
             let jobs = response.data;
 
+            console.log(jobs)
+
             jobs.forEach(job => {
                 // build button based on applied flag
                 let buttonHtml;
@@ -165,6 +172,10 @@ $("#jobSearch").on("keyup", function () {
                     buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;
                 } else {
                     buttonHtml = `<button class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>`;
+                }
+
+                if (job.jobPostStatus === 'COMPLETED' || job.jobPostStatus === 'ACCEPTED') {
+                    buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>This Job is Closed</button>`;
                 }
 
                 let card = `
@@ -178,8 +189,8 @@ $("#jobSearch").on("keyup", function () {
                                     <span class="text-success fw-bold">$${job.cost}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <small class="text-muted"><i class="fas fa-map-marker-alt"></i> ${job.location}</small>
-                                    <small class="text-muted"><i class="fas fa-clock"></i> ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}</small>
+                                    <small><i class="fas fa-map-marker-alt"></i> ${job.location}</small>
+                                    <small><i class="fas fa-clock"></i> ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}</small>
                                 </div>
                                 ${buttonHtml} <!-- use buttonHtml here -->
                             </div>
@@ -199,7 +210,6 @@ $("#jobSearch").on("keyup", function () {
 /*-------------------------------------------------------------------------------------------*/
 function loadMyApplications() {
     const userId = localStorage.getItem("userID");
-    console.log(userId)
     $.ajax({
         url: `http://localhost:8080/worker/getApplication/${userId}`,
         type: "GET",
@@ -349,7 +359,6 @@ function renderJobs(jobs) {
 
 
     jobs.forEach(job => {
-        console.log(job)
         container.innerHTML += `
           <div class="col-md-6 mb-3">
             <div class="card job-card">

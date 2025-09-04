@@ -210,7 +210,25 @@ function loadMyJobs() {
                 return;
             }
 
+
+
             res.data.forEach(job => {
+             /*   if (job.jobPostStatus === 'COMPLETED' || job.jobPostStatus === 'ACCEPTED') {
+
+                    const closedCardHtml = `
+            <div class="col-md-4 mb-3">
+                <div class="card job-card" data-id="${job.id}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">${job.jobTitle}</h5>
+                        <p class="">This job is closed.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+                    jobsContainer.append(closedCardHtml);
+                    return;
+                }*/
+
                 let badgeText = job.applicationsCount > 0
                     ? `${job.applicationsCount} Applications`
                     : 'In Progress';
