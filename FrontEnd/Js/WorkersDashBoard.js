@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     checkToken();
     sideNav();
     loadUserDetails();
@@ -20,7 +20,7 @@ function checkToken() {
 }
 
 /*---------------------SIGN OUT Button---------------------------*/
-$("#logoutBTN").on('click',function () {
+$("#logoutBTN").on('click', function () {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("role")
     localStorage.removeItem("token");
@@ -36,7 +36,7 @@ function sideNav() {
     var $navBackdrop = $('#navBackdrop');
 
 
-    $circleMenuBtn.on('click', function() {
+    $circleMenuBtn.on('click', function () {
         if ($sideNav.hasClass('show')) {
             $sideNav.removeClass('show');
             $navBackdrop.removeClass('show');
@@ -50,14 +50,14 @@ function sideNav() {
         }
     });
 
-    $navBackdrop.on('click', function() {
+    $navBackdrop.on('click', function () {
         $sideNav.removeClass('show');
         $navBackdrop.removeClass('show');
         $hamburgerIcon.removeClass('active');
         $circleMenuBtn.removeClass('active');
     });
 
-    $('.nav-menu a').on('click', function() {
+    $('.nav-menu a').on('click', function () {
         if ($(window).width() <= 991) {
             $sideNav.removeClass('show');
             $navBackdrop.removeClass('show');
@@ -72,7 +72,7 @@ function loadUserDetails() {
     $.ajax({
         url: "http://localhost:8080/worker/loadUserDetails",
         type: "GET",
-        headers:{
+        headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
         },
 
@@ -140,6 +140,7 @@ function loadLatestJobs() {
         }
     });
 }
+
 /*----------------- Load Jobs with Filters -----------------*/
 $("#jobSearch").on("keyup", function () {
     let searchValue = $(this).val();
@@ -151,7 +152,7 @@ $("#jobSearch").on("keyup", function () {
         headers: {
             Authorization: "Bearer " + localStorage.getItem("token") // <-- must be correct
         },
-        data: { search: searchValue },
+        data: {search: searchValue},
         success: function (response) {
             $("#jobs-container").empty();
 
@@ -188,7 +189,7 @@ $("#jobSearch").on("keyup", function () {
                 $("#jobs-container").append(card);
             });
         },
-        error: function(err) {
+        error: function (err) {
             console.error("Failed to load filtered jobs", err);
         }
     });
@@ -236,11 +237,15 @@ function loadMyApplications() {
 
 // Helper to assign badge color based on status
 function getStatusBadgeClass(status) {
-    switch(status.toLowerCase()) {
-        case 'pending': return 'bg-warning';
-        case 'approved': return 'bg-success';
-        case 'rejected': return 'bg-danger';
-        default: return 'bg-secondary';
+    switch (status.toLowerCase()) {
+        case 'pending':
+            return 'bg-warning';
+        case 'approved':
+            return 'bg-success';
+        case 'rejected':
+            return 'bg-danger';
+        default:
+            return 'bg-secondary';
     }
 }
 
@@ -262,7 +267,7 @@ $("#applyJobForm").submit(function (e) {
     const jobTitle = $card.find(".card-title").text();
     const category = $card.find(".badge").text();
     const amountText = $card.find(".text-success").text();
-    const amount = parseFloat(amountText.replace('$',''));
+    const amount = parseFloat(amountText.replace('$', ''));
 
     const applicationDTO = {
         jobPostsId: jobId,
@@ -326,6 +331,23 @@ function renderJobs(jobs) {
 
     container.innerHTML = ""; // clear old cards
 
+    if (jobs.length === 0) {
+        // Show a "No active jobs" card
+        container.innerHTML = `
+            <div class="col-12">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">No Active Jobs</h5>
+                        <p class="card-text">You currently have no active jobs assigned. Check back later!</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+
+
     jobs.forEach(job => {
         container.innerHTML += `
           <div class="col-md-6 mb-3">
@@ -335,21 +357,44 @@ function renderJobs(jobs) {
                 <p class="card-text">${job.description}</p>
                 <div class="row">
                   <div class="col-6">
-                    <small class="text-muted">Deadline</small>
+                    <small>Deadline</small>
                     <p>${job.deadline}</p>
                   </div>
                   <div class="col-6">
-                    <small class="text-muted">Payment</small>
+                    <small>Payment</small>
                     <p class="text-success fw-bold">$${job.cost}</p>
                   </div>
                 </div>
-                <button class="btn btn-success btn-sm" onclick="markComplete(${job.id})">Mark Complete</button>
+                 <button class="btn btn-success btn-sm" 
+                    onclick="markComplete(${job.id})">
+              Mark Complete
+            </button>
               </div>
             </div>
           </div>
         `;
     });
 }
+
+function markComplete(applicationId) {
+    const userID = localStorage.getItem("userID")
+    $.ajax({
+        url: `http://localhost:8080/worker/mark-complete?applicationId=${applicationId}&userId=${userID}`,
+        method: "PUT",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        success: function(response) {
+            alert("Job marked complete!");
+            loadActiveJobs();
+            loadMyApplications();
+        },
+        error: function(xhr) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
 
 
 

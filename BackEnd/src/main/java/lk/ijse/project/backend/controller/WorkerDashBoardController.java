@@ -4,11 +4,13 @@ import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
+import lk.ijse.project.backend.entity.Applications;
 import lk.ijse.project.backend.service.ApplicationService;
 import lk.ijse.project.backend.service.JobPostService;
 import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -129,6 +131,20 @@ public class WorkerDashBoardController {
     public ResponseEntity<List<JobPostDTO>> getActiveJobs(@PathVariable Long workerId) {
         List<JobPostDTO> jobs = applicationService.findActiveJobs(workerId);
         return ResponseEntity.ok(jobs);
+    }
+
+    @PutMapping("/mark-complete")
+        public ResponseEntity<ApiResponseDTO> markComplete(
+                @RequestParam Long applicationId,
+                @RequestParam Long userId) {
+
+            Applications updatedApp = applicationService.markAsComplete(applicationId, userId);
+            return ResponseEntity.ok(new ApiResponseDTO(
+                            200,
+                            "Updated",
+                            updatedApp
+                    )
+            );
     }
 
 }

@@ -1,5 +1,6 @@
 package lk.ijse.project.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lk.ijse.project.backend.entity.enums.Role;
 import lk.ijse.project.backend.entity.enums.Status;
@@ -45,5 +46,6 @@ public class User implements SuperEntity {
     private Rating ratings;  /*Rating one to one*/
 
     @OneToMany(mappedBy = "users")
+    @JsonIgnore
     private List<Applications> applications;
 }

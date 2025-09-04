@@ -173,5 +173,16 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .toList();
     }
 
+    @Override
+    public Applications markAsComplete(Long applicationId, Long userId) {
+            Applications application = applicationRepository
+                    .findByIdAndUsersId(applicationId, userId)
+                    .orElseThrow(() -> new RuntimeException("Application not found"));
+
+            application.setStatus(ApplicationStatus.COMPLETED);
+            return applicationRepository.save(application);
+
+    }
+
 }
 
