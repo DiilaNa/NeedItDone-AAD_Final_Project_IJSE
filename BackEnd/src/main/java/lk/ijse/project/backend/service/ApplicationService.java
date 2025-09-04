@@ -1,6 +1,7 @@
 package lk.ijse.project.backend.service;
 
 import lk.ijse.project.backend.dto.ApplicationDTO;
+import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.entity.enums.ApplicationStatus;
 import org.springframework.data.domain.Page;
 
@@ -19,4 +20,6 @@ public interface ApplicationService {
     List<ApplicationDTO> getApplicationsForHomeowner(Long homeownerId);
 
     void updateApplicationStatus(Long applicationId, ApplicationStatus status);
+
+    List<JobPostDTO> findActiveJobs(Long workerId);
 }

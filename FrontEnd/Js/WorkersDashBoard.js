@@ -4,6 +4,7 @@ $(document).ready(function() {
     loadUserDetails();
     loadLatestJobs();
     loadMyApplications();
+    loadActiveJobs();
 });
 
 function checkToken() {
@@ -296,5 +297,59 @@ $("#applyJobForm").submit(function (e) {
         }
     });
 });
+
+async function loadActiveJobs() {
+    const workerId = localStorage.getItem("userID"); // assuming you stored user id
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`http://localhost:8080/worker/${workerId}/active-jobs`, {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
+
+    if (response.ok) {
+        const jobs = await response.json();
+        renderJobs(jobs);
+    } else {
+        console.error("Failed to load active jobs");
+    }
+}
+
+function renderJobs(jobs) {
+    const container = document.querySelector("#worker-active-jobs-content .row");
+    if (!container) {
+        console.error("Container not found!");
+        return;
+    }
+
+    container.innerHTML = ""; // clear old cards
+
+    jobs.forEach(job => {
+        container.innerHTML += `
+          <div class="col-md-6 mb-3">
+            <div class="card job-card">
+              <div class="card-body">
+                <h5 class="card-title">${job.jobTitle}</h5>
+                <p class="card-text">${job.description}</p>
+                <div class="row">
+                  <div class="col-6">
+                    <small class="text-muted">Deadline</small>
+                    <p>${job.deadline}</p>
+                  </div>
+                  <div class="col-6">
+                    <small class="text-muted">Payment</small>
+                    <p class="text-success fw-bold">$${job.cost}</p>
+                  </div>
+                </div>
+                <button class="btn btn-success btn-sm" onclick="markComplete(${job.id})">Mark Complete</button>
+              </div>
+            </div>
+          </div>
+        `;
+    });
+}
+
 
 

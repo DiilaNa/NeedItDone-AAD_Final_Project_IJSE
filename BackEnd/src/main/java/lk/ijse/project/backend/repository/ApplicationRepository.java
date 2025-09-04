@@ -1,6 +1,7 @@
 package lk.ijse.project.backend.repository;
 
 import lk.ijse.project.backend.entity.Applications;
+import lk.ijse.project.backend.entity.enums.ApplicationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,7 @@ public interface ApplicationRepository extends JpaRepository<Applications,Intege
 
     @Query("SELECT a FROM Applications a WHERE a.jobPosts.users.id = :homeownerId")
     List<Applications> findAllApplicationsForHomeowner(@Param("homeownerId") Long homeownerId);
+
+    List<Applications> findByUsersIdAndStatus(Long workerId, ApplicationStatus status);
+
 }

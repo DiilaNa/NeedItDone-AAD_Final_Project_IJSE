@@ -125,4 +125,10 @@ public class WorkerDashBoardController {
         );
     }
 
+    @GetMapping("/{workerId}/active-jobs")
+    public ResponseEntity<List<JobPostDTO>> getActiveJobs(@PathVariable Long workerId) {
+        List<JobPostDTO> jobs = applicationService.findActiveJobs(workerId);
+        return ResponseEntity.ok(jobs);
+    }
+
 }

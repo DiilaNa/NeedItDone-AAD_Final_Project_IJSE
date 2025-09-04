@@ -1,6 +1,7 @@
 package lk.ijse.project.backend.service.impl;
 
 import lk.ijse.project.backend.dto.ApplicationDTO;
+import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.entity.Applications;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
@@ -92,7 +93,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     List<Applications> list = applicationRepository.findByUsersId(userID);
 
     if (list.isEmpty()){
-        throw new RuntimeException("No applications found");
+        return Collections.emptyList();
     }
 
     List<ApplicationDTO> dtos = new ArrayList<>();
@@ -160,6 +161,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         application.setStatus(status);
         applicationRepository.save(application);
+    }
+
+    @Override
+    public List<JobPostDTO> findActiveJobs(Long workerId) {
+        List<Applications> apps = applicationRepository
+                .findByUsersIdAndStatus(workerId, ApplicationStatus.ACCEPTED);
+
+        return apps.stream()
+                .map(app -> modelMapper.map(app.getJobPosts(), JobPostDTO.class))
+                .toList();
     }
 
 }

@@ -22,6 +22,8 @@ public class Applications implements SuperEntity{
     private String jobTitle;
     private String category;
     private Date date;
+
+    @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
     private Double amount;
 
