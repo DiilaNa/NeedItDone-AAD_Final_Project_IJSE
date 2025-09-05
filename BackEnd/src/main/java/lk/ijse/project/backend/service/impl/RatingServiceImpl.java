@@ -4,6 +4,7 @@ import lk.ijse.project.backend.dto.RatingDTO;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.Rating;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.entity.enums.RatingStatus;
 import lk.ijse.project.backend.repository.JobPostRepository;
 import lk.ijse.project.backend.repository.RatingRepository;
 import lk.ijse.project.backend.repository.UserRepository;
@@ -41,6 +42,7 @@ public class RatingServiceImpl implements RatingService {
                 .description(dto.getDescription())
                 .date(dto.getDate())
                 .users(user)
+                .status(RatingStatus.ADDED)
                 .jobPosts(jobPost)
                 .build();
 

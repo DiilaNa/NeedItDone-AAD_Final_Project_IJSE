@@ -10,4 +10,6 @@ import java.util.List;
 public interface RatingRepository extends JpaRepository<Rating, Integer> {
     Rating findById(Long id);
     List<Rating> findRatingByNameContainingIgnoreCase(String name);
+
+    boolean existsByUsersIdAndJobPostsId(Long userId, Long jobPostId);
 }

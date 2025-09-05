@@ -1,6 +1,7 @@
 package lk.ijse.project.backend.entity;
 
 import jakarta.persistence.*;
+import lk.ijse.project.backend.entity.enums.RatingStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,9 @@ public class Rating implements SuperEntity{
     private int stars;
     private String description;
     private Date date;
+
+    @Enumerated(EnumType.STRING)
+    private RatingStatus status;
 
     @ManyToOne
     @JoinColumn(name = "userID")  /*User One to One*/

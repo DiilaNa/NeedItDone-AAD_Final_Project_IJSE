@@ -8,8 +8,10 @@ import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.entity.enums.ApplicationStatus;
 import lk.ijse.project.backend.entity.enums.JobPostStatus;
+import lk.ijse.project.backend.entity.enums.RatingStatus;
 import lk.ijse.project.backend.repository.ApplicationRepository;
 import lk.ijse.project.backend.repository.JobPostRepository;
+import lk.ijse.project.backend.repository.RatingRepository;
 import lk.ijse.project.backend.repository.UserRepository;
 import lk.ijse.project.backend.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final JobPostRepository jobPostRepository;
     private final UserRepository userRepository;
+    private final RatingRepository ratingRepository;
     @Override
     @Transactional
     public void saveApplications(ApplicationDTO applicationDTO) {
@@ -150,11 +153,21 @@ public class ApplicationServiceImpl implements ApplicationService {
             dto.setSkills(app.getSkills());
             dto.setExperience(app.getExperience());
             dto.setDescription(app.getDescription());
-            dto.setWorkerName(app.getUsers().getUsername());
             dto.setUserId(app.getUsers().getId());
+
+            Long jobPostId = app.getJobPosts().getId();
+            Long userId = app.getUsers().getId();
+
+            if (ratingRepository.existsByUsersIdAndJobPostsId(userId, jobPostId)) {
+                dto.setRatingStatus(RatingStatus.ADDED);
+            } else {
+                dto.setRatingStatus(RatingStatus.PENDING);
+            }
+
             return dto;
         }).toList();
     }
+
 
     @Override
     @Transactional

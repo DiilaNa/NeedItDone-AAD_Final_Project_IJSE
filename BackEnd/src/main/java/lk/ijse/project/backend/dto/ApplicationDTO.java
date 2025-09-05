@@ -2,6 +2,7 @@ package lk.ijse.project.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lk.ijse.project.backend.entity.enums.ApplicationStatus;
+import lk.ijse.project.backend.entity.enums.RatingStatus;
 import lombok.*;
 
 import java.util.Date;
@@ -20,6 +21,8 @@ public class ApplicationDTO {
     private Date date;
     @NotBlank(message = "amount can not be blank")
     private Double amount;
+
+    private RatingStatus ratingStatus;
 
     private ApplicationStatus status;
     private String description;
