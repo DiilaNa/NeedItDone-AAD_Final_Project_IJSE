@@ -43,8 +43,9 @@ public class User implements SuperEntity {
     @JsonIgnore
     private List<JobPosts> jobPosts; /*JobPost One to Many*/
 
-    @OneToOne(mappedBy = "users")
-    private Rating ratings;  /*Rating one to one*/
+    @OneToMany(mappedBy = "users")
+    @JsonIgnore
+    private List<Rating> ratings;  /*Rating one to one*/
 
     @OneToMany(mappedBy = "users")
     @JsonIgnore

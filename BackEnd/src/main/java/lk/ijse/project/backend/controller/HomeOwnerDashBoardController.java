@@ -1,12 +1,16 @@
 package lk.ijse.project.backend.controller;
 
+import jakarta.validation.Valid;
 import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
+import lk.ijse.project.backend.dto.RatingDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
+import lk.ijse.project.backend.entity.Rating;
 import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.service.ApplicationService;
 import lk.ijse.project.backend.service.JobPostService;
+import lk.ijse.project.backend.service.RatingService;
 import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +27,7 @@ public class HomeOwnerDashBoardController {
     private final JobPostService jobPostService;
     private final UserService userService;
     private final ApplicationService applicationService;
+    private final RatingService ratingService;
 
     @PostMapping("/saveJob")
     public ResponseEntity<ApiResponseDTO> saveJob(@RequestBody JobPostDTO jobPostDTO) {
@@ -152,6 +157,18 @@ public class HomeOwnerDashBoardController {
         return ResponseEntity.ok(
                 new ApiResponseDTO(200, "Application status updated successfully", null)
         );
+    }
+
+    @PostMapping("/ratings")
+    public ResponseEntity<ApiResponseDTO> createRating(@RequestBody @Valid RatingDTO ratingDTO) {
+        Rating rating = ratingService.saveRating(ratingDTO);
+            return ResponseEntity.ok(
+                        new ApiResponseDTO(
+                                200,
+                                "Rating added Successfully",
+                                rating
+                        )
+            );
     }
 }
 

@@ -15,19 +15,23 @@ import java.util.Date;
 @NoArgsConstructor
 public class RatingDTO {
     private Long id;
-    @NotBlank(message = "name can not be blank")
+
+    @NotBlank(message = "name cannot be blank")
     private String name;
-    @NotBlank(message = "message can not be blank")
-    private int stars;
-    @NotBlank(message = "desc can not be blank")
+
+    @NotNull(message = "stars cannot be null")
+    private Integer stars;
+
+    @NotBlank(message = "description cannot be blank")
     private String description;
-    @NotBlank(message = "date can not be blank")
+
+    @NotNull(message = "date cannot be null")
     private Date date;
 
-    @NotNull(message = "userId can not be null")
+    @NotNull(message = "userId cannot be null")
     private Long userId;
 
-    @NotNull(message = "jobPostId can not be null")
+    @NotNull(message = "jobPostId cannot be null")
     private Long jobPostId;
-
 }
+

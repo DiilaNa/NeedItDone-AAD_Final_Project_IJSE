@@ -174,7 +174,7 @@ $("#jobSearch").on("keyup", function () {
                     buttonHtml = `<button class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>`;
                 }
 
-                if (job.jobPostStatus === 'COMPLETED' || job.jobPostStatus === 'ACCEPTED') {
+                if (job.jobPostStatus === 'COMPLETED') {
                     buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>This Job is Closed</button>`;
                 }
 

@@ -5,8 +5,6 @@ function navigateTo(page) {
     }
 }
 
-
-
 /*--------------------------LOGIN--------------------------------*/
 $("#loginForm").on('submit', function(e) {
     e.preventDefault();

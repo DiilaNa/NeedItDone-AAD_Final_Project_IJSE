@@ -22,46 +22,6 @@ public class AdminController {
     private final UserService userService;
     private final JobPostService jobPostService;
 
-    @PostMapping("/saveRating")
-    public ResponseEntity<ApiResponseDTO> saveRating(@RequestBody RatingDTO ratingDTO) {
-        ratingService.save(ratingDTO);
-        return ResponseEntity.ok(
-                new ApiResponseDTO(
-                        200,
-                        "Rating saved Successfully",
-                        "ok"
-                )
-
-        );
-    }
-
-    @PutMapping("/updateRating")
-    public ResponseEntity<ApiResponseDTO> updateRating(@RequestBody RatingDTO ratingDTO) {
-        ratingService.update(ratingDTO);
-        return ResponseEntity.ok(
-                new ApiResponseDTO(
-                        200,
-                        "Rating updated Successfully",
-                        "ok"
-                )
-
-        );
-
-    }
-
-    @GetMapping("/get")
-    public ResponseEntity<ApiResponseDTO> getALlRating() {
-        List<RatingDTO> ratings = ratingService.getAll();
-        return ResponseEntity.ok(
-                new ApiResponseDTO(
-                        200,
-                        "Load all Ratings successfully",
-                        ratings
-                )
-        );
-
-    }
-
     @GetMapping("search/{keyword}")
     public ResponseEntity<ApiResponseDTO> search(@PathVariable String keyword) {
         List<SignUpDTO> users = userService.getAllUsersByKeyword(keyword);

@@ -25,70 +25,25 @@ import java.util.List;
 public class RatingServiceImpl implements RatingService {
     private final RatingRepository ratingRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
     private final JobPostRepository jobPostRepository;
 
-
     @Override
-    @Transactional
-    public void save(RatingDTO ratingDTO) {
-        User user = (User) userRepository.findById(ratingDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User Not Found"));
+    public Rating saveRating(RatingDTO dto) {
+        User user = (User) userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        JobPosts jobPost = (JobPosts) jobPostRepository.findById(dto.getJobPostId())
+                .orElseThrow(() -> new RuntimeException("Job post not found"));
 
+        Rating rating = Rating.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .stars(dto.getStars())
+                .description(dto.getDescription())
+                .date(dto.getDate())
+                .users(user)
+                .jobPosts(jobPost)
+                .build();
 
-        JobPosts jobPosts = (JobPosts) jobPostRepository.findById(ratingDTO.getJobPostId())
-                .orElseThrow(() -> new RuntimeException(
-                        "JobPost Not Found for id " + ratingDTO.getJobPostId()
-                ));
-
-        Rating rating = modelMapper.map(ratingDTO, Rating.class);
-        rating.setUsers(user);
-        rating.setJobPosts(jobPosts);
-
-        ratingRepository.save(rating);
-
-
-    }
-
-    @Override
-    @Transactional
-    public void update(RatingDTO ratingDTO) {
-        Rating rating = ratingRepository.findById(ratingDTO.getId());
-        rating.setName(ratingDTO.getName());
-        rating.setStars(ratingDTO.getStars());
-        rating.setDescription(ratingDTO.getDescription());
-        rating.setDate(ratingDTO.getDate());
-
-        ratingRepository.save(rating);
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<RatingDTO> getAll() {
-        List<Rating> ratings = ratingRepository.findAll();
-        if (ratings.isEmpty()) {
-            throw new RuntimeException("No Ratings Found");
-        }
-        return modelMapper.map(ratings, new TypeToken<List<RatingDTO>>() {}.getType());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<RatingDTO> getAllByKeyword(String keyword) {
-       List<Rating> list = ratingRepository.findRatingByNameContainingIgnoreCase(keyword);
-       if (list.isEmpty()) {
-           throw new RuntimeException("No Ratings Found");
-       }
-       return modelMapper.map(list, new TypeToken<List<RatingDTO>>() {}.getType());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<RatingDTO> getAlLPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-        Page<Rating> applications = ratingRepository.findAll(pageable);
-        return applications.map(application -> modelMapper.map(applications, RatingDTO.class));
-
+        return ratingRepository.save(rating);
     }
 }

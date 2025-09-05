@@ -463,3 +463,25 @@ body {
         font-size: 2rem;
     }
 }
+
+.star-rating .star {
+    font-size: 2rem;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+.star-rating .star.hover,
+.star-rating .star.selected {
+    color: #f8d90f;
+}
+
+.btn-gradient {
+    background: linear-gradient(90deg, #4facfe, #5205d6);
+    color: white;
+    transition: 0.3s ease;
+}
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+

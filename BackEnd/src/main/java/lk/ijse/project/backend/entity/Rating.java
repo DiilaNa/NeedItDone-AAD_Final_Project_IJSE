@@ -22,7 +22,7 @@ public class Rating implements SuperEntity{
     private String description;
     private Date date;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userID")  /*User One to One*/
     private User users;
 

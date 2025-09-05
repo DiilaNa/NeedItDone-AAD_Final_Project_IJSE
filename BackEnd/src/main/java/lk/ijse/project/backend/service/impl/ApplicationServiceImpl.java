@@ -151,6 +151,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             dto.setExperience(app.getExperience());
             dto.setDescription(app.getDescription());
             dto.setWorkerName(app.getUsers().getUsername());
+            dto.setUserId(app.getUsers().getId());
             return dto;
         }).toList();
     }

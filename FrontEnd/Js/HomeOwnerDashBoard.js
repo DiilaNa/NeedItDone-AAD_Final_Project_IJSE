@@ -42,7 +42,6 @@ function checkToken() {
 }
 
 
-
 /*-----------------------Side Navigation Bar--------------------------------*/
 function sideNav() {
     let $circleMenuBtn = $('#circleMenuBtn');
@@ -93,6 +92,7 @@ $("#saveJopPostForm").on('submit',function(e){
     e.preventDefault();
     saveJobPosts();
 });
+
 function saveJobPosts() {
     const JobData = {
         jobTitle : $("#jobTitle").val(),
@@ -210,25 +210,7 @@ function loadMyJobs() {
                 return;
             }
 
-
-
             res.data.forEach(job => {
-             /*   if (job.jobPostStatus === 'COMPLETED' || job.jobPostStatus === 'ACCEPTED') {
-
-                    const closedCardHtml = `
-            <div class="col-md-4 mb-3">
-                <div class="card job-card" data-id="${job.id}">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">${job.jobTitle}</h5>
-                        <p class="">This job is closed.</p>
-                    </div>
-                </div>
-            </div>
-        `;
-                    jobsContainer.append(closedCardHtml);
-                    return;
-                }*/
-
                 let badgeText = job.applicationsCount > 0
                     ? `${job.applicationsCount} Applications`
                     : 'In Progress';
@@ -391,6 +373,9 @@ function loadApplications() {
             res.data.forEach(app => {
                 const isPending = app.status === "PENDING";
 
+                const isCompleted = app.status === "COMPLETED";
+                const alreadyRated = app.alreadyRated || false;
+
                 const statusClass = app.status === "ACCEPTED" ? "btn-success" :
                     app.status === "DECLINED" ? "btn-danger" : "btn-warning text-dark";
 
@@ -430,10 +415,19 @@ function loadApplications() {
                            </div>`
                         : ""
                 }
-            </div>
-        </div>
-    `;
-
+                ${isCompleted && !alreadyRated ? `
+                    <div class="d-flex flex-column flex-md-column gap-2 mt-3 mt-md-0">
+                        <button class="btn btn-sm btn-gradient rate-btn w-100" 
+                            data-jobid="${app.id}" 
+                            data-workerid="${app.userId}" 
+                            data-workername="${app.workerName}">
+                            <i class="bi bi-star-fill me-1"></i> Rate ${app.workerName}
+                        </button>
+                    </div>    
+                ` : ""}
+                </div>
+             </div>
+            `;
                 container.append(applicationCard);
             });
         },
@@ -486,3 +480,75 @@ $("#applications-container").on("click", ".decline-app", function () {
         }
     });
 });
+
+let selectedStars = 0;
+let currentJobId = null;
+let currentWorkerId = null;
+let currentWorkerName = null;
+
+$(document).on("click", ".rate-btn", function () {
+    currentJobId = $(this).data("jobid");
+    currentWorkerId = $(this).data("workerid");
+    currentWorkerName = $(this).data("workername");
+
+    $("#ratingWorkerName").text("You are rating: " + currentWorkerName);
+
+    selectedStars = 0;
+    $(".star").removeClass("selected");
+    $("#ratingComment").val("");
+
+    $("#ratingModal").modal("show");
+});
+
+$(document).on("mouseenter", ".star", function () {
+    const value = $(this).data("value");
+    $(this).parent().children(".star").each(function () {
+        $(this).toggleClass("hover", $(this).data("value") <= value);
+    });
+});
+$(document).on("mouseleave", ".star-rating", function () {
+    $(this).children(".star").removeClass("hover");
+});
+$(document).on("click", ".star", function () {
+    selectedStars = $(this).data("value");
+    const container = $(this).parent();
+    container.children(".star").each(function () {
+        $(this).toggleClass("selected", $(this).data("value") <= selectedStars);
+    });
+});
+$("#submitRating").on("click", function () {
+    const comment = $("#ratingComment").val();
+
+    if (selectedStars === 0) {
+        alert("Please select a star rating.");
+        return;
+    }
+    const ratingData = {
+        name: currentWorkerName,
+        stars: selectedStars,
+        description: comment,
+        date: new Date().toISOString(),
+        userId: currentWorkerId,
+        jobPostId: currentJobId
+    };
+
+    $.ajax({
+        url: "http://localhost:8080/home/ratings",
+        type: "POST",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        contentType: "application/json",
+        data: JSON.stringify(ratingData),
+        success: function () {
+            $("#ratingModal").modal("hide");
+            alert("Thanks for rating!");
+            loadApplications();
+        },
+        error: function () {
+            alert("Failed to submit rating.");
+        }
+    });
+});
+
+

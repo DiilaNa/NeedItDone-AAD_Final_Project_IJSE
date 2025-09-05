@@ -1,14 +1,12 @@
 package lk.ijse.project.backend.service;
 
+import jakarta.validation.Valid;
 import lk.ijse.project.backend.dto.RatingDTO;
+import lk.ijse.project.backend.entity.Rating;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface RatingService {
-    void save(RatingDTO ratingDTO);
-    void update(RatingDTO ratingDTO);
-    List<RatingDTO> getAll();
-    List<RatingDTO> getAllByKeyword(String keyword);
-    Page<RatingDTO> getAlLPaginated(int page, int size);
+    Rating saveRating(@Valid RatingDTO ratingDTO);
 }
