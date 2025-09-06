@@ -154,11 +154,12 @@ public class ApplicationServiceImpl implements ApplicationService {
             dto.setExperience(app.getExperience());
             dto.setDescription(app.getDescription());
             dto.setUserId(app.getUsers().getId());
-
             Long jobPostId = app.getJobPosts().getId();
-            Long userId = app.getUsers().getId();
+            Long workerId = app.getUsers().getId();
+            System.out.println(workerId);
+            System.out.println(jobPostId);
 
-            if (ratingRepository.existsByUsersIdAndJobPostsId(userId, jobPostId)) {
+            if (ratingRepository.existsByUsers_IdAndJobPosts_Id(workerId, jobPostId)) {
                 dto.setRatingStatus(RatingStatus.ADDED);
             } else {
                 dto.setRatingStatus(RatingStatus.PENDING);

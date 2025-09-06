@@ -374,7 +374,10 @@ function loadApplications() {
                 const isPending = app.status === "PENDING";
 
                 const isCompleted = app.status === "COMPLETED";
+
+                console.log(app.ratingStatus)
                 const alreadyRated = app.ratingStatus === "ADDED";
+                console.log(alreadyRated)
 
                 const statusClass = app.status === "ACCEPTED" ? "btn-success" :
                     app.status === "DECLINED" ? "btn-danger" : "btn-warning text-dark";
@@ -419,7 +422,7 @@ function loadApplications() {
                     isCompleted
                         ? `<div class="d-flex flex-column flex-md-column gap-2 mt-3 mt-md-0">
                             <button class="btn btn-sm ${alreadyRated ? 'btn-secondary' : 'btn-gradient'} rate-btn w-100"
-                                data-jobid="${app.id}" 
+                                data-jobid="${app.jobPostsId}" 
                                 data-workerid="${app.userId}" 
                                 data-workername="${app.workerName}"
                                 ${alreadyRated ? 'disabled' : ''}>
@@ -453,6 +456,8 @@ $(document).on("click", ".rate-btn", function () {
 
     $("#ratingWorkerName").text("You are rating: " + currentWorkerName);
 
+    console.log("Rating jobPostId:", currentJobId, "userId:", currentWorkerId);
+
     selectedStars = 0;
     $(".star").removeClass("selected");
     $("#ratingComment").val("");
@@ -460,22 +465,7 @@ $(document).on("click", ".rate-btn", function () {
     $("#ratingModal").modal("show");
 });
 
-$(document).on("mouseenter", ".star", function () {
-    const value = $(this).data("value");
-    $(this).parent().children(".star").each(function () {
-        $(this).toggleClass("hover", $(this).data("value") <= value);
-    });
-});
-$(document).on("mouseleave", ".star-rating", function () {
-    $(this).children(".star").removeClass("hover");
-});
-$(document).on("click", ".star", function () {
-    selectedStars = $(this).data("value");
-    const container = $(this).parent();
-    container.children(".star").each(function () {
-        $(this).toggleClass("selected", $(this).data("value") <= selectedStars);
-    });
-});
+
 $("#submitRating").on("click", function () {
     const comment = $("#ratingComment").val();
 
@@ -483,6 +473,8 @@ $("#submitRating").on("click", function () {
         alert("Please select a star rating.");
         return;
     }
+
+    console.log(currentJobId)
 
     const ratingData = {
         name: currentWorkerName,
@@ -519,6 +511,27 @@ $("#submitRating").on("click", function () {
     });
 });
 
+
+$(document).on("mouseenter", ".star", function () {
+    const value = $(this).data("value");
+    $(this).parent().children(".star").each(function () {
+        $(this).toggleClass("hover", $(this).data("value") <= value);
+    });
+});
+
+
+$(document).on("mouseleave", ".star-rating", function () {
+    $(this).children(".star").removeClass("hover");
+});
+
+
+$(document).on("click", ".star", function () {
+    selectedStars = $(this).data("value");
+    const container = $(this).parent();
+    container.children(".star").each(function () {
+        $(this).toggleClass("selected", $(this).data("value") <= selectedStars);
+    });
+});
 
 
 /*-------------------------------Handle Accept or decline--------------------------*/
