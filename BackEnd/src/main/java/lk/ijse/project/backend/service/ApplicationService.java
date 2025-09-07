@@ -27,4 +27,5 @@ public interface ApplicationService {
     Applications markAsComplete(Long ApplicationID, Long userId);
 
     List<ApplicationDTO> getRecentApplications(Long userId);
+    List<ApplicationDTO> getRecentApplicationsDashBoard(Long workerId);
 }

@@ -207,6 +207,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     @Transactional
     public List<ApplicationDTO> getRecentApplications(Long homeownerId) {
+        System.out.println(homeownerId);
         List<Applications> apps = applicationRepository
                 .findTop3ByJobPosts_Users_IdOrderByDateDesc(homeownerId);
 
@@ -220,6 +221,28 @@ public class ApplicationServiceImpl implements ApplicationService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<ApplicationDTO> getRecentApplicationsDashBoard(Long workerId) {
+        List<Applications> applications = applicationRepository.findTop3ByUsers_IdOrderByDateDesc(workerId);
+
+        return applications.stream()
+                .map(app -> {
+                    ApplicationDTO dto = modelMapper.map(app, ApplicationDTO.class);
+
+                    // If the entity's jobTitle is null, use JobPosts title
+                    if (dto.getJobTitle() == null && app.getJobPosts() != null) {
+                        dto.setJobTitle(app.getJobPosts().getJobTitle());
+                    }
+
+                    // Map the date and status manually if needed (optional)
+                    dto.setDate(app.getDate());
+                    dto.setStatus(app.getStatus());
+
+                    return dto;
+                })
+                .toList();
     }
 
 }

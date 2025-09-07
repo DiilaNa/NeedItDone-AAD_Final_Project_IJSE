@@ -11,6 +11,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ApplicationDTO {
     private Long id;
     @NotBlank(message = "job title can not be blank")

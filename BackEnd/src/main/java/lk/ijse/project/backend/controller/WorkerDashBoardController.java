@@ -37,6 +37,15 @@ public class WorkerDashBoardController {
         return ResponseEntity.ok(new ApiResponseDTO(200, "Worker stats loaded", stats));
     }
 
+    @GetMapping("/recent-applications/{workerId}")
+    public ResponseEntity<ApiResponseDTO> recentApplications(@PathVariable Long workerId) {
+        System.out.println(workerId);
+        List<ApplicationDTO> apps = applicationService.getRecentApplicationsDashBoard(workerId);
+        System.out.println(apps);
+        return ResponseEntity.ok(new ApiResponseDTO(200, "Recent applications loaded", apps));
+    }
+
+
     @GetMapping("/latest/{userId}") /*LOAD Applications/below search*/
     public ResponseEntity<ApiResponseDTO> getLatestJobs(@PathVariable Long userId) {
 

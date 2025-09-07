@@ -6,6 +6,7 @@ $(document).ready(function () {
     loadMyApplications();
     loadActiveJobs();
     loadWorkerStats();
+    loadWorkerRecentApplications()
 });
 
 function checkToken() {
@@ -37,6 +38,60 @@ function loadWorkerStats() {
         },
         error: function (err) { console.error("Worker stats error", err); }
     });
+}
+
+/*---------------load Recent Applications--------------------------*/
+function loadWorkerRecentApplications() {
+    const workerId = localStorage.getItem("userID");
+    console.log(workerId)
+    $.ajax({
+        url: `http://localhost:8080/worker/recent-applications/${workerId}`,
+        type: "GET",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        success: function (res) {
+            console.log(res)
+            const list = Array.isArray(res.data) ? res.data : [];
+            console.log(list)
+            const box = $("#worker-recent-applications");
+            box.empty();
+            if (list.length === 0) {
+                box.append(`
+          <div class="text-center py-4">
+            <i class="fas fa-user-clock fa-2x mb-2"></i>
+            <p>No recent applications whotto</p>
+          </div>
+        `);
+                return;
+            }
+            list.forEach(a => {
+                const statusBadgeClass =
+                    a.status === "ACCEPTED" ? "bg-success" :
+                        a.status === "DECLINED" ? "bg-danger" : "bg-warning";
+                box.append(`
+          <div class="job-card card mb-2 shadow-sm border-0 rounded-3">
+            <div class="card-body d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-0">${a.jobTitle || "Job"}</h6>
+                <small>Applied ${timeAgo(a.appliedDate)}</small>
+              </div>
+              <span class="badge ${statusBadgeClass}">${a.status || "PENDING"}</span>
+            </div>
+          </div>
+        `);
+            });
+        },
+        error: function (err) { console.error("Recent applications error", err); }
+    });
+}
+
+function timeAgo(dateString) {
+    if (!dateString) return "Today";
+    const now = new Date();
+    const dt = new Date(dateString);
+    const diff = Math.floor((now - dt) / (1000 * 60 * 60 * 24));
+    if (diff <= 0) return "Today";
+    if (diff === 1) return "1 day ago";
+    return `${diff} days ago`;
 }
 
 

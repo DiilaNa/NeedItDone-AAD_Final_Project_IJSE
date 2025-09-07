@@ -44,4 +44,5 @@ public interface ApplicationRepository extends JpaRepository<Applications,Intege
                                    @Param("jobPostStatus") JobPostStatus jobPostStatus);
 
 
+    List<Applications> findTop3ByUsers_IdOrderByDateDesc(Long workerId);
 }
