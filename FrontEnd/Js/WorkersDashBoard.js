@@ -5,6 +5,7 @@ $(document).ready(function () {
     loadLatestJobs();
     loadMyApplications();
     loadActiveJobs();
+    loadWorkerStats();
 });
 
 function checkToken() {
@@ -18,6 +19,26 @@ function checkToken() {
         return;
     }
 }
+
+
+/*----------------Load DashBoard Stats--------------------------*/
+function loadWorkerStats() {
+    const workerId = localStorage.getItem("userID");
+    $.ajax({
+        url: `http://localhost:8080/worker/stats/${workerId}`,
+        type: "GET",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        success: function (res) {
+            const s = res.data || {};
+            $("#wd-applications-sent").text(s.applicationsSentCount ?? 0);
+            $("#wd-active-jobs").text(s.activeJobsCount ?? 0);
+            $("#wd-completed-jobs").text(s.completedJobsCount ?? 0);
+            $("#wd-my-rating").text((s.averageRating ?? 0).toFixed(1));
+        },
+        error: function (err) { console.error("Worker stats error", err); }
+    });
+}
+
 
 /*---------------------SIGN OUT Button---------------------------*/
 $("#logoutBTN").on('click', function () {
@@ -401,6 +422,7 @@ function markComplete(applicationID) {
             alert("Job marked complete!");
             loadActiveJobs();
             loadMyApplications();
+            loadWorkerStats()
         },
         error: function(xhr) {
             console.error(xhr.responseText);

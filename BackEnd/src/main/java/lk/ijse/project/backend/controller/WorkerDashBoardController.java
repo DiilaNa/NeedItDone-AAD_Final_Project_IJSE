@@ -3,10 +3,12 @@ package lk.ijse.project.backend.controller;
 import lk.ijse.project.backend.dto.ActiveJobDTO;
 import lk.ijse.project.backend.dto.ApplicationDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
+import lk.ijse.project.backend.dto.WorkersDashBoardStatsDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.entity.Applications;
 import lk.ijse.project.backend.service.ApplicationService;
+import lk.ijse.project.backend.service.DashBoardService;
 import lk.ijse.project.backend.service.JobPostService;
 import lk.ijse.project.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,15 @@ public class WorkerDashBoardController {
     private final ApplicationService applicationService;
     private final JobPostService jobPostService;
     private final UserService userService;
+    private final DashBoardService dashBoardService;
+
+
+    @GetMapping("/stats/{workerId}")
+    public ResponseEntity<ApiResponseDTO> stats(@PathVariable Long workerId) {
+        WorkersDashBoardStatsDTO stats = dashBoardService.getStats(workerId);
+        ResponseEntity.badRequest().body(stats);
+        return ResponseEntity.ok(new ApiResponseDTO(200, "Worker stats loaded", stats));
+    }
 
     @GetMapping("/latest/{userId}") /*LOAD Applications/below search*/
     public ResponseEntity<ApiResponseDTO> getLatestJobs(@PathVariable Long userId) {

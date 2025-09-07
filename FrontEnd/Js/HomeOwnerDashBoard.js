@@ -226,8 +226,6 @@ function saveJobPosts() {
         categoryName : $("#jobCategory").val()
     };
 
-    console.log(JobData)
-
     $.ajax({
         type: "POST",
         url: "http://localhost:8080/home/saveJob",
@@ -245,6 +243,7 @@ function saveJobPosts() {
                 timer: 1500
             });
             loadMyJobs();
+            loadWorkerStats();
         },
         error: function (){
             Swal.fire({

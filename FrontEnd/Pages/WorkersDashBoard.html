@@ -55,101 +55,70 @@
     <div class="col-md-10 p-4">
       <!-- Dashboard Overview -->
       <div id="worker-dashboard-content" class="dashboard-section active">
-                <h2 class="mb-4">Worker Dashboard</h2>
-                <div class="row mb-4">
-                  <div class="col-md-3">
-                    <div class="card stats-card">
-                      <div class="card-body text-center">
-                        <i class="fas fa-paper-plane fa-2x mb-2"></i>
-                        <h4>15</h4>
-                        <p>Applications Sent</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="card stats-card">
-                      <div class="card-body text-center">
-                        <i class="fas fa-briefcase fa-2x mb-2"></i>
-                        <h4>6</h4>
-                        <p>Active Jobs</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="card stats-card">
-                      <div class="card-body text-center">
-                        <i class="fas fa-check-circle fa-2x mb-2"></i>
-                        <h4>23</h4>
-                        <p>Completed Jobs</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="card stats-card">
-                      <div class="card-body text-center">
-                        <i class="fas fa-dollar-sign fa-2x mb-2"></i>
-                        <h4>$2,450</h4>
-                        <p>Earnings This Month</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <h2 class="mb-4">Worker Dashboard</h2>
 
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="card">
-                      <div class="card-header">
-                        <h5>Recent Applications</h5>
-                      </div>
-                      <div class="card-body">
-                        <div class="job-card card mb-2">
-                          <div class="card-body">
-                            <h6>Kitchen Renovation</h6>
-                            <p class="small text-muted">Applied 1 day ago</p>
-                            <span class="badge bg-warning status-badge">Under Review</span>
-                          </div>
-                        </div>
-                        <div class="job-card card mb-2">
-                          <div class="card-body">
-                            <h6>Bathroom Plumbing</h6>
-                            <p class="small text-muted">Applied 3 days ago</p>
-                            <span class="badge bg-success status-badge">Accepted</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="card">
-                      <div class="card-header">
-                        <h5>Active Jobs</h5>
-                      </div>
-                      <div class="card-body">
-                        <div class="job-card card mb-2">
-                          <div class="card-body">
-                            <h6>Office Electrical Work</h6>
-                            <p class="small text-muted">Due in 3 days</p>
-                            <div class="progress mb-2">
-                              <div class="progress-bar" role="progressbar" style="width: 60%"></div>
-                            </div>
-                            <small class="text-muted">60% Complete</small>
-                          </div>
-                        </div>
-                        <div class="job-card card">
-                          <div class="card-body">
-                            <h6>Home Carpentry</h6>
-                            <p class="small text-muted">Due in 1 week</p>
-                            <div class="progress mb-2">
-                              <div class="progress-bar" role="progressbar" style="width: 25%"></div>
-                            </div>
-                            <small class="text-muted">25% Complete</small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div class="card stats-card">
+              <div class="card-body text-center">
+                <i class="fas fa-paper-plane fa-2x mb-2"></i>
+                <h4 id="wd-applications-sent">0</h4>
+                <p>Applications Sent</p>
               </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card stats-card">
+              <div class="card-body text-center">
+                <i class="fas fa-briefcase fa-2x mb-2"></i>
+                <h4 id="wd-active-jobs">0</h4>
+                <p>Active Jobs</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card stats-card">
+              <div class="card-body text-center">
+                <i class="fas fa-check-circle fa-2x mb-2"></i>
+                <h4 id="wd-completed-jobs">0</h4>
+                <p>Completed Jobs</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card stats-card">
+              <div class="card-body text-center">
+                <i class="fas fa-star fa-2x mb-2"></i>
+                <h4 id="wd-my-rating">0.0</h4>
+                <p>My Rating</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Recent Applications -->
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header"><h5>Recent Applications</h5></div>
+              <div class="card-body" id="worker-recent-applications">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Ratings -->
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header"><h5>Recent Ratings</h5></div>
+              <div class="card-body" id="worker-recent-ratings">
+                <!-- Filled by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <!-- Browse Jobs Section -->
       <div id="worker-browse-jobs-content" class="dashboard-section">

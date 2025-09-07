@@ -215,10 +215,10 @@ public class JobPostServiceImpl implements JobPostService {
         JobPosts job = (JobPosts) jobPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found"));
 
-        if (job.getJobPostStatus() == JobPostStatus.ENABLE) {
+        if (job.getJobPostStatus() == JobPostStatus.IN_PROGRESS) {
             job.setJobPostStatus(JobPostStatus.DISABLE);
         }else {
-            job.setJobPostStatus(JobPostStatus.ENABLE);
+            job.setJobPostStatus(JobPostStatus.IN_PROGRESS);
         }
         jobPostRepository.save(job);
     }
