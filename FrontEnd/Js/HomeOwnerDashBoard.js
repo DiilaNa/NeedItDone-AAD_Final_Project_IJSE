@@ -4,6 +4,7 @@ $(document).ready(function () {
     loadUserDetails();
     sideNav();
     loadApplications();
+    loadRecentJobs();
 
     $("#homeowner-my-jobs-content").on("click", ".view-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
@@ -28,7 +29,7 @@ $(document).ready(function () {
     });
 
 });
-
+/*--------------------------Check the token when login to the system------------------*/
 function checkToken() {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
@@ -40,6 +41,60 @@ function checkToken() {
         return;
     }
 }
+/*--------------------------Load the recent 2 jobs in Dashboard----------------------*/
+function loadRecentJobs() {
+    const userID = localStorage.getItem("userID");
+    $.ajax({
+        url: `http://localhost:8080/home/recent/${userID}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            const container = $("#recent-jobs-container");
+            container.empty();
+
+            if (!res.data || res.data === null) {
+                container.append(`
+                    <div class="text-center py-4">
+                        <i class="fas fa-briefcase fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">No recent jobs available</p>
+                    </div>
+                `);
+                return;
+            }
+
+            console.log(res.data)
+
+            res.data.forEach(job => {
+                let badgeText = job.applicationsCount > 0
+                    ? `${job.applicationsCount} Applications`
+                    : 'In Progress';
+
+                let badgeClass = job.applicationsCount > 0
+                    ? 'bg-success'
+                    : 'bg-warning text-white';
+
+                let postedText = job.postedDate
+                    ? `Posted ${moment(job.postedDate).fromNow()}`
+                    : 'Posted Today';
+
+                const jobHtml = `
+                    <div class="job-card card mb-2 shadow-sm">
+                         <div class="card-body">
+                             <h6>${job.jobTitle}</h6>
+                             <p class="small text-muted" style="color: white !important;">${postedText}</p>
+                             <span class="badge ${badgeClass} status-badge">${badgeText}</span
+                         </div>
+                    </div>
+               `;
+                container.append(jobHtml);
+            });
+        }
+    });
+}
+
+
 
 
 /*-----------------------Side Navigation Bar--------------------------------*/
@@ -209,7 +264,6 @@ function loadMyJobs() {
                 jobsContainer.append(`<p class="text-muted">No job posts found.</p>`);
                 return;
             }
-
             res.data.forEach(job => {
                 let badgeText = job.applicationsCount > 0
                     ? `${job.applicationsCount} Applications`
@@ -219,8 +273,8 @@ function loadMyJobs() {
                     ? (job.urgency === 'In Progress' ? 'bg-warning' : 'bg-success')
                     : 'bg-warning text-white';
 
-                let postedText = job.daysSincePosted > 0
-                    ? `Posted ${job.daysSincePosted} days ago`
+                let postedText = job.postedDate
+                    ? `Posted ${moment(job.postedDate).fromNow()}`
                     : 'Posted Today';
 
                 const cardHtml = `

@@ -228,4 +228,22 @@ public class JobPostServiceImpl implements JobPostService {
         List<JobPosts> jobs = jobPostRepository.findByJobTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrLocationContainingIgnoreCase(keyword, keyword, keyword);
         return modelMapper.map(jobs, new TypeToken<List<JobPostDTO>>(){}.getType());
     }
+
+    @Override
+    public List<JobPostDTO> getRecentJobs(Long userId) {
+        List<JobPosts> jobs = jobPostRepository.findTop3ByUsers_IdOrderByPostedDateDesc(userId);
+
+        return jobs.stream()
+                .map(job -> {
+                    JobPostDTO dto = modelMapper.map(job, JobPostDTO.class);
+                    long daysSincePosted = job.getPostedDate() != null ?
+                            ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now()) : 0;
+                    dto.setDaysSincePosted((int) daysSincePosted);
+                    dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+    }
 }

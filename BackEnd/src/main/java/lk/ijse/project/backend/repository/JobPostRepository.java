@@ -33,4 +33,5 @@ public interface JobPostRepository extends JpaRepository<JobPosts,Integer> {
             String title, String description, String location
     );
 
+    List<JobPosts> findTop3ByUsers_IdOrderByPostedDateDesc(Long userId);
 }

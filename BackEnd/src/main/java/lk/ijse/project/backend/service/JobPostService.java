@@ -26,4 +26,6 @@ public interface JobPostService {
     void disableJob(Long id);
 
     List<JobPostDTO> searchJobs(String keyword);
+
+    List<JobPostDTO> getRecentJobs(Long userId);
 }

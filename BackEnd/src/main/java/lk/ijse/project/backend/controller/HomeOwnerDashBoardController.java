@@ -6,6 +6,7 @@ import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.dto.RatingDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
+import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.Rating;
 import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.service.ApplicationService;
@@ -17,6 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +58,26 @@ public class HomeOwnerDashBoardController {
                             null));
         }
     }
+
+    @GetMapping("/recent/{userId}")
+    public ResponseEntity<ApiResponseDTO> getRecentJobs(@PathVariable Long userId) {
+        List<JobPostDTO> recentJobs = jobPostService.getRecentJobs(userId);
+
+        if (recentJobs.isEmpty()) {
+            return ResponseEntity.ok(new ApiResponseDTO(
+                    200,
+                    "No recent Jobs Found",
+                    null
+            ));
+        }
+
+        return ResponseEntity.ok(new ApiResponseDTO(
+                200,
+                "Recent jobs loaded successfully",
+                recentJobs
+        ));
+    }
+
 
     @GetMapping("/loadUserDetails")
     public ResponseEntity<ApiResponseDTO> getUserDetails() {
