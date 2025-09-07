@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface ApplicationRepository extends JpaRepository<Applications,Integer> {
-    List<Applications> findApplicationsByJobTitleContainingIgnoreCase(String jobTitle);
 
     Optional<Object> findById(Long id);
 
@@ -27,4 +26,5 @@ public interface ApplicationRepository extends JpaRepository<Applications,Intege
     List<Applications> findByUsersIdAndStatus(Long workerId, ApplicationStatus status);
 
     Optional<Applications> findByIdAndUsers_Id(Long id, Long userId);
-}
+
+    List<Applications> findTop3ByJobPosts_Users_IdOrderByDateDesc(Long homeownerId);}

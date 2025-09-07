@@ -18,7 +18,6 @@ import java.util.List;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-    private final RatingService ratingService;
     private final UserService userService;
     private final JobPostService jobPostService;
 

@@ -5,6 +5,7 @@ $(document).ready(function () {
     sideNav();
     loadApplications();
     loadRecentJobs();
+    loadRecentApplications();
 
     $("#homeowner-my-jobs-content").on("click", ".view-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
@@ -64,8 +65,6 @@ function loadRecentJobs() {
                 return;
             }
 
-            console.log(res.data)
-
             res.data.forEach(job => {
                 let badgeText = job.applicationsCount > 0
                     ? `${job.applicationsCount} Applications`
@@ -93,11 +92,54 @@ function loadRecentJobs() {
         }
     });
 }
+/*-----------------------Load recent Applications----------------------------------*/
+function loadRecentApplications() {
+    const userID = localStorage.getItem("userID");
+    $.ajax({
+        url: `http://localhost:8080/home/recent-applications/${userID}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            const container = $("#recent-applications-container");
+            container.empty();
 
+            if (!res.data || res.data.length === 0) {
+                container.append(`
+                    <div class="text-center py-4">
+                        <i class="fas fa-user-clock fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">No recent applications yet</p>
+                    </div>
+                `);
+                return;
+            }
+            console.log(res.data)
+            res.data.forEach(app => {
+                const appliedDate = app.date
+                    ? new Date(app.date).toLocaleDateString()
+                    : "Today";
 
-
-
-/*-----------------------Side Navigation Bar--------------------------------*/
+                const appHtml = `
+                    <div class="card mb-2 shadow-sm border-0 rounded-3">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-0">${app.workerName}</h6>
+                                <small>${app.jobTitle}</small>
+                            </div>
+                            <span class="badge bg-info">${appliedDate}</span>
+                        </div>
+                    </div>
+                `;
+                container.append(appHtml);
+            });
+        },
+        error: function (err) {
+            console.error("Failed to load applications", err);
+        }
+    });
+}
+    /*-----------------------Side Navigation Bar--------------------------------*/
 function sideNav() {
     let $circleMenuBtn = $('#circleMenuBtn');
     let $hamburgerIcon = $('#hamburgerIcon');

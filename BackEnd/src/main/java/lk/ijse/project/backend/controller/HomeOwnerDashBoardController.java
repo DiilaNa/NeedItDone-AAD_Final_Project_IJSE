@@ -78,6 +78,26 @@ public class HomeOwnerDashBoardController {
         ));
     }
 
+    @GetMapping("/recent-applications/{userId}")
+    public ResponseEntity<ApiResponseDTO> getRecentApplications(@PathVariable Long userId) {
+        List<ApplicationDTO> applications = applicationService.getRecentApplications(userId);
+
+        if (applications.isEmpty()) {
+            return ResponseEntity.ok(new ApiResponseDTO(
+                    200,
+                    "No applications found",
+                    Collections.emptyList()
+            ));
+        }
+
+        return ResponseEntity.ok(new ApiResponseDTO(
+                200,
+                "Recent applications loaded successfully",
+                applications
+        ));
+    }
+
+
 
     @GetMapping("/loadUserDetails")
     public ResponseEntity<ApiResponseDTO> getUserDetails() {

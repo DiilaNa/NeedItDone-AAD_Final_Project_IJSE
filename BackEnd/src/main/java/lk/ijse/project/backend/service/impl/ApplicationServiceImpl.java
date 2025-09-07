@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -120,17 +121,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ApplicationDTO> getAllApplicationsByKeyword(String keyword) {
-        List<Applications> list = applicationRepository.findApplicationsByJobTitleContainingIgnoreCase(keyword);
-        if (list.isEmpty()){
-            throw new RuntimeException("No applications found");
-        }
-        return modelMapper.map(list, new TypeToken<List<ApplicationDTO>>() {}.getType());
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public Page<ApplicationDTO> getAllApplicationsPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         Page<Applications> applications = applicationRepository.findAll(pageable);
@@ -212,6 +202,24 @@ public class ApplicationServiceImpl implements ApplicationService {
         jobPostRepository.save(jobPost);
         return applicationRepository.save(application);
 
+    }
+
+    @Override
+    @Transactional
+    public List<ApplicationDTO> getRecentApplications(Long homeownerId) {
+        List<Applications> apps = applicationRepository
+                .findTop3ByJobPosts_Users_IdOrderByDateDesc(homeownerId);
+
+        return apps.stream()
+                .map(app -> {
+                    ApplicationDTO dto = new ApplicationDTO();
+                    dto.setId(app.getId());
+                    dto.setWorkerName(app.getUsers().getUsername());
+                    dto.setJobTitle(app.getJobPosts().getJobTitle());
+                    dto.setDate(app.getDate());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
 }

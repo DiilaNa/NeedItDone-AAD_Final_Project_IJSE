@@ -13,7 +13,6 @@ public interface ApplicationService {
     void saveApplications(ApplicationDTO applicationDTO);
     void updateApplications(ApplicationDTO applicationDTO );
     void deleteApplications(ApplicationDTO applicationDTO);
-    List<ApplicationDTO> getAllApplicationsByKeyword(String keyword);
 
     Page<ApplicationDTO> getAllApplicationsPaginated(int page, int size);
 
@@ -26,4 +25,6 @@ public interface ApplicationService {
     List<ActiveJobDTO> findActiveJobs(Long workerId);
 
     Applications markAsComplete(Long ApplicationID, Long userId);
+
+    List<ApplicationDTO> getRecentApplications(Long userId);
 }
