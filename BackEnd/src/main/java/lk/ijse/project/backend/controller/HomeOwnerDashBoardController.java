@@ -2,6 +2,7 @@ package lk.ijse.project.backend.controller;
 
 import jakarta.validation.Valid;
 import lk.ijse.project.backend.dto.ApplicationDTO;
+import lk.ijse.project.backend.dto.DashboardStatsHomeWorkerDTO;
 import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.dto.RatingDTO;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
@@ -9,10 +10,7 @@ import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.Rating;
 import lk.ijse.project.backend.entity.User;
-import lk.ijse.project.backend.service.ApplicationService;
-import lk.ijse.project.backend.service.JobPostService;
-import lk.ijse.project.backend.service.RatingService;
-import lk.ijse.project.backend.service.UserService;
+import lk.ijse.project.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +30,18 @@ public class HomeOwnerDashBoardController {
     private final UserService userService;
     private final ApplicationService applicationService;
     private final RatingService ratingService;
+    private final DashBoardService dashBoardService;
+
+    @GetMapping("/stats/{userId}")
+    public ResponseEntity<ApiResponseDTO> getDashboardStats(@PathVariable Long userId) {
+        DashboardStatsHomeWorkerDTO stats = dashBoardService.getDashboardStats(userId);
+
+        return ResponseEntity.ok(new ApiResponseDTO(
+                200,
+                "Dashboard stats loaded successfully",
+                stats
+        ));
+    }
 
     @PostMapping("/saveJob")
     public ResponseEntity<ApiResponseDTO> saveJob(@RequestBody JobPostDTO jobPostDTO) {

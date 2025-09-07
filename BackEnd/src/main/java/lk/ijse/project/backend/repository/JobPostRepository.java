@@ -2,6 +2,7 @@ package lk.ijse.project.backend.repository;
 
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.entity.enums.JobPostStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,4 +35,8 @@ public interface JobPostRepository extends JpaRepository<JobPosts,Integer> {
     );
 
     List<JobPosts> findTop3ByUsers_IdOrderByPostedDateDesc(Long userId);
+
+    long countByUsers_Id(Long userId);
+
+    long countByUsers_IdAndJobPostStatus(Long userId, JobPostStatus jobPostStatus);
 }

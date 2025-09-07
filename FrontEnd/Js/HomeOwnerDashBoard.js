@@ -6,7 +6,7 @@ $(document).ready(function () {
     loadApplications();
     loadRecentJobs();
     loadRecentApplications();
-
+    loadDashboardStats();
     $("#homeowner-my-jobs-content").on("click", ".view-job", function () {
         const jobId = $(this).closest(".job-card").data("id");
         viewJobPostsDetails(jobId);
@@ -92,6 +92,31 @@ function loadRecentJobs() {
         }
     });
 }
+
+/*--------------------------Load DashBoard Stats-------------------------------------*/
+function loadDashboardStats() {
+    const userID = localStorage.getItem("userID");
+
+    $.ajax({
+        url: `http://localhost:8080/home/stats/${userID}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function(res) {
+            const stats = res.data;
+
+            $("#my-jobs-count").text(stats.myJobsCount);
+            $("#applications-count").text(stats.applicationsCount);
+            $("#completed-jobs-count").text(stats.completedJobsCount);
+            $("#active-jobs-count").text(stats.activeJobsCount);
+        },
+        error: function(err) {
+            console.error("Failed to load dashboard stats", err);
+        }
+    });
+}
+
 /*-----------------------Load recent Applications----------------------------------*/
 function loadRecentApplications() {
     const userID = localStorage.getItem("userID");

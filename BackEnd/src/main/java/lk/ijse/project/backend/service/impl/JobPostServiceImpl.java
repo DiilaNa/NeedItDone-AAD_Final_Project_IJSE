@@ -52,7 +52,7 @@ public class JobPostServiceImpl implements JobPostService {
         job.setUsers(user);
         job.setCategories(category);
         job.setPostedDate(LocalDate.now());
-        job.setJobPostStatus(JobPostStatus.ENABLE);
+        job.setJobPostStatus(JobPostStatus.IN_PROGRESS);
 
 
         jobPostRepository.save(job);
