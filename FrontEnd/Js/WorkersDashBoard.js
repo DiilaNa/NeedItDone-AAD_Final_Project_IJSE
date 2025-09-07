@@ -6,7 +6,8 @@ $(document).ready(function () {
     loadMyApplications();
     loadActiveJobs();
     loadWorkerStats();
-    loadWorkerRecentApplications()
+    loadWorkerRecentApplications();
+    loadWorkerRecentRatings();
 });
 
 function checkToken() {
@@ -43,15 +44,12 @@ function loadWorkerStats() {
 /*---------------load Recent Applications--------------------------*/
 function loadWorkerRecentApplications() {
     const workerId = localStorage.getItem("userID");
-    console.log(workerId)
     $.ajax({
         url: `http://localhost:8080/worker/recent-applications/${workerId}`,
         type: "GET",
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         success: function (res) {
-            console.log(res)
             const list = Array.isArray(res.data) ? res.data : [];
-            console.log(list)
             const box = $("#worker-recent-applications");
             box.empty();
             if (list.length === 0) {
@@ -92,6 +90,48 @@ function timeAgo(dateString) {
     if (diff <= 0) return "Today";
     if (diff === 1) return "1 day ago";
     return `${diff} days ago`;
+}
+
+/*-------------------------------Load recent ratings in Dashboard-------------------------*/
+function loadWorkerRecentRatings() {
+    const workerId = localStorage.getItem("userID");
+    $.ajax({
+        url: `http://localhost:8080/worker/recent-ratings/${workerId}`,
+        type: "GET",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        success: function (res) {
+            const list = Array.isArray(res.data) ? res.data : [];
+            const box = $("#worker-recent-ratings");
+            console.log(list)
+            box.empty();
+            if (list.length === 0) {
+                box.append(`
+          <div class="text-center py-4">
+            <i class="fas fa-star-half-alt fa-2x mb-2"></i>
+            <p>No ratings yet</p>
+          </div>
+        `);
+                return;
+            }
+            list.forEach(r => {
+                const stars = "★".repeat(r.stars || 0) + "☆".repeat(Math.max(0, 5 - (r.stars || 0)));
+                box.append(`
+          <div class="card mb-2 shadow-sm border-0 rounded-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <small>${r.name}</small>
+                 <div class="mt-1">${stars}</div>
+               
+              </div>
+              ${r.description ? `<small class="d-block mt-1">"${r.description}"</small>` : ""}
+               <small class="mt-1">${timeAgo(r.date)}</small>
+            </div>
+          </div>
+        `);
+            });
+        },
+        error: function (err) { console.error("Recent ratings error", err); }
+    });
 }
 
 
@@ -239,10 +279,8 @@ $("#jobSearch").on("keyup", function () {
 
             let jobs = response.data;
 
-            console.log(jobs)
 
             jobs.forEach(job => {
-                // build button based on applied flag
                 let buttonHtml;
                 if (job.applied) {
                     buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;

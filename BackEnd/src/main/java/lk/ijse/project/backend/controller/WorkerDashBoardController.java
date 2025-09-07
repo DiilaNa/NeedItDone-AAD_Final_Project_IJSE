@@ -1,16 +1,10 @@
 package lk.ijse.project.backend.controller;
 
-import lk.ijse.project.backend.dto.ActiveJobDTO;
-import lk.ijse.project.backend.dto.ApplicationDTO;
-import lk.ijse.project.backend.dto.JobPostDTO;
-import lk.ijse.project.backend.dto.WorkersDashBoardStatsDTO;
+import lk.ijse.project.backend.dto.*;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.entity.Applications;
-import lk.ijse.project.backend.service.ApplicationService;
-import lk.ijse.project.backend.service.DashBoardService;
-import lk.ijse.project.backend.service.JobPostService;
-import lk.ijse.project.backend.service.UserService;
+import lk.ijse.project.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -28,6 +22,7 @@ public class WorkerDashBoardController {
     private final JobPostService jobPostService;
     private final UserService userService;
     private final DashBoardService dashBoardService;
+    private final RatingService ratingService;
 
 
     @GetMapping("/stats/{workerId}")
@@ -43,6 +38,12 @@ public class WorkerDashBoardController {
         List<ApplicationDTO> apps = applicationService.getRecentApplicationsDashBoard(workerId);
         System.out.println(apps);
         return ResponseEntity.ok(new ApiResponseDTO(200, "Recent applications loaded", apps));
+    }
+
+    @GetMapping("/recent-ratings/{workerId}")
+    public ResponseEntity<ApiResponseDTO> recentRatings(@PathVariable Long workerId) {
+        List<RatingDTO> ratings = ratingService.getRecentRatings(workerId);
+        return ResponseEntity.ok(new ApiResponseDTO(200, "Recent ratings loaded", ratings));
     }
 
 

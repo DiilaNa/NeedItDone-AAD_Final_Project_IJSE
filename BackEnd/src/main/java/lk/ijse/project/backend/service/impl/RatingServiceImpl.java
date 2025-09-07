@@ -4,6 +4,7 @@ import lk.ijse.project.backend.dto.RatingDTO;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.Rating;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.entity.enums.ApplicationStatus;
 import lk.ijse.project.backend.entity.enums.RatingStatus;
 import lk.ijse.project.backend.repository.JobPostRepository;
 import lk.ijse.project.backend.repository.RatingRepository;
@@ -27,6 +28,7 @@ public class RatingServiceImpl implements RatingService {
     private final RatingRepository ratingRepository;
     private final UserRepository userRepository;
     private final JobPostRepository jobPostRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Rating saveRating(RatingDTO dto) {
@@ -48,4 +50,25 @@ public class RatingServiceImpl implements RatingService {
 
         return ratingRepository.save(rating);
     }
+ /*   @Override
+    @Transactional(readOnly = true)
+    public List<RatingDTO> getRecentRatings(Long workerId) {
+        List<Rating> ratings = ratingRepository.findTop3ForWorkerOrderByDateDesc(
+                workerId, ApplicationStatus.ACCEPTED, PageRequest.of(0, 3));
+
+        return ratings.stream()
+                .map(r -> modelMapper.map(r, RatingDTO.class))
+                .toList();
+    }*/
+    @Override
+    @Transactional(readOnly = true)
+    public List<RatingDTO> getRecentRatings(Long workerId) {
+        List<Rating> ratings = ratingRepository.findTop3ByWorkerId(workerId, PageRequest.of(0, 3));
+
+        return ratings.stream()
+                .map(r -> modelMapper.map(r, RatingDTO.class))
+                .toList();
+    }
+
+
 }
