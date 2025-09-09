@@ -45,7 +45,7 @@ function checkToken() {
 /*--------------------------Load the recent 2 jobs in Dashboard----------------------*/
 function loadRecentJobs() {
     const userID = localStorage.getItem("userID");
-    $.ajax({
+    ajaxWithRefresh({
         url: `http://localhost:8080/home/recent/${userID}`,
         type: "GET",
         headers: {
@@ -97,7 +97,7 @@ function loadRecentJobs() {
 function loadDashboardStats() {
     const userID = localStorage.getItem("userID");
 
-    $.ajax({
+    ajaxWithRefresh({
         url: `http://localhost:8080/home/stats/${userID}`,
         type: "GET",
         headers: {
@@ -120,7 +120,7 @@ function loadDashboardStats() {
 /*-----------------------Load recent Applications----------------------------------*/
 function loadRecentApplications() {
     const userID = localStorage.getItem("userID");
-    $.ajax({
+    ajaxWithRefresh({
         url: `http://localhost:8080/home/recent-applications/${userID}`,
         type: "GET",
         headers: {
@@ -226,7 +226,7 @@ function saveJobPosts() {
         categoryName : $("#jobCategory").val()
     };
 
-    $.ajax({
+    ajaxWithRefresh({
         type: "POST",
         url: "http://localhost:8080/home/saveJob",
         data: JSON.stringify(JobData),
@@ -261,7 +261,7 @@ function saveJobPosts() {
 
 /*-------------------Load User Details in the UI---------------------------------*/
 function loadUserDetails() {
-    $.ajax({
+    ajaxWithRefresh({
         url: "http://localhost:8080/home/loadUserDetails",
         type: "GET",
         headers:{
@@ -285,7 +285,7 @@ $("#updateUserForm").on('submit', function(e) {
         phone: $("#profilePhone").val(),
     };
 
-    $.ajax({
+    ajaxWithRefresh({
         url: "http://localhost:8080/home/updateUserHomeController",
         type: "PUT",
         data: JSON.stringify(updatedUser),
@@ -316,7 +316,7 @@ $("#updateUserForm").on('submit', function(e) {
 /*-----------------Load Job Posts-------------------------------------*/
 function loadMyJobs() {
     const userID = localStorage.getItem("userID")
-    apiRequest({
+   ajaxWithRefresh({
         url: `http://localhost:8080/home/get${userID}`,
         type: "GET",
         headers: {
@@ -331,55 +331,42 @@ function loadMyJobs() {
                 return;
             }
             res.data.forEach(job => {
-                let badgeText, badgeClass;
+                let badgeText = job.applicationsCount > 0
+                    ? `${job.applicationsCount} Applications`
+                    : 'In Progress';
 
-                if (job.jobPostVisibility === "DISABLE") {
-                    badgeText = "Removed by Admin";
-                    badgeClass = "bg-danger text-white";
-                } else {
-                    badgeText = job.applicationsCount > 0
-                        ? `${job.applicationsCount} Applications`
-                        : 'In Progress';
-
-                    badgeClass = job.applicationsCount > 0
-                        ? (job.urgency === 'In Progress' ? 'bg-warning' : 'bg-success')
-                        : 'bg-warning text-white';
-                }
+                let badgeClass = job.applicationsCount > 0
+                    ? (job.urgency === 'In Progress' ? 'bg-warning' : 'bg-success')
+                    : 'bg-warning text-white';
 
                 let postedText = job.postedDate
                     ? `Posted ${moment(job.postedDate).fromNow()}`
                     : 'Posted Today';
 
                 const cardHtml = `
-        <div class="col-md-4 mb-3">
-            <div class="card job-card ${job.jobPostVisibility === "DISABLE" ? "border-danger opacity-75" : ""}" data-id="${job.id}">
-                <div class="card-body">
-                    <h5 class="card-title">${job.jobTitle}</h5>
-                    <p class="card-text">${job.description}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge ${badgeClass}">
-                            ${badgeText}
-                        </span>
-                        <small class="text-muted">${postedText}</small>
-                    </div>
-                    <div class="mt-3">
-                        ${job.jobPostVisibility === "DISABLE"
-                    ? `<button class="btn btn-sm btn-outline-secondary" disabled>Disabled</button>`
-                    : `
-                                <button class="btn btn-sm btn-outline-primary view-job">View</button>
-                                <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
-                                <button class="btn btn-sm btn-outline-danger delete-job">Delete</button>
-                              `
-                }
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+                            <div class="col-md-4 mb-3">
+                                <div class="card job-card" data-id="${job.id}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${job.jobTitle}</h5>
+                                            <p class="card-text">${job.description}</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="badge ${badgeClass}">
+                                                    ${badgeText}
+                                                </span>
+                                                    <small class="text-muted" style="color: white !important;">${postedText}</small>
+                                            </div>
+                                            <div class="mt-3">
+                                                <button class="btn btn-sm btn-outline-primary view-job">View</button>
+                                                <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
+                                                <button class="btn btn-sm btn-outline-danger delete-job">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
 
                 $("#homeowner-my-jobs-content .row").append(cardHtml);
             });
-
         },
         error: function (err) {
             console.error("Failed to load jobs", err);
@@ -389,7 +376,7 @@ function loadMyJobs() {
 
 /*-------------------View Job Posts(view Button In cards)----------------*/
 function viewJobPostsDetails(jobId) {
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/home/get/${jobId}`,
         type: "GET",
         headers: {
@@ -419,7 +406,7 @@ function viewJobPostsDetails(jobId) {
 
 /*-------------------Loads to update Job Posts----------------*/
 function loadsToUpdate(jobId) {
-    apiRequest({
+   ajaxWithRefresh({
         url: `http://localhost:8080/home/get/${jobId}`,
         type: "GET",
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -448,7 +435,7 @@ function updateJobPosts() {
         urgency: $("#editJobUrgency").val()
     };
 
-    apiRequest({
+    ajaxWithRefresh({
         url: "http://localhost:8080/home/updateJob",
         type: "PUT",
         contentType: "application/json",
@@ -467,7 +454,7 @@ function updateJobPosts() {
 /*---------------------Delete Job Posts---------------------------*/
 function deleteJobPosts(jobId) {
     if (confirm("Are you sure you want to delete this job?")) {
-        apiRequest({
+        ajaxWithRefresh({
             url: `http://localhost:8080/home/deleteJob/${jobId}`,
             type: "DELETE",
             headers: {
@@ -488,7 +475,7 @@ function deleteJobPosts(jobId) {
 function loadApplications() {
     const userID = localStorage.getItem("userID");
 
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/home/getApplications/${userID}`,
         type: "GET",
         headers: {
@@ -589,6 +576,8 @@ $(document).on("click", ".rate-btn", function () {
 
     $("#ratingWorkerName").text("You are rating: " + currentWorkerName);
 
+    console.log("Rating jobPostId:", currentJobId, "userId:", currentWorkerId);
+
     selectedStars = 0;
     $(".star").removeClass("selected");
     $("#ratingComment").val("");
@@ -604,6 +593,9 @@ $("#submitRating").on("click", function () {
         alert("Please select a star rating.");
         return;
     }
+
+    console.log(currentJobId)
+
     const ratingData = {
         name: currentWorkerName,
         stars: selectedStars,
@@ -613,7 +605,7 @@ $("#submitRating").on("click", function () {
         jobPostId: currentJobId
     };
 
-    apiRequest({
+    ajaxWithRefresh({
         url: "http://localhost:8080/home/ratings",
         type: "POST",
         headers: {
@@ -666,7 +658,7 @@ $(document).on("click", ".star", function () {
 $("#applications-container").on("click", ".accept-app", function () {
     const appId = $(this).closest(".application-card").data("id");
 
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/home/updateApplicationStatus/${appId}`,
         type: "PUT",
         headers: {
@@ -689,7 +681,7 @@ $("#applications-container").on("click", ".accept-app", function () {
 $("#applications-container").on("click", ".decline-app", function () {
     const appId = $(this).closest(".application-card").data("id");
 
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/home/updateApplicationStatus/${appId}`,
         type: "PUT",
         headers: {
@@ -706,3 +698,47 @@ $("#applications-container").on("click", ".decline-app", function () {
         }
     });
 });
+
+function ajaxWithRefresh(options) {
+    const token = localStorage.getItem("token");
+
+    // Add Authorization header
+    if (!options.headers) options.headers = {};
+    options.headers.Authorization = "Bearer " + token;
+
+    const originalError = options.error;
+    options.error = async function(xhr, status, error) {
+        if (xhr.status === 401 || xhr.status === 403) { // access token expired
+            const refreshToken = localStorage.getItem("refreshToken");
+            try {
+                const res = await fetch("http://localhost:8080/auth/refresh-token", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ refreshToken })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem("token", data.accessToken);
+
+                    // Retry original AJAX call with new token
+                    options.headers.Authorization = "Bearer " + data.accessToken;
+                    $.ajax(options);
+                } else {
+                    // Refresh failed → logout
+                    localStorage.clear();
+                    window.location.href = "../Pages/LogIn.html";
+                }
+            } catch (err) {
+                console.error("Refresh token failed", err);
+                localStorage.clear();
+                window.location.href = "../Pages/LogIn.html";
+            }
+        } else {
+            // other errors
+            if (originalError) originalError(xhr, status, error);
+        }
+    };
+
+    $.ajax(options);
+}
+

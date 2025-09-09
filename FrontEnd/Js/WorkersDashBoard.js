@@ -26,7 +26,7 @@ function checkToken() {
 /*----------------Load DashBoard Stats--------------------------*/
 function loadWorkerStats() {
     const workerId = localStorage.getItem("userID");
-    apiRequest({
+   ajaxWithRefresh({
         url: `http://localhost:8080/worker/stats/${workerId}`,
         type: "GET",
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -44,7 +44,7 @@ function loadWorkerStats() {
 /*---------------load Recent Applications--------------------------*/
 function loadWorkerRecentApplications() {
     const workerId = localStorage.getItem("userID");
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/worker/recent-applications/${workerId}`,
         type: "GET",
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -95,7 +95,7 @@ function timeAgo(dateString) {
 /*-------------------------------Load recent ratings in Dashboard-------------------------*/
 function loadWorkerRecentRatings() {
     const workerId = localStorage.getItem("userID");
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/worker/recent-ratings/${workerId}`,
         type: "GET",
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -137,10 +137,7 @@ function loadWorkerRecentRatings() {
 
 /*---------------------SIGN OUT Button---------------------------*/
 $("#logoutBTN").on('click', function () {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("role")
-    localStorage.removeItem("token");
-    localStorage.removeItem("userID");
+   localStorage.clear()
     window.location.href = "../Pages/HomePage.html";
 })
 
@@ -185,7 +182,7 @@ function sideNav() {
 
 function loadUserDetails() {
 
-    apiRequest({
+   ajaxWithRefresh({
         url: "http://localhost:8080/worker/loadUserDetails",
         type: "GET",
         headers: {
@@ -205,7 +202,7 @@ function loadLatestJobs() {
     $("#jobs-container").empty();
     const userID = localStorage.getItem("userID");
 
-    apiRequest({
+   ajaxWithRefresh({
         url: `http://localhost:8080/worker/latest/${userID}`,
         type: "GET",
         headers: {
@@ -268,7 +265,7 @@ $("#jobSearch").on("keyup", function () {
     let searchValue = $(this).val();
     const userID = localStorage.getItem("userID"); // optional if needed
 
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/worker/search?keyword=${searchValue}&userID=${userID}`, // make sure backend accepts userId
         type: "GET",
         headers: {
@@ -326,7 +323,7 @@ $("#jobSearch").on("keyup", function () {
 /*-------------------------------------------------------------------------------------------*/
 function loadMyApplications() {
     const userId = localStorage.getItem("userID");
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/worker/getApplication/${userId}`,
         type: "GET",
         headers: {
@@ -408,7 +405,7 @@ $("#applyJobForm").submit(function (e) {
         experience: $("#modalExperience").val()
     };
 
-    apiRequest({
+   ajaxWithRefresh({
         url: "http://localhost:8080/worker/saveApplication",
         type: "POST",
         headers: {
@@ -506,7 +503,7 @@ function markComplete(applicationID) {
     const userID = localStorage.getItem("userID")
     const token = localStorage.getItem("token")
 
-    apiRequest({
+   ajaxWithRefresh({
         url: `http://localhost:8080/worker/mark-complete?applicationId=${applicationID}&userId=${userID}`,
         method: "PUT",
         headers: {
@@ -524,6 +521,50 @@ function markComplete(applicationID) {
         }
     });
 }
+
+function ajaxWithRefresh(options) {
+    const token = localStorage.getItem("token");
+
+    // Add Authorization header
+    if (!options.headers) options.headers = {};
+    options.headers.Authorization = "Bearer " + token;
+
+    const originalError = options.error;
+    options.error = async function(xhr, status, error) {
+        if (xhr.status === 401 || xhr.status === 403) { // access token expired
+            const refreshToken = localStorage.getItem("refreshToken");
+            try {
+                const res = await fetch("http://localhost:8080/auth/refresh-token", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ refreshToken })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem("token", data.accessToken);
+
+                    // Retry original AJAX call with new token
+                    options.headers.Authorization = "Bearer " + data.accessToken;
+                    $.ajax(options);
+                } else {
+                    // Refresh failed → logout
+                    localStorage.clear();
+                    window.location.href = "../Pages/LogIn.html";
+                }
+            } catch (err) {
+                console.error("Refresh token failed", err);
+                localStorage.clear();
+                window.location.href = "../Pages/LogIn.html";
+            }
+        } else {
+            // other errors
+            if (originalError) originalError(xhr, status, error);
+        }
+    };
+
+    $.ajax(options);
+}
+
 
 
 

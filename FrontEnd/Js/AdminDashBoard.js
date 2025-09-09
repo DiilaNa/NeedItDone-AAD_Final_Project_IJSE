@@ -20,7 +20,7 @@ function checkToken() {
 
 /*-------------------------Get Count Dashboard-----------------------------*/
 function loadAdminDashboardStats() {
-    apiRequest({
+   ajaxWithRefresh({
         url: "http://localhost:8080/admin/dashboard-stats",
         type: "GET",
         headers: {
@@ -95,7 +95,7 @@ const pageSize = 10;
 
 function loadUsers(page = 0) {
     currentPage = page
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/admin/getAllUserPagination?page=${page}&size=${pageSize}`,
         type: "GET",
         headers: {
@@ -173,7 +173,7 @@ $(document).on("click", ".disable-btn", function () {
     const button = $(this);
     console.log(userId)
 
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/admin/disableUser/${userId}`,
         type: "PUT",
         headers: {
@@ -199,7 +199,7 @@ $("#userSearch").on("keyup", function () {
         return;
     }
 
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/admin/search/${keyword}`,
         type: "GET",
         headers: {
@@ -239,7 +239,7 @@ const jobPageSize = 10;
 
 function loadJobs(page = 0) {
     currentJobPage = page;
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/admin/getAllJobPostsPagination?page=${page}&size=${jobPageSize}`,
         type: "GET",
         headers: {
@@ -250,8 +250,7 @@ function loadJobs(page = 0) {
                 const jobs = res.data.content;
                 const tbody = $("#jobTableBody");
                 tbody.empty();
-                console.log(jobs)
-                console.log(jobs.jobPostVisibility)
+
                 jobs.forEach(job => {
                     tbody.append(`
                         <tr>
@@ -302,7 +301,7 @@ function renderJobPagination(totalPages, current) {
 $(document).on("click", ".disable-job-btn", function () {
     const jobId = $(this).data("id");
 
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/admin/disableJob/${jobId}`,
         type: "PUT",
         headers: {
@@ -328,7 +327,7 @@ $("#jobSearchAdmin").on("keyup", function () {
         return;
     }
 
-    apiRequest({
+    ajaxWithRefresh({
         url: `http://localhost:8080/admin/searchJobs/${keyword}`,
         type: "GET",
         headers: {
@@ -364,6 +363,50 @@ $("#jobSearchAdmin").on("keyup", function () {
         }
     });
 });
+
+function ajaxWithRefresh(options) {
+    const token = localStorage.getItem("token");
+
+    // Add Authorization header
+    if (!options.headers) options.headers = {};
+    options.headers.Authorization = "Bearer " + token;
+
+    const originalError = options.error;
+    options.error = async function(xhr, status, error) {
+        if (xhr.status === 401 || xhr.status === 403) { // access token expired
+            const refreshToken = localStorage.getItem("refreshToken");
+            try {
+                const res = await fetch("http://localhost:8080/auth/refresh-token", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ refreshToken })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem("token", data.accessToken);
+
+                    // Retry original AJAX call with new token
+                    options.headers.Authorization = "Bearer " + data.accessToken;
+                    $.ajax(options);
+                } else {
+                    // Refresh failed → logout
+                    localStorage.clear();
+                    window.location.href = "../Pages/LogIn.html";
+                }
+            } catch (err) {
+                console.error("Refresh token failed", err);
+                localStorage.clear();
+                window.location.href = "../Pages/LogIn.html";
+            }
+        } else {
+            // other errors
+            if (originalError) originalError(xhr, status, error);
+        }
+    };
+
+    $.ajax(options);
+}
+
 
 
 

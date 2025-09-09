@@ -1,17 +1,15 @@
 package lk.ijse.project.backend.controller;
 
-import lk.ijse.project.backend.dto.login.ApiResponseDTO;
-import lk.ijse.project.backend.dto.login.LogInDTO;
-import lk.ijse.project.backend.dto.login.SignUpDTO;
+import lk.ijse.project.backend.dto.login.*;
 import lk.ijse.project.backend.service.UserService;
 import lk.ijse.project.backend.service.impl.UserServiceImpl;
 import lk.ijse.project.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,19 +31,17 @@ public class LoginController {
         );
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<ApiResponseDTO> refreshToken(@RequestBody Map<String, String> request) {
-        String refreshToken = request.get("refreshToken");
-        if (refreshToken == null || !jwtUtil.validateToken(refreshToken)) {
-            return ResponseEntity.status(401).body(new ApiResponseDTO(401, "Invalid refresh token", null));
+    @PostMapping("/refresh-token")
+    public ResponseEntity<TokenRefreshResponse> refreshToken(@RequestBody TokenRefreshRequest request) {
+        String refreshToken = request.getRefreshToken();
+        if (!jwtUtil.validateToken(refreshToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-
         String username = jwtUtil.extractUserName(refreshToken);
         String newAccessToken = jwtUtil.generateToken(username);
 
-        return ResponseEntity.ok(new ApiResponseDTO(200, "Token refreshed", newAccessToken));
+        return ResponseEntity.ok(new TokenRefreshResponse(newAccessToken, refreshToken));
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponseDTO> login(@RequestBody LogInDTO loginDTO) {

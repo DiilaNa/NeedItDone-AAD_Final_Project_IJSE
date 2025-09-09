@@ -104,35 +104,41 @@ async function redirectBasedOnRole(token) {
 
     alert("Access denied: No role match");
 }
+async function fetchWithRefresh(url, options = {}) {
+    let token = localStorage.getItem("token"); // access token
+    options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${token}`
+    };
 
-function refreshAccessToken() {
-    return new Promise((resolve) => {
+    let response = await fetch(url, options);
+
+    if (response.status === 401) {
+        // access token expired, use refresh token to get a new one
         const refreshToken = localStorage.getItem("refreshToken");
+        const refreshRes = await fetch("http://localhost:8080/auth/refresh-token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refreshToken })
+        });
 
-        if (!refreshToken) {
-            resolve(false);
+        if (refreshRes.ok) {
+            const data = await refreshRes.json();
+            localStorage.setItem("token", data.accessToken);
+            options.headers.Authorization = `Bearer ${data.accessToken}`;
+            response = await fetch(url, options);
+        } else {
+            localStorage.clear();
+            window.location.href = "../Pages/LogIn.html";
             return;
         }
+    }
 
-        $.ajax({
-            url: "http://localhost:8080/auth/refresh",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ refreshToken }),
-            success: function (res) {
-                if (res.status === 200) {
-                    localStorage.setItem("accessToken", res.data); // res.data = new access token
-                    resolve(true);
-                } else {
-                    resolve(false);
-                }
-            },
-            error: function () {
-                resolve(false);
-            }
-        });
-    });
+    return response;
 }
+
+
+
 
 
 
