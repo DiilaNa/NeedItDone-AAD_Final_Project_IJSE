@@ -26,7 +26,7 @@ function checkToken() {
 /*----------------Load DashBoard Stats--------------------------*/
 function loadWorkerStats() {
     const workerId = localStorage.getItem("userID");
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/worker/stats/${workerId}`,
         type: "GET",
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -44,7 +44,7 @@ function loadWorkerStats() {
 /*---------------load Recent Applications--------------------------*/
 function loadWorkerRecentApplications() {
     const workerId = localStorage.getItem("userID");
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/worker/recent-applications/${workerId}`,
         type: "GET",
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -95,7 +95,7 @@ function timeAgo(dateString) {
 /*-------------------------------Load recent ratings in Dashboard-------------------------*/
 function loadWorkerRecentRatings() {
     const workerId = localStorage.getItem("userID");
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/worker/recent-ratings/${workerId}`,
         type: "GET",
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -185,7 +185,7 @@ function sideNav() {
 
 function loadUserDetails() {
 
-    $.ajax({
+    apiRequest({
         url: "http://localhost:8080/worker/loadUserDetails",
         type: "GET",
         headers: {
@@ -205,7 +205,7 @@ function loadLatestJobs() {
     $("#jobs-container").empty();
     const userID = localStorage.getItem("userID");
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/worker/latest/${userID}`,
         type: "GET",
         headers: {
@@ -268,7 +268,7 @@ $("#jobSearch").on("keyup", function () {
     let searchValue = $(this).val();
     const userID = localStorage.getItem("userID"); // optional if needed
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/worker/search?keyword=${searchValue}&userID=${userID}`, // make sure backend accepts userId
         type: "GET",
         headers: {
@@ -326,7 +326,7 @@ $("#jobSearch").on("keyup", function () {
 /*-------------------------------------------------------------------------------------------*/
 function loadMyApplications() {
     const userId = localStorage.getItem("userID");
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/worker/getApplication/${userId}`,
         type: "GET",
         headers: {
@@ -408,7 +408,7 @@ $("#applyJobForm").submit(function (e) {
         experience: $("#modalExperience").val()
     };
 
-    $.ajax({
+    apiRequest({
         url: "http://localhost:8080/worker/saveApplication",
         type: "POST",
         headers: {
@@ -506,7 +506,7 @@ function markComplete(applicationID) {
     const userID = localStorage.getItem("userID")
     const token = localStorage.getItem("token")
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/worker/mark-complete?applicationId=${applicationID}&userId=${userID}`,
         method: "PUT",
         headers: {

@@ -58,6 +58,7 @@ async function LogIn() {
         localStorage.setItem("role", role);
         localStorage.setItem("token", token);
         localStorage.setItem("userID",userID)
+        localStorage.setItem("refreshToken", resp.data.refreshToken);
 
         await redirectBasedOnRole(token);
 
@@ -103,5 +104,35 @@ async function redirectBasedOnRole(token) {
 
     alert("Access denied: No role match");
 }
+
+function refreshAccessToken() {
+    return new Promise((resolve) => {
+        const refreshToken = localStorage.getItem("refreshToken");
+
+        if (!refreshToken) {
+            resolve(false);
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/auth/refresh",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ refreshToken }),
+            success: function (res) {
+                if (res.status === 200) {
+                    localStorage.setItem("accessToken", res.data); // res.data = new access token
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            },
+            error: function () {
+                resolve(false);
+            }
+        });
+    });
+}
+
 
 

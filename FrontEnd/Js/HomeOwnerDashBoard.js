@@ -316,7 +316,7 @@ $("#updateUserForm").on('submit', function(e) {
 /*-----------------Load Job Posts-------------------------------------*/
 function loadMyJobs() {
     const userID = localStorage.getItem("userID")
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/home/get${userID}`,
         type: "GET",
         headers: {
@@ -389,7 +389,7 @@ function loadMyJobs() {
 
 /*-------------------View Job Posts(view Button In cards)----------------*/
 function viewJobPostsDetails(jobId) {
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/home/get/${jobId}`,
         type: "GET",
         headers: {
@@ -419,7 +419,7 @@ function viewJobPostsDetails(jobId) {
 
 /*-------------------Loads to update Job Posts----------------*/
 function loadsToUpdate(jobId) {
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/home/get/${jobId}`,
         type: "GET",
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -448,7 +448,7 @@ function updateJobPosts() {
         urgency: $("#editJobUrgency").val()
     };
 
-    $.ajax({
+    apiRequest({
         url: "http://localhost:8080/home/updateJob",
         type: "PUT",
         contentType: "application/json",
@@ -467,7 +467,7 @@ function updateJobPosts() {
 /*---------------------Delete Job Posts---------------------------*/
 function deleteJobPosts(jobId) {
     if (confirm("Are you sure you want to delete this job?")) {
-        $.ajax({
+        apiRequest({
             url: `http://localhost:8080/home/deleteJob/${jobId}`,
             type: "DELETE",
             headers: {
@@ -488,7 +488,7 @@ function deleteJobPosts(jobId) {
 function loadApplications() {
     const userID = localStorage.getItem("userID");
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/home/getApplications/${userID}`,
         type: "GET",
         headers: {
@@ -613,7 +613,7 @@ $("#submitRating").on("click", function () {
         jobPostId: currentJobId
     };
 
-    $.ajax({
+    apiRequest({
         url: "http://localhost:8080/home/ratings",
         type: "POST",
         headers: {
@@ -666,7 +666,7 @@ $(document).on("click", ".star", function () {
 $("#applications-container").on("click", ".accept-app", function () {
     const appId = $(this).closest(".application-card").data("id");
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/home/updateApplicationStatus/${appId}`,
         type: "PUT",
         headers: {
@@ -689,7 +689,7 @@ $("#applications-container").on("click", ".accept-app", function () {
 $("#applications-container").on("click", ".decline-app", function () {
     const appId = $(this).closest(".application-card").data("id");
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/home/updateApplicationStatus/${appId}`,
         type: "PUT",
         headers: {

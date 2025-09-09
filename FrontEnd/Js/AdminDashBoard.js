@@ -20,7 +20,7 @@ function checkToken() {
 
 /*-------------------------Get Count Dashboard-----------------------------*/
 function loadAdminDashboardStats() {
-    $.ajax({
+    apiRequest({
         url: "http://localhost:8080/admin/dashboard-stats",
         type: "GET",
         headers: {
@@ -95,7 +95,7 @@ const pageSize = 10;
 
 function loadUsers(page = 0) {
     currentPage = page
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/admin/getAllUserPagination?page=${page}&size=${pageSize}`,
         type: "GET",
         headers: {
@@ -173,7 +173,7 @@ $(document).on("click", ".disable-btn", function () {
     const button = $(this);
     console.log(userId)
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/admin/disableUser/${userId}`,
         type: "PUT",
         headers: {
@@ -199,7 +199,7 @@ $("#userSearch").on("keyup", function () {
         return;
     }
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/admin/search/${keyword}`,
         type: "GET",
         headers: {
@@ -239,7 +239,7 @@ const jobPageSize = 10;
 
 function loadJobs(page = 0) {
     currentJobPage = page;
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/admin/getAllJobPostsPagination?page=${page}&size=${jobPageSize}`,
         type: "GET",
         headers: {
@@ -302,7 +302,7 @@ function renderJobPagination(totalPages, current) {
 $(document).on("click", ".disable-job-btn", function () {
     const jobId = $(this).data("id");
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/admin/disableJob/${jobId}`,
         type: "PUT",
         headers: {
@@ -328,7 +328,7 @@ $("#jobSearchAdmin").on("keyup", function () {
         return;
     }
 
-    $.ajax({
+    apiRequest({
         url: `http://localhost:8080/admin/searchJobs/${keyword}`,
         type: "GET",
         headers: {
