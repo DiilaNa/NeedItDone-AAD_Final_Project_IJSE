@@ -4,6 +4,7 @@ package lk.ijse.project.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lk.ijse.project.backend.entity.enums.JobPostStatus;
+import lk.ijse.project.backend.entity.enums.JobPostVisibility;
 import lk.ijse.project.backend.entity.enums.Status;
 import lombok.*;
 
@@ -30,6 +31,9 @@ public class JobPosts implements SuperEntity{
 
     @Enumerated(EnumType.STRING)
     private JobPostStatus jobPostStatus;
+
+    @Enumerated(EnumType.STRING)
+    private JobPostVisibility jobPostVisibility;
 
     @ManyToOne
     @JoinColumn(name = "userID") /*User One to Many*/

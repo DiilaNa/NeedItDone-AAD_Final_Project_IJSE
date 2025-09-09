@@ -250,8 +250,8 @@ function loadJobs(page = 0) {
                 const jobs = res.data.content;
                 const tbody = $("#jobTableBody");
                 tbody.empty();
-                console.log(jobs.status)
-
+                console.log(jobs)
+                console.log(jobs.jobPostVisibility)
                 jobs.forEach(job => {
                     tbody.append(`
                         <tr>
@@ -262,8 +262,8 @@ function loadJobs(page = 0) {
                             <td>${job.urgency}</td>
                             <td>${job.postedDate ? new Date(job.postedDate).toLocaleDateString() : 'N/A'}</td>
                             <td>
-                               <button class="btn btn-sm ${job.jobPostStatus  === 'ENABLE' ? 'btn-danger' : 'btn-success'} disable-job-btn" data-id="${job.id}">
-                                      ${job.jobPostStatus  === 'ENABLE' ? "Disable" : "Enable"}
+                               <button class="btn btn-sm ${job.jobPostVisibility  === 'ENABLE' ? 'btn-danger' : 'btn-success'} disable-job-btn" data-id="${job.id}">
+                                      ${job.jobPostVisibility  === 'ENABLE' ? "Disable" : "Enable"}
                                 </button>
                             </td>
 

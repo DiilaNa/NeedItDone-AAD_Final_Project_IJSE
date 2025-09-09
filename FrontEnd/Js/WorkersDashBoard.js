@@ -218,6 +218,7 @@ function loadLatestJobs() {
             res.data.forEach(job => {
                 // build button depending on applied flag
                 let buttonHtml;
+                if (job.jobPostVisibility === "DISABLE") return;
                 if (job.applied) {
                     buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;
                 } else {
@@ -282,6 +283,7 @@ $("#jobSearch").on("keyup", function () {
 
             jobs.forEach(job => {
                 let buttonHtml;
+                if (job.jobPostVisibility === "DISABLE") return;
                 if (job.applied) {
                     buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;
                 } else {

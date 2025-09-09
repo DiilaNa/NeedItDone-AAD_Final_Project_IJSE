@@ -5,6 +5,7 @@ import lk.ijse.project.backend.entity.Categories;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.entity.enums.JobPostStatus;
+import lk.ijse.project.backend.entity.enums.JobPostVisibility;
 import lk.ijse.project.backend.repository.ApplicationRepository;
 import lk.ijse.project.backend.repository.CategoriesRepository;
 import lk.ijse.project.backend.repository.JobPostRepository;
@@ -53,6 +54,7 @@ public class JobPostServiceImpl implements JobPostService {
         job.setCategories(category);
         job.setPostedDate(LocalDate.now());
         job.setJobPostStatus(JobPostStatus.IN_PROGRESS);
+        job.setJobPostVisibility(JobPostVisibility.ENABLE);
 
 
         jobPostRepository.save(job);
@@ -128,6 +130,7 @@ public class JobPostServiceImpl implements JobPostService {
             dto.setUsername(jobPosts.getUsers().getUsername());
             dto.setPostedDate(jobPosts.getPostedDate());
             dto.setJobPostStatus(jobPosts.getJobPostStatus());
+            dto.setJobPostVisibility(jobPosts.getJobPostVisibility());
             return dto;
         });
 
@@ -170,6 +173,7 @@ public class JobPostServiceImpl implements JobPostService {
                 dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : "Uncategorized");
                 dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
                 dto.setApplied(applied);
+                dto.setJobPostVisibility(job.getJobPostVisibility());
 
                 if (job.getPostedDate() != null) {
                     long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
@@ -195,6 +199,7 @@ public class JobPostServiceImpl implements JobPostService {
 
                     boolean applied = applicationRepository.existsByUsers_IdAndJobPosts_Id(userId, job.getId());
                     dto.setApplied(applied);
+                    dto.setJobPostVisibility(job.getJobPostVisibility());
                     dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
 
                     if (job.getPostedDate() != null) {
@@ -215,10 +220,10 @@ public class JobPostServiceImpl implements JobPostService {
         JobPosts job = (JobPosts) jobPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found"));
 
-        if (job.getJobPostStatus() == JobPostStatus.IN_PROGRESS) {
-            job.setJobPostStatus(JobPostStatus.DISABLE);
+        if (job.getJobPostVisibility() == JobPostVisibility.ENABLE){
+            job.setJobPostVisibility(JobPostVisibility.DISABLE);
         }else {
-            job.setJobPostStatus(JobPostStatus.IN_PROGRESS);
+            job.setJobPostVisibility(JobPostVisibility.ENABLE);
         }
         jobPostRepository.save(job);
     }

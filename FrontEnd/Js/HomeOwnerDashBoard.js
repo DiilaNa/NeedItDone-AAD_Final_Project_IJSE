@@ -331,42 +331,55 @@ function loadMyJobs() {
                 return;
             }
             res.data.forEach(job => {
-                let badgeText = job.applicationsCount > 0
-                    ? `${job.applicationsCount} Applications`
-                    : 'In Progress';
+                let badgeText, badgeClass;
 
-                let badgeClass = job.applicationsCount > 0
-                    ? (job.urgency === 'In Progress' ? 'bg-warning' : 'bg-success')
-                    : 'bg-warning text-white';
+                if (job.jobPostVisibility === "DISABLE") {
+                    badgeText = "Removed by Admin";
+                    badgeClass = "bg-danger text-white";
+                } else {
+                    badgeText = job.applicationsCount > 0
+                        ? `${job.applicationsCount} Applications`
+                        : 'In Progress';
+
+                    badgeClass = job.applicationsCount > 0
+                        ? (job.urgency === 'In Progress' ? 'bg-warning' : 'bg-success')
+                        : 'bg-warning text-white';
+                }
 
                 let postedText = job.postedDate
                     ? `Posted ${moment(job.postedDate).fromNow()}`
                     : 'Posted Today';
 
                 const cardHtml = `
-                            <div class="col-md-4 mb-3">
-                                <div class="card job-card" data-id="${job.id}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${job.jobTitle}</h5>
-                                            <p class="card-text">${job.description}</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="badge ${badgeClass}">
-                                                    ${badgeText}
-                                                </span>
-                                                    <small class="text-muted" style="color: white !important;">${postedText}</small>
-                                            </div>
-                                            <div class="mt-3">
-                                                <button class="btn btn-sm btn-outline-primary view-job">View</button>
-                                                <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
-                                                <button class="btn btn-sm btn-outline-danger delete-job">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
+        <div class="col-md-4 mb-3">
+            <div class="card job-card ${job.jobPostVisibility === "DISABLE" ? "border-danger opacity-75" : ""}" data-id="${job.id}">
+                <div class="card-body">
+                    <h5 class="card-title">${job.jobTitle}</h5>
+                    <p class="card-text">${job.description}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge ${badgeClass}">
+                            ${badgeText}
+                        </span>
+                        <small class="text-muted">${postedText}</small>
+                    </div>
+                    <div class="mt-3">
+                        ${job.jobPostVisibility === "DISABLE"
+                    ? `<button class="btn btn-sm btn-outline-secondary" disabled>Disabled</button>`
+                    : `
+                                <button class="btn btn-sm btn-outline-primary view-job">View</button>
+                                <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger delete-job">Delete</button>
+                              `
+                }
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
 
                 $("#homeowner-my-jobs-content .row").append(cardHtml);
             });
+
         },
         error: function (err) {
             console.error("Failed to load jobs", err);
@@ -576,8 +589,6 @@ $(document).on("click", ".rate-btn", function () {
 
     $("#ratingWorkerName").text("You are rating: " + currentWorkerName);
 
-    console.log("Rating jobPostId:", currentJobId, "userId:", currentWorkerId);
-
     selectedStars = 0;
     $(".star").removeClass("selected");
     $("#ratingComment").val("");
@@ -593,9 +604,6 @@ $("#submitRating").on("click", function () {
         alert("Please select a star rating.");
         return;
     }
-
-    console.log(currentJobId)
-
     const ratingData = {
         name: currentWorkerName,
         stars: selectedStars,
