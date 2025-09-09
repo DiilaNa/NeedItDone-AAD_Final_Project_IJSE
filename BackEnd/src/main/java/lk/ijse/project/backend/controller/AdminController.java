@@ -12,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
@@ -86,6 +88,16 @@ public class AdminController {
         return ResponseEntity.ok(
                 new ApiResponseDTO(200, "Search jobs successfully", jobs)
         );
+    }
+
+    @GetMapping("/dashboard-stats")
+    public ResponseEntity<ApiResponseDTO> getDashboardStats() {
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalUsers", userService.countAllUsers());
+        stats.put("activeJobs", jobPostService.countActiveJobs());
+        stats.put("completedJobs", jobPostService.countCompletedJobs());
+
+        return ResponseEntity.ok(new ApiResponseDTO(200, "Dashboard stats", stats));
     }
 
 

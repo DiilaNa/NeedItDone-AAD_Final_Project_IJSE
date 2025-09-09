@@ -28,4 +28,8 @@ public interface JobPostService {
     List<JobPostDTO> searchJobs(String keyword);
 
     List<JobPostDTO> getRecentJobs(Long userId);
+
+    Object countActiveJobs();
+
+    Object countCompletedJobs();
 }

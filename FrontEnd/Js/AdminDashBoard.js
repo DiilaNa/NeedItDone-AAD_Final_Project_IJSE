@@ -3,6 +3,7 @@ $(document).ready(function() {
     sideNavBar();
     loadUsers();
     loadJobs();
+    loadAdminDashboardStats();
 
 });
 function checkToken() {
@@ -16,6 +17,29 @@ function checkToken() {
         return;
     }
 }
+
+/*-------------------------Get Count Dashboard-----------------------------*/
+function loadAdminDashboardStats() {
+    $.ajax({
+        url: "http://localhost:8080/admin/dashboard-stats",
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (res) {
+            if (res.status === 200 && res.data) {
+                $("#total-users").text(res.data.totalUsers);
+                $("#active-jobs").text(res.data.activeJobs);
+                $("#completed-jobs").text(res.data.completedJobs);
+            }
+        },
+        error: function (err) {
+            console.error("Failed to load dashboard stats", err);
+        }
+    });
+}
+
+
 
 /*----------------------SIDE NAV BAR-------------------------------------------*/
 

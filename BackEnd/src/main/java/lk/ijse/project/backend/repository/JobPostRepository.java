@@ -39,4 +39,6 @@ public interface JobPostRepository extends JpaRepository<JobPosts,Integer> {
     long countByUsers_Id(Long userId);
 
     long countByUsers_IdAndJobPostStatus(Long userId, JobPostStatus jobPostStatus);
+
+    Object countByJobPostStatus(JobPostStatus status);
 }

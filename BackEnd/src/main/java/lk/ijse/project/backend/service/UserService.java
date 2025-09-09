@@ -16,4 +16,6 @@ public interface UserService {
     SignUpDTO findByUserName(String username);
 
     void disableUser(Long id);
+
+    Object countAllUsers();
 }

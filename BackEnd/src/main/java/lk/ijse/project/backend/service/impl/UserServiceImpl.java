@@ -130,6 +130,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Object countAllUsers() {
+        return userRepository.count();
+    }
+
+    @Override
     public Page<SignUpDTO> getAllUsersPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         Page<User> userPage = userRepository.findAll(pageable);

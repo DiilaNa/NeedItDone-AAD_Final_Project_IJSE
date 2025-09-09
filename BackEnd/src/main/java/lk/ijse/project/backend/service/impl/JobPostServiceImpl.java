@@ -246,4 +246,14 @@ public class JobPostServiceImpl implements JobPostService {
                 .collect(Collectors.toList());
 
     }
+
+    @Override
+    public Object countActiveJobs() {
+        return jobPostRepository.countByJobPostStatus(JobPostStatus.IN_PROGRESS);
+    }
+
+    @Override
+    public Object countCompletedJobs() {
+        return jobPostRepository.countByJobPostStatus(JobPostStatus.COMPLETED);
+    }
 }
