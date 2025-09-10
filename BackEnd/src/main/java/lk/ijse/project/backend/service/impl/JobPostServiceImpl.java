@@ -10,6 +10,7 @@ import lk.ijse.project.backend.repository.ApplicationRepository;
 import lk.ijse.project.backend.repository.CategoriesRepository;
 import lk.ijse.project.backend.repository.JobPostRepository;
 import lk.ijse.project.backend.repository.UserRepository;
+import lk.ijse.project.backend.service.EmailService;
 import lk.ijse.project.backend.service.JobPostService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -34,6 +35,7 @@ public class JobPostServiceImpl implements JobPostService {
     private final ModelMapper modelMapper;
     private final ApplicationRepository applicationRepository;
     private final CategoriesRepository categoriesRepository;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -231,6 +233,30 @@ public class JobPostServiceImpl implements JobPostService {
             job.setJobPostVisibility(JobPostVisibility.ENABLE);
         }
         jobPostRepository.save(job);
+
+        User user = job.getUsers();
+        if (user != null) {
+            String email = user.getEmail();
+            String username = user.getUsername();
+            String jobTitle = job.getJobTitle();
+
+            String subject;
+            String body;
+
+            if (job.getJobPostVisibility() == JobPostVisibility.DISABLE) {
+                subject = "Your job post has been disabled";
+                body = "Hi " + username + ",\n\n" +
+                        "Your job post '" + jobTitle + "' has been disabled by the admin.\n" +
+                        "You won’t see this job post active until it is re-enabled.";
+            } else {
+                subject = "Your job post has been enabled";
+                body = "Hi " + username + ",\n\n" +
+                        "Your job post '" + jobTitle + "' has been enabled by the admin.\n" +
+                        "It is now active and visible to others.";
+            }
+
+            emailService.sendEmail(email, subject, body);
+        }
     }
 
     @Override
