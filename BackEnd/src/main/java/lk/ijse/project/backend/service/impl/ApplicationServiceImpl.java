@@ -173,8 +173,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     private void sendApplicationStatusEmail(Applications app) {
         String to = app.getUsers().getEmail();
-        String subject;
-        String body;
+        String subject = "";
+        String body = "";
 
         if (app.getStatus() == ApplicationStatus.ACCEPTED) {
             subject = "🎉 Your Application was Accepted!";
@@ -182,12 +182,14 @@ public class ApplicationServiceImpl implements ApplicationService {
                     ",\n\nGood news! Your application for the job '" +
                     app.getJobTitle() + "' was accepted by the homeowner.\n\n" +
                     "You can now coordinate and get started!";
-        } else {
+        } else if (app.getStatus() == ApplicationStatus.REJECTED) {
             subject = "❌ Your Application was Declined";
             body = "Hi " + app.getUsers().getUsername() +
                     ",\n\nUnfortunately, your application for the job '" +
                     app.getJobTitle() + "' was declined.\n\n" +
                     "Don’t worry! You can explore more jobs in NeedItDone.";
+        }else {
+            return;
         }
 
         emailService.sendEmail(to, subject, body);
@@ -210,23 +212,56 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .toList();
     }
 
+//
+//    @Override
+//    @Transactional
+//    public Applications markAsComplete(Long applicationID,Long userId) {
+//        Applications application = applicationRepository
+//                .findByIdAndUsers_Id(applicationID, userId)
+//                .orElseThrow(() -> new RuntimeException("Application not found"));
+//
+//        String workerName =  application.getUsers().getUsername();
+//        application.setStatus(ApplicationStatus.COMPLETED);
+//
+//        JobPosts jobPost = application.getJobPosts();
+//        jobPost.setJobPostStatus(JobPostStatus.COMPLETED);
+//
+//        jobPostRepository.save(jobPost);
+//        return applicationRepository.save(application);
+//
+//        String homeownerEmail =  application.getUsers().getEmail();
+//        String jobTitle = application.getJobTitle();
+//        emailService.sendJobCompletionEmail(homeownerEmail, workerName, jobTitle);
+//
+//
+//    }
 
     @Override
     @Transactional
-    public Applications markAsComplete(Long applicationID,Long userId) {
+    public Applications markAsComplete(Long applicationID, Long userId) {
         Applications application = applicationRepository
                 .findByIdAndUsers_Id(applicationID, userId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
+        String workerName = application.getUsers().getUsername();
         application.setStatus(ApplicationStatus.COMPLETED);
 
         JobPosts jobPost = application.getJobPosts();
         jobPost.setJobPostStatus(JobPostStatus.COMPLETED);
 
         jobPostRepository.save(jobPost);
-        return applicationRepository.save(application);
 
+        // ✅ Send mail to homeowner
+        String homeownerEmail = jobPost.getUsers().getEmail();
+        String jobTitle = application.getJobTitle();
+        emailService.sendJobCompletionEmail(homeownerEmail, workerName, jobTitle);
+
+        return applicationRepository.save(application);
     }
+
+
+
+
 
     @Override
     @Transactional

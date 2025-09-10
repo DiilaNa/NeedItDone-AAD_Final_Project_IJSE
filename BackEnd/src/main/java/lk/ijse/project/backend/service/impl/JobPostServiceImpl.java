@@ -80,12 +80,7 @@ public class JobPostServiceImpl implements JobPostService {
 
         LocalDate existingPostedDate = job.getPostedDate();
 
-        modelMapper.map(jobPostDTO, job);
-        job.setUsers(user);
-        job.setCategories(category);
-        job.setPostedDate(existingPostedDate);
 
-        jobPostRepository.save(job);
     }
 
     @Override
