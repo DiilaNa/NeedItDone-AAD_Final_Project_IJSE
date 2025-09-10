@@ -677,28 +677,6 @@ $("#applications-container").on("click", ".accept-app", function () {
         }
     });
 });
-
-$("#applications-container").on("click", ".decline-app", function () {
-    const appId = $(this).closest(".application-card").data("id");
-
-    ajaxWithRefresh({
-        url: `http://localhost:8080/home/updateApplicationStatus/${appId}`,
-        type: "PUT",
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("token")
-        },
-        contentType: "application/json",
-        data: JSON.stringify({ status: "DECLINED" }),
-        success: function () {
-            alert("Application Declined!");
-            loadApplications();
-        },
-        error: function () {
-            alert("Failed to decline application.");
-        }
-    });
-});
-
 function ajaxWithRefresh(options) {
     const token = localStorage.getItem("token");
 
@@ -707,8 +685,10 @@ function ajaxWithRefresh(options) {
     options.headers.Authorization = "Bearer " + token;
 
     const originalError = options.error;
+
     options.error = async function(xhr, status, error) {
-        if (xhr.status === 401 || xhr.status === 403) { // access token expired
+        if (xhr.status === 401 || xhr.status === 403) {
+            // silently handle token expiration
             const refreshToken = localStorage.getItem("refreshToken");
             try {
                 const res = await fetch("http://localhost:8080/auth/refresh-token", {
@@ -720,25 +700,24 @@ function ajaxWithRefresh(options) {
                     const data = await res.json();
                     localStorage.setItem("token", data.accessToken);
 
-                    // Retry original AJAX call with new token
+                    // retry the original request silently
                     options.headers.Authorization = "Bearer " + data.accessToken;
                     $.ajax(options);
                 } else {
-                    // Refresh failed → logout
                     localStorage.clear();
                     window.location.href = "../Pages/LogIn.html";
                 }
             } catch (err) {
-                console.error("Refresh token failed", err);
                 localStorage.clear();
                 window.location.href = "../Pages/LogIn.html";
             }
         } else {
-            // other errors
             if (originalError) originalError(xhr, status, error);
         }
     };
 
+
     $.ajax(options);
 }
+
 

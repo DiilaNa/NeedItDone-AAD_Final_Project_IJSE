@@ -372,8 +372,10 @@ function ajaxWithRefresh(options) {
     options.headers.Authorization = "Bearer " + token;
 
     const originalError = options.error;
+
     options.error = async function(xhr, status, error) {
-        if (xhr.status === 401 || xhr.status === 403) { // access token expired
+        if (xhr.status === 401 || xhr.status === 403) {
+            // silently handle token expiration
             const refreshToken = localStorage.getItem("refreshToken");
             try {
                 const res = await fetch("http://localhost:8080/auth/refresh-token", {
@@ -385,24 +387,22 @@ function ajaxWithRefresh(options) {
                     const data = await res.json();
                     localStorage.setItem("token", data.accessToken);
 
-                    // Retry original AJAX call with new token
+                    // retry the original request silently
                     options.headers.Authorization = "Bearer " + data.accessToken;
                     $.ajax(options);
                 } else {
-                    // Refresh failed → logout
                     localStorage.clear();
                     window.location.href = "../Pages/LogIn.html";
                 }
             } catch (err) {
-                console.error("Refresh token failed", err);
                 localStorage.clear();
                 window.location.href = "../Pages/LogIn.html";
             }
         } else {
-            // other errors
             if (originalError) originalError(xhr, status, error);
         }
     };
+
 
     $.ajax(options);
 }

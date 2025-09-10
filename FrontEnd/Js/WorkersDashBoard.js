@@ -425,6 +425,7 @@ $("#applyJobForm").submit(function (e) {
         }
     });
 });
+/*-----------------------------Load Active Jobs-----------------------------*/
 
 async function loadActiveJobs() {
     const workerId = localStorage.getItem("userID"); // assuming you stored user id
@@ -499,6 +500,9 @@ function renderJobs(jobs) {
     });
 }
 
+/*----------------------Mark Active Job as Complete----------------------------*/
+
+
 function markComplete(applicationID) {
     const userID = localStorage.getItem("userID")
     const token = localStorage.getItem("token")
@@ -522,6 +526,44 @@ function markComplete(applicationID) {
     });
 }
 
+/*----------------------Update Worker Profile details----------------------------*/
+$("#updateUserForm").on('submit', function(e) {
+    e.preventDefault();
+
+    const updatedWorker = {
+        username: $("#profileUserName").val(),
+        email: $("#profileEmail").val(),
+        phone: $("#profilePhone").val(),
+    };
+
+    ajaxWithRefresh({
+        url: "http://localhost:8080/worker/updateUserWorkerController",
+        type: "PUT",
+        data: JSON.stringify(updatedWorker),
+        contentType: "application/json",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function(response) {
+            if (response.data) {
+                // Update token if backend sends new token
+                localStorage.setItem("token", response.data);
+            }
+            Swal.fire("Updated!", "Your details have been updated", "success");
+
+        },
+        error: function(xhr) {
+            Swal.fire(
+                "Update Failed!",
+                "Failed to update profile details. Please try again.",
+                "error"
+            );
+            console.error("Worker update error:", xhr);
+        }
+    });
+});
+
+
 function ajaxWithRefresh(options) {
     const token = localStorage.getItem("token");
 
@@ -530,8 +572,10 @@ function ajaxWithRefresh(options) {
     options.headers.Authorization = "Bearer " + token;
 
     const originalError = options.error;
+
     options.error = async function(xhr, status, error) {
-        if (xhr.status === 401 || xhr.status === 403) { // access token expired
+        if (xhr.status === 401 || xhr.status === 403) {
+            // silently handle token expiration
             const refreshToken = localStorage.getItem("refreshToken");
             try {
                 const res = await fetch("http://localhost:8080/auth/refresh-token", {
@@ -543,24 +587,22 @@ function ajaxWithRefresh(options) {
                     const data = await res.json();
                     localStorage.setItem("token", data.accessToken);
 
-                    // Retry original AJAX call with new token
+                    // retry the original request silently
                     options.headers.Authorization = "Bearer " + data.accessToken;
                     $.ajax(options);
                 } else {
-                    // Refresh failed → logout
                     localStorage.clear();
                     window.location.href = "../Pages/LogIn.html";
                 }
             } catch (err) {
-                console.error("Refresh token failed", err);
                 localStorage.clear();
                 window.location.href = "../Pages/LogIn.html";
             }
         } else {
-            // other errors
             if (originalError) originalError(xhr, status, error);
         }
     };
+
 
     $.ajax(options);
 }
