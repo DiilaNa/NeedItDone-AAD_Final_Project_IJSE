@@ -14,6 +14,7 @@ import lk.ijse.project.backend.repository.JobPostRepository;
 import lk.ijse.project.backend.repository.RatingRepository;
 import lk.ijse.project.backend.repository.UserRepository;
 import lk.ijse.project.backend.service.ApplicationService;
+import lk.ijse.project.backend.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -38,6 +39,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final JobPostRepository jobPostRepository;
     private final UserRepository userRepository;
     private final RatingRepository ratingRepository;
+    private final EmailService emailService;
     @Override
     @Transactional
     public void saveApplications(ApplicationDTO applicationDTO) {
@@ -166,7 +168,31 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         application.setStatus(status);
         applicationRepository.save(application);
+        sendApplicationStatusEmail(application);
     }
+
+    private void sendApplicationStatusEmail(Applications app) {
+        String to = app.getUsers().getEmail();
+        String subject;
+        String body;
+
+        if (app.getStatus() == ApplicationStatus.ACCEPTED) {
+            subject = "🎉 Your Application was Accepted!";
+            body = "Hi " + app.getUsers().getUsername() +
+                    ",\n\nGood news! Your application for the job '" +
+                    app.getJobTitle() + "' was accepted by the homeowner.\n\n" +
+                    "You can now coordinate and get started!";
+        } else {
+            subject = "❌ Your Application was Declined";
+            body = "Hi " + app.getUsers().getUsername() +
+                    ",\n\nUnfortunately, your application for the job '" +
+                    app.getJobTitle() + "' was declined.\n\n" +
+                    "Don’t worry! You can explore more jobs in NeedItDone.";
+        }
+
+        emailService.sendEmail(to, subject, body);
+    }
+
 
     @Override
     public List<ActiveJobDTO> findActiveJobs(Long workerId) {
