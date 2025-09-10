@@ -79,8 +79,18 @@ public class JobPostServiceImpl implements JobPostService {
                 .orElseThrow(() -> new RuntimeException("Job post not found"));
 
         LocalDate existingPostedDate = job.getPostedDate();
+        JobPostStatus existingStatus = job.getJobPostStatus();
+        JobPostVisibility existingVisibility = job.getJobPostVisibility();
 
+        modelMapper.map(jobPostDTO, job);
 
+        job.setUsers(user);
+        job.setCategories(category);
+        job.setPostedDate(existingPostedDate);
+        job.setJobPostStatus(existingStatus);
+        job.setJobPostVisibility(existingVisibility);
+
+        jobPostRepository.save(job);
     }
 
     @Override
