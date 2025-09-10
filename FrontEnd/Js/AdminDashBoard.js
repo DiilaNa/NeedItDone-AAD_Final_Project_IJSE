@@ -170,8 +170,8 @@ function renderPagination(totalPages, current) {
 /*-----------------Set Account Status / Disable or Enable Account----------------------------*/
 $(document).on("click", ".disable-btn", function () {
     const userId = $(this).data("id");
-    const button = $(this);
-    console.log(userId)
+    const btn = $(this)
+    btn.prop("disabled", true).text("Processing...");
 
     ajaxWithRefresh({
         url: `http://localhost:8080/admin/disableUser/${userId}`,
@@ -186,6 +186,9 @@ $(document).on("click", ".disable-btn", function () {
         error: function (err) {
             console.error("Failed to disable user", err);
             alert("Error disabling user");
+        },
+        complete: function () {
+            btn.prop("disabled", false).text("Disable / Enable User");
         }
     });
 });
@@ -300,6 +303,8 @@ function renderJobPagination(totalPages, current) {
 /*-----------------Disable Job Post----------------------------*/
 $(document).on("click", ".disable-job-btn", function () {
     const jobId = $(this).data("id");
+    const btn = $(this);
+    btn.prop("disabled", true).text("Processing...");
 
     ajaxWithRefresh({
         url: `http://localhost:8080/admin/disableJob/${jobId}`,
@@ -314,6 +319,9 @@ $(document).on("click", ".disable-job-btn", function () {
         error: function (err) {
             console.error("Failed to disable job", err);
             alert("Error disabling job");
+        },
+        complete: function () {
+                btn.prop("disabled", false).text("Disable / Enable JobPost");
         }
     });
 });

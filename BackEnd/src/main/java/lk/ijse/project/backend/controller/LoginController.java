@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class LoginController {
-    private final UserServiceImpl userServiceImpl;
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
@@ -25,7 +24,7 @@ public class LoginController {
                 new ApiResponseDTO(
                         200,
                         "User Registered Successfully",
-                        userServiceImpl.Register(signUpDTO)
+                        userService.Register(signUpDTO)
                 )
 
         );
@@ -49,7 +48,7 @@ public class LoginController {
                 new ApiResponseDTO(
                         200,
                         "ok",
-                        userServiceImpl.authenticate(loginDTO)
+                        userService.authenticate(loginDTO)
                 )
         );
     }

@@ -7,6 +7,7 @@ import lk.ijse.project.backend.entity.enums.Role;
 import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.entity.enums.Status;
 import lk.ijse.project.backend.repository.UserRepository;
+import lk.ijse.project.backend.service.EmailService;
 import lk.ijse.project.backend.service.UserService;
 import lk.ijse.project.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
+    private final EmailService emailService;
 
+    @Override
     public String Register(SignUpDTO signUpDTO) {
         if (userRepository.findByUsername(signUpDTO.getUsername()).isPresent()){
             throw new RuntimeException("Username is already Exists");
@@ -46,7 +50,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return "User Registered Successfully";
     }
-
+    @Override
     public LoginResponseDTO authenticate(LogInDTO logInDTO) {
         User user = userRepository.findByUsername(logInDTO.getUsername())
                 .orElseThrow(() -> new RuntimeException("User Name not Found"));
@@ -129,9 +133,33 @@ public class UserServiceImpl implements UserService {
             user.setStatus(Status.ACTIVE);
         }
         userRepository.save(user);
+        sendMail(user);
+
 
     }
 
+    @Async
+    public void sendMail(User user) {
+        String subject;
+        String body;
+
+        if (user.getStatus() == Status.BANNED) {
+            subject = "Account Suspended - Access Restricted";
+            body = "Hi " + user.getUsername() + ",\n\n" +
+                    "Your account has been *banned* by the administrator due to policy violations or suspicious activities.\n" +
+                    "You will not be able to log in until further notice.\n\n" +
+                    "If you believe this is a mistake, please contact support.";
+        } else {
+            subject = "Account Reactivated - Welcome Back!";
+            body = "Hi " + user.getUsername() + ",\n\n" +
+                    "Good news! Your account has been *re-activated* by the administrator.\n" +
+                    "You can now log in and continue using our platform.\n\n" +
+                    "Thank you for being with us!";
+        }
+
+        emailService.sendEmail(user.getEmail(), subject, body);
+
+    }
     @Override
     public Object countAllUsers() {
         return userRepository.count();

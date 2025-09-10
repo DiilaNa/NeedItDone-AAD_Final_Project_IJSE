@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -233,7 +234,12 @@ public class JobPostServiceImpl implements JobPostService {
             job.setJobPostVisibility(JobPostVisibility.ENABLE);
         }
         jobPostRepository.save(job);
+        sendMail(job);
 
+    }
+
+    @Async
+    public void sendMail(JobPosts job) {
         User user = job.getUsers();
         if (user != null) {
             String email = user.getEmail();
@@ -255,7 +261,7 @@ public class JobPostServiceImpl implements JobPostService {
                         "It is now active and visible to others.";
             }
 
-            emailService.sendEmail(email, subject, body);
+             emailService.sendEmail(email, subject, body);
         }
     }
 
