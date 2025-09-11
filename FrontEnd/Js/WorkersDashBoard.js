@@ -212,6 +212,27 @@ function loadLatestJobs() {
             const jobsContainer = $("#jobs-container");
             jobsContainer.empty();
 
+            if (res.data.length  === 0) {
+                jobsContainer.append(`  
+   <div class="d-flex justify-content-center align-items-center py-5 px-3">
+            <div class="card text-center shadow-lg p-4" 
+                 style="max-width: 600px; width: 100%; border-radius: 20px; background: linear-gradient(135deg, #350091, #1f22f0); color: #fff;">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <i class="fas fa-clipboard-list fa-5x"></i>
+                    </div>
+                    <h3 class="card-title mb-3">No Jobs Posts Yet</h3>
+                    <p class="card-text mb-4" style="font-size: 1.1rem;">
+                        Currently, there are no job posts available. Please check back later.
+                    </p>
+                </div>
+            </div>
+        </div>
+                   
+                `)
+                return;
+            }
+
             res.data.forEach(job => {
                 // build button depending on applied flag
                 let buttonHtml;
@@ -273,9 +294,32 @@ $("#jobSearch").on("keyup", function () {
         },
         data: {search: searchValue},
         success: function (response) {
-            $("#jobs-container").empty();
+           let jobsContainer = $("#jobs-container")
+
+          jobsContainer.empty();
 
             let jobs = response.data;
+
+            if (jobs.length  === 0) {
+                jobsContainer.append(`  
+   <div class="d-flex justify-content-center align-items-center py-5 px-3">
+            <div class="card text-center shadow-lg p-4" 
+                 style="max-width: 600px; width: 100%; border-radius: 20px; background: linear-gradient(135deg, #1305d6, #3d008e); color: #fff;">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <i class="fas fa-clipboard-list fa-5x"></i>
+                    </div>
+                    <h3 class="card-title mb-3">No Jobs Posts Found</h3>
+                    <p class="card-text mb-4" style="font-size: 1.1rem;">
+                        Currently, there are no job posts available. Please check back later.
+                    </p>
+                </div>
+            </div>
+        </div>
+                   
+                `)
+                return;
+            }
 
 
             jobs.forEach(job => {
@@ -334,9 +378,17 @@ function loadMyApplications() {
             tbody.empty();
 
             if (!res.data || res.data.length === 0) {
-                tbody.append('<tr><td colspan="5">No applications found</td></tr>');
+                tbody.append(`  <tr class="no-data-row">
+            <td colspan="5">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>No applications found</span>
+                </div>
+            </td>
+        </tr>`)
                 return;
             }
+
 
 
             res.data.forEach(app => {

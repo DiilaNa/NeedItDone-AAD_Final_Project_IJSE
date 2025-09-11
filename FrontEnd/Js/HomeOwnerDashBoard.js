@@ -58,8 +58,8 @@ function loadRecentJobs() {
             if (!res.data || res.data === null) {
                 container.append(`
                     <div class="text-center py-4">
-                        <i class="fas fa-briefcase fa-2x text-muted mb-2"></i>
-                        <p class="text-muted">No recent jobs available</p>
+                        <i class="fas fa-briefcase fa-2x mb-2"></i>
+                        <p>No recent jobs available</p>
                     </div>
                 `);
                 return;
@@ -133,13 +133,12 @@ function loadRecentApplications() {
             if (!res.data || res.data.length === 0) {
                 container.append(`
                     <div class="text-center py-4">
-                        <i class="fas fa-user-clock fa-2x text-muted mb-2"></i>
-                        <p class="text-muted">No recent applications yet</p>
+                        <i class="fas fa-user-clock fa-2x mb-2"></i>
+                        <p>No recent applications yet</p>
                     </div>
                 `);
                 return;
             }
-            console.log(res.data)
             res.data.forEach(app => {
                 const appliedDate = app.date
                     ? new Date(app.date).toLocaleDateString()
@@ -236,14 +235,22 @@ function saveJobPosts() {
         },
         success: function () {
             Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500
+                title: 'Saved!',
+                text: 'Your Post have been saved successfully.',
+                icon: 'success',
+                background: '#0a0f3d', // Dark background
+                color: '#ffffff',       // Text color
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            }).then(() => {
+                loadRecentJobs();
+                loadRecentApplications();
+                loadDashboardStats();
+                loadMyJobs();
+                loadWorkerStats();
             });
-            loadMyJobs();
-            loadWorkerStats();
         },
         error: function (){
             Swal.fire({
@@ -293,24 +300,34 @@ $("#updateUserForm").on('submit', function(e) {
         headers: {
             Authorization : "Bearer " + localStorage.getItem("token")
         },
-        success: function (response) {
-            if (response.data) {
-                localStorage.setItem("token", response.data);
+        success: function(response) {
+            if (response.data === 200){
+                Swal.fire({
+                    title: 'Saved!',
+                    text: 'Your Post has been saved successfully.',
+                    icon: 'success',
+                    background: '#0a0f3d',
+                    color: '#ffffff',
+                    confirmButtonColor: '#667eea',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: true
+                }).then(() => {
+                    loadMyJobs();
+                    loadUserDetails();
+                });
+            } else {
+                // Show inline toast-style message
+                const msg = document.getElementById('updateMessage');
+                msg.innerText = "Failed to save post!";
+                msg.style.display = 'block';
+                setTimeout(() => {
+                    msg.style.display = 'none';
+                }, 3000); // hide after 3 seconds
             }
-            Swal.fire("Updated!", "Your details have been updated", "success");
-            loadMyJobs();
-            loadUserDetails()
         },
-        error: function (e) {
-            Swal.fire(
-                "Update Failed!",
-                "Updating fields has been Failed!",
-                "error"
 
-            )
-            e.status
-        }
-});
+    });
 });
 
 /*-----------------Load Job Posts-------------------------------------*/
@@ -327,9 +344,26 @@ function loadMyJobs() {
             jobsContainer.empty();
 
             if (res.data.length === 0) {
-                jobsContainer.append(`<p class="text-muted">No job posts found.</p>`);
+                jobsContainer.append(`<div class="d-flex justify-content-center align-items-center py-5 px-3">
+         <div class="card text-center shadow-lg p-4" 
+         style="max-width: 600px; width: 100%; border-radius: 20px; background: linear-gradient(135deg, #5205d6, #7c1ff0); color: #fff;">
+           <div class="card-body">
+            <div class="mb-4">
+                <i class="fas fa-briefcase fa-5x"></i>
+            </div>
+            <h3 class="card-title mb-3">No Job Posts Found</h3>
+            <p class="card-text mb-4" style="font-size: 1.1rem;">
+                Currently, there are no job posts available. Please check back later or create a new job post if you are an employer.
+            </p>
+            <a href="#homeowner-post-job-content" class="btn btn-light btn-lg">Post a Job</a>
+        </div>
+    </div>
+</div> 
+
+                `);
                 return;
             }
+
             res.data.forEach(job => {
                 let badgeText = job.applicationsCount > 0
                     ? `${job.applicationsCount} Applications`
@@ -442,34 +476,83 @@ function updateJobPosts() {
         data: JSON.stringify(jobData),
         headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         success: function () {
-            alert("Job updated successfully");
+            Swal.fire({
+                title: 'Updated!',
+                text: 'Your Post has been Updated successfully.',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            }).then(() => {
+                loadMyJobs();
+                loadUserDetails();
+            });
             $("#editJobModal").modal("hide");
-            loadMyJobs();
         },
         error: function () {
-            alert("Failed to update job");
+            const msg = document.getElementById('updateMessage');
+            msg.innerText = "Failed to save post!";
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
         }
     });
 }
 /*---------------------Delete Job Posts---------------------------*/
 function deleteJobPosts(jobId) {
-    if (confirm("Are you sure you want to delete this job?")) {
-        ajaxWithRefresh({
-            url: `http://localhost:8080/home/deleteJob/${jobId}`,
-            type: "DELETE",
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("token")
-            },
-            success: function () {
-                alert("Job deleted successfully");
-                loadMyJobs();
-            },
-            error: function () {
-                alert("Failed to delete job");
-            }
-        });
-    }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This action cannot be undone!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e74c3c', // Red button
+        cancelButtonColor: '#667eea',  // Cancel button
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        background: '#0a0f3d', // Dark background
+        color: '#ffffff'        // Text color
+    }).then((result) => {
+        if (result.isConfirmed) {
+            ajaxWithRefresh({
+                url: `http://localhost:8080/home/deleteJob/${jobId}`,
+                type: "DELETE",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                },
+                success: function () {
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'The item has been deleted.',
+                        icon: 'success',
+                        background: '#0a0f3d',
+                        color: '#ffffff',
+                        confirmButtonColor: '#667eea',
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                    loadMyJobs();
+                    loadDashboardStats();
+                    loadRecentJobs();
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Failed!',
+                        text: 'Unable to delete the job. Please try again.',
+                        icon: 'error',
+                        background: '#0a0f3d',
+                        color: '#ffffff',
+                        confirmButtonColor: '#e74c3c'
+                    });
+                }
+            });
+        }
+    });
 }
+
 
 /*------------------------Load Job Applications--------------------------------*/
 function loadApplications() {
@@ -486,9 +569,24 @@ function loadApplications() {
             container.empty();
 
             if (!res.data || res.data.length === 0) {
-                container.append("<p>No applications found.</p>");
+                container.append(`<div class="d-flex justify-content-center align-items-center py-5 px-3">
+                        <div class="card text-center shadow-lg p-4"
+                             style="max-width: 600px; width: 100%; border-radius: 20px; background: linear-gradient(135deg, #5205d6, #7c1ff0); color: #fff;">
+                            <div class="card-body">
+                                <div class="mb-4">
+                                  <i class="fas fa-hourglass-half fa-5x"></i>
+                                </div>
+                                <h3 class="card-title mb-3">No Job Applications Found</h3>
+                                <p class="card-text mb-4" style="font-size: 1.1rem;">
+                                    Currently, there are no job Applications Received. Please check back later.
+                                </p>
+                            </div>
+                        </div>
+                    </div>`
+                );
                 return;
             }
+
 
             res.data.forEach(app => {
                 const isPending = app.status === "PENDING";
@@ -677,6 +775,7 @@ $("#applications-container").on("click", ".accept-app", function () {
         }
     });
 });
+
 function ajaxWithRefresh(options) {
     const token = localStorage.getItem("token");
 
@@ -719,5 +818,16 @@ function ajaxWithRefresh(options) {
 
     $.ajax(options);
 }
+
+/*----------- Save Success Alert -----------*/
+function showSaveAlert() {
+
+}
+
+/*----------- Delete Confirmation Alert -----------*/
+function showDeleteAlert(callback) {
+
+}
+
 
 

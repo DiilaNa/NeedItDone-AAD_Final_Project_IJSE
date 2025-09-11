@@ -456,3 +456,61 @@ body {
         font-size: 2rem;
     }
 }
+
+/* Add this in your CSS */
+#myApplicationTbody tr td {
+    background-color: #0b4da0;  /* dark blue */
+    color: #fff;                /* white text */
+}
+
+#myApplicationTbody tr td span.badge {
+    font-size: 0.85rem;
+}
+/* Table container */
+#worker-my-applications-content .table-responsive {
+    overflow-x: auto;
+}
+
+/* Table header - dark blue */
+#worker-my-applications-content table thead {
+    background-color: #0b4da0;  /* Dark blue */
+    color: #fff;
+}
+
+/* Table rows - alternating slightly lighter blue for readability */
+#worker-my-applications-content table tbody tr:nth-child(odd) {
+    background-color: #0d5bcf; /* Slightly lighter blue */
+    color: #fff;
+}
+
+#worker-my-applications-content table tbody tr:nth-child(even) {
+    background-color: #0b4da0; /* Dark blue */
+    color: #fff;
+}
+
+/* Hover effect */
+#worker-my-applications-content table tbody tr:hover {
+    background-color: #083f7a; /* Darker shade on hover */
+    cursor: pointer;
+}
+
+/* Badges inside table */
+#worker-my-applications-content table tbody tr td span.badge {
+    font-size: 0.85rem;
+}
+
+/* No data row */
+#myApplicationTbody .no-data-row td {
+    text-align: center;
+    background-color: #0b4da0;
+    color: #fff;
+    font-weight: 500;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+#myApplicationTbody .no-data-row i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+

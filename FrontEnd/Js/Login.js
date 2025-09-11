@@ -21,12 +21,15 @@ async function LogIn() {
         password: password
     };
 
+    console.log(data)
+
     try {
-        const response = await fetchWithRefresh("http://localhost:8080/auth/login", {
+        const response = await fetch("http://localhost:8080/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
+
 
         if (!response.ok) {
             const loginError = document.getElementById("loginError");
