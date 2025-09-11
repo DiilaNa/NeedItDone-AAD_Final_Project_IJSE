@@ -598,12 +598,12 @@ function loadApplications() {
                 console.log(alreadyRated)
 
                 const statusClass = app.status === "ACCEPTED" ? "btn-success" :
-                    app.status === "DECLINED" ? "btn-danger" : "btn-warning text-dark";
+                    app.status === "REJECTED" ? "btn-danger" : "btn-warning text-dark";
 
                 const applicationCard = `
         <div class="application-card mb-4 p-4 rounded-3 shadow" data-id="${app.id}" 
              style="background-color: #0b0b3b; color: #f1f1f1; border-left: 4px solid ${
-                    app.status === "ACCEPTED" ? "#28a745" : app.status === "DECLINED" ? "#dc3545" : "#ffc107"
+                    app.status === "ACCEPTED" ? "#28a745" : app.status === "REJECTED" ? "#dc3545" : "#ffc107"
                 };">
 
            
@@ -712,19 +712,37 @@ $("#submitRating").on("click", function () {
         contentType: "application/json",
         data: JSON.stringify(ratingData),
         success: function () {
-            $("#ratingModal").modal("hide");
+            Swal.fire({
+                title: 'Done!',
+                text: 'Rated for user successfully.',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            }).then(() => {
+                $("#ratingModal").modal("hide");
+                const $button = $(`.rate-btn[data-jobid="${currentJobId}"][data-workerid="${currentWorkerId}"]`);
+                $button.prop("disabled", true);
+                $button.text("Rated");
+                $button.removeClass("btn-gradient").addClass("btn-secondary"); // Change styling
+                $button.closest(".application-card").addClass("rated-card");
+                loadApplications();
 
-            const $button = $(`.rate-btn[data-jobid="${currentJobId}"][data-workerid="${currentWorkerId}"]`);
-            $button.prop("disabled", true);
-            $button.text("Rated");
-            $button.removeClass("btn-gradient").addClass("btn-secondary"); // Change styling
-
-            $button.closest(".application-card").addClass("rated-card");
-            alert("Thanks for rating!");
-            loadApplications();
+            });
         },
         error: function () {
-            alert("Failed to submit rating.");
+            Swal.fire({
+                background: "#1e1e1e",
+                color: "#ffffff",
+                position: "center",
+                icon: "error",
+                title: "Failed to Save",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     });
 });
@@ -751,10 +769,11 @@ $(document).on("click", ".star", function () {
     });
 });
 
-
-/*-------------------------------Handle Accept or decline--------------------------*/
+/*-------------------------------Handle Accept --------------------------*/
 $("#applications-container").on("click", ".accept-app", function () {
     const appId = $(this).closest(".application-card").data("id");
+    const btn = $(this);
+    btn.prop("disabled", true).text("Processing...");
 
     ajaxWithRefresh({
         url: `http://localhost:8080/home/updateApplicationStatus/${appId}`,
@@ -763,18 +782,83 @@ $("#applications-container").on("click", ".accept-app", function () {
             Authorization: "Bearer " + localStorage.getItem("token")
         },
         contentType: "application/json",
-        data: JSON.stringify({
-            status: "ACCEPTED" }
-        ),
+        data: JSON.stringify({ status: "ACCEPTED" }),
         success: function () {
-            alert("Application Accepted!");
-            loadApplications(); // reload list
+            btn.prop("disabled", false).text("Accepted");
+            Swal.fire({
+                title: 'Success',
+                text: 'Application Accepted',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            }).then(() => {
+                loadApplications();
+            });
         },
         error: function () {
-            alert("Failed to accept application.");
+            Swal.fire({
+                background: "#1e1e1e",
+                color: "#ffffff",
+                position: "center",
+                icon: "error",
+                title: "Failed !!",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            btn.prop("disabled", false).text("Accept"); // reset on failure
         }
     });
 });
+
+/*-------------------------------Handle Decline --------------------------*/
+$("#applications-container").on("click", ".decline-app", function () {
+    const appId = $(this).closest(".application-card").data("id");
+    const btn = $(this);
+    btn.prop("disabled", true).text("Processing...");
+
+    ajaxWithRefresh({
+        url: `http://localhost:8080/home/updateApplicationStatus/${appId}`,
+        type: "PUT",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        contentType: "application/json",
+        data: JSON.stringify({ status: "REJECTED" }),
+        success: function () {
+            btn.prop("disabled", false).text("Declined");
+            Swal.fire({
+                title: 'Success!',
+                text: 'Application Declined',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            }).then(() => {
+                loadApplications();
+            });
+        },
+        error: function () {
+            Swal.fire({
+                background: "#1e1e1e",
+                color: "#ffffff",
+                position: "center",
+                icon: "error",
+                title: "Failed !!",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            btn.prop("disabled", false).text("Decline"); // reset on failure
+        }
+    });
+});
+
 
 function ajaxWithRefresh(options) {
     const token = localStorage.getItem("token");
@@ -819,15 +903,29 @@ function ajaxWithRefresh(options) {
     $.ajax(options);
 }
 
-/*----------- Save Success Alert -----------*/
-function showSaveAlert() {
+/*    Swal.fire({
+        title: 'Saved!',
+        text: 'Your Post have been saved successfully.',
+        icon: 'success',
+        background: '#0a0f3d',
+        color: '#ffffff',
+        confirmButtonColor: '#667eea',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: true
+    }).then(() => {
+    });
 
-}
+    Swal.fire({
+        background: "#1e1e1e",   // dark background
+        color: "#ffffff",
+        position: "center",
+        icon: "error",
+        title: "Failed to Save",
+        showConfirmButton: false,
+        timer: 1500
+    });*/
 
-/*----------- Delete Confirmation Alert -----------*/
-function showDeleteAlert(callback) {
-
-}
 
 
 

@@ -388,9 +388,6 @@ function loadMyApplications() {
         </tr>`)
                 return;
             }
-
-
-
             res.data.forEach(app => {
                 const row = `
                     <tr>
@@ -466,14 +463,34 @@ $("#applyJobForm").submit(function (e) {
         contentType: "application/json",
         data: JSON.stringify(applicationDTO),
         success: function () {
-            alert("Application submitted successfully!");
-            $("#applyJobModal").modal("hide");
-            const $button = $card.find(".apply-job");
-            $button.text("APPLIED").prop("disabled", true).removeClass("btn-custom").addClass("btn-secondary");
-            loadMyApplications();
+            Swal.fire({
+                title: 'Applied!',
+                text: 'Your have successfully Applied For the Job.',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            }).then(() => {
+                $("#applyJobModal").modal("hide");
+                const $button = $card.find(".apply-job");
+                $button.text("APPLIED").prop("disabled", true).removeClass("btn-custom").addClass("btn-secondary");
+                loadMyApplications();
+                loadWorkerRecentApplications();
+                loadWorkerRecentRatings();
+                loadDashboardStats();
+            });
         },
         error: function () {
-            alert("Failed to apply. Try again.");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Failed to Apply for the Job",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     });
 });
@@ -558,6 +575,8 @@ function renderJobs(jobs) {
 function markComplete(applicationID) {
     const userID = localStorage.getItem("userID")
     const token = localStorage.getItem("token")
+    const $btn = $(this);
+    $btn.prop("disabled", true).text("Processing...");
 
    ajaxWithRefresh({
         url: `http://localhost:8080/worker/mark-complete?applicationId=${applicationID}&userId=${userID}`,
@@ -566,13 +585,38 @@ function markComplete(applicationID) {
             "Authorization": "Bearer " + token
         },
         contentType: "application/json",
-        success: function(response) {
-            alert("Job marked complete!");
-            loadActiveJobs();
-            loadMyApplications();
-            loadWorkerStats()
+        success: function() {
+            $btn.prop("disabled", false).text("Marked");
+            Swal.fire({
+                title: 'Marked!',
+                text: 'Marked Job post successfully.',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            }).then(() => {
+                loadActiveJobs();
+                loadMyApplications();
+                loadWorkerStats()
+                loadRecentJobs()
+                loadDashboardStats()
+                loadWorkerRecentApplications()
+            });
         },
         error: function(xhr) {
+
+            Swal.fire({
+                background: "#1e1e1e",   // dark background
+                color: "#ffffff",
+                position: "center",
+                icon: "error",
+                title: "Failed to mark as complete",
+                showConfirmButton: false,
+                timer: 1500
+            });
             console.error(xhr.responseText);
         }
     });
@@ -596,21 +640,28 @@ $("#updateUserForm").on('submit', function(e) {
         headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
         },
-        success: function(response) {
-            if (response.data) {
-                // Update token if backend sends new token
-                localStorage.setItem("token", response.data);
-            }
-            Swal.fire("Updated!", "Your details have been updated", "success");
+        success: function() {
+            Swal.fire({
+                title: 'Updated!',
+                text: 'Your Account Details updated successfully.',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            })
 
         },
         error: function(xhr) {
-            Swal.fire(
-                "Update Failed!",
-                "Failed to update profile details. Please try again.",
-                "error"
-            );
-            console.error("Worker update error:", xhr);
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Failed to update profile details. Please try again.",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     });
 });
@@ -658,6 +709,29 @@ function ajaxWithRefresh(options) {
 
     $.ajax(options);
 }
+/*    Swal.fire({
+        title: 'Saved!',
+        text: 'Your Post have been saved successfully.',
+        icon: 'success',
+        background: '#0a0f3d', // Dark background
+        color: '#ffffff',       // Text color
+        confirmButtonColor: '#667eea',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: true
+    }).then(() => {
+    });
+
+    Swal.fire({
+        background: "#1e1e1e",   // dark background
+        color: "#ffffff",
+        position: "center",
+        icon: "error",
+        title: "Failed to Save",
+        showConfirmButton: false,
+        timer: 1500
+    });*/
+
 
 
 

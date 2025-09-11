@@ -212,30 +212,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .toList();
     }
 
-//
-//    @Override
-//    @Transactional
-//    public Applications markAsComplete(Long applicationID,Long userId) {
-//        Applications application = applicationRepository
-//                .findByIdAndUsers_Id(applicationID, userId)
-//                .orElseThrow(() -> new RuntimeException("Application not found"));
-//
-//        String workerName =  application.getUsers().getUsername();
-//        application.setStatus(ApplicationStatus.COMPLETED);
-//
-//        JobPosts jobPost = application.getJobPosts();
-//        jobPost.setJobPostStatus(JobPostStatus.COMPLETED);
-//
-//        jobPostRepository.save(jobPost);
-//        return applicationRepository.save(application);
-//
-//        String homeownerEmail =  application.getUsers().getEmail();
-//        String jobTitle = application.getJobTitle();
-//        emailService.sendJobCompletionEmail(homeownerEmail, workerName, jobTitle);
-//
-//
-//    }
-
     @Override
     @Transactional
     public Applications markAsComplete(Long applicationID, Long userId) {
@@ -254,7 +230,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         // ✅ Send mail to homeowner
         String homeownerEmail = jobPost.getUsers().getEmail();
         String jobTitle = application.getJobTitle();
-        emailService.sendJobCompletionEmail(homeownerEmail, workerName, jobTitle);
+//        emailService.sendJobCompletionEmail(homeownerEmail, workerName, jobTitle);
 
         return applicationRepository.save(application);
     }
