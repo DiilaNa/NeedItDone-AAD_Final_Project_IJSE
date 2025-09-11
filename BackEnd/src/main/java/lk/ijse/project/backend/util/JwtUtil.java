@@ -17,7 +17,8 @@ public class JwtUtil {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
-    private final long refreshExpiration = 7 * 24 * 60 * 60 * 1000;
+    @Value("${jwt.refreshToken}")
+    private long refresh;
 
     public String generateToken(String username) {
         return Jwts.builder()
@@ -33,7 +34,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
+                .setExpiration(new Date(System.currentTimeMillis() + refresh))
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }

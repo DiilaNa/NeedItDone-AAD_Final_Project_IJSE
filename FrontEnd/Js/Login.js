@@ -22,7 +22,7 @@ async function LogIn() {
     };
 
     try {
-        const response = await fetch("http://localhost:8080/auth/login", {
+        const response = await fetchWithRefresh("http://localhost:8080/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
@@ -70,7 +70,7 @@ async function LogIn() {
 
 async function redirectBasedOnRole(token) {
 
-    let res = await fetch("http://localhost:8080/hello/homeowner", {
+    let res = await fetchWithRefresh("http://localhost:8080/hello/homeowner", {
         method: "GET",
         headers: { "Authorization": "Bearer " + token }
     });
@@ -81,7 +81,7 @@ async function redirectBasedOnRole(token) {
     }
 
 
-    res = await fetch("http://localhost:8080/hello/worker", {
+    res = await fetchWithRefresh("http://localhost:8080/hello/worker", {
         method: "GET",
         headers: { "Authorization": "Bearer " + token }
     });
@@ -92,7 +92,7 @@ async function redirectBasedOnRole(token) {
     }
 
 
-    res = await fetch("http://localhost:8080/hello/admin", {
+    res = await fetchWithRefresh("http://localhost:8080/hello/admin", {
         method: "GET",
         headers: { "Authorization": "Bearer " + token }
     });
@@ -104,18 +104,17 @@ async function redirectBasedOnRole(token) {
 
     alert("Access denied: No role match");
 }
+
 async function fetchWithRefresh(url, options = {}) {
-    let token = localStorage.getItem("token"); // access token
-    options.headers = {
-        ...options.headers,
-        Authorization: `Bearer ${token}`
-    };
+    let token = localStorage.getItem("token");
+    let refreshToken = localStorage.getItem("refreshToken");
 
-    let response = await fetch(url, options);
+    if (!options.headers) options.headers = {};
+    options.headers["Authorization"] = "Bearer " + token;
 
-    if (response.status === 401) {
-        // access token expired, use refresh token to get a new one
-        const refreshToken = localStorage.getItem("refreshToken");
+    let res = await fetch(url, options);
+
+    if (res.status === 401 || res.status === 403) {
         const refreshRes = await fetch("http://localhost:8080/auth/refresh-token", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -125,17 +124,18 @@ async function fetchWithRefresh(url, options = {}) {
         if (refreshRes.ok) {
             const data = await refreshRes.json();
             localStorage.setItem("token", data.accessToken);
-            options.headers.Authorization = `Bearer ${data.accessToken}`;
-            response = await fetch(url, options);
+
+            options.headers["Authorization"] = "Bearer " + data.accessToken;
+            res = await fetch(url, options);
         } else {
             localStorage.clear();
             window.location.href = "../Pages/LogIn.html";
-            return;
         }
     }
 
-    return response;
+    return res;
 }
+
 
 
 
