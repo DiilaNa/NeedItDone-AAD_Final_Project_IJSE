@@ -248,3 +248,41 @@ input:autofill {
     -webkit-text-fill-color: #fff !important;
 }
 
+
+/*------------------------Toggle password---------------------------*/
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Make input full width */
+.input-container .input {
+    flex: 1;
+    padding-right: 2.5rem; /* space for the toggle icon */
+}
+
+/* Position the toggle icon inside the input field */
+#togglePassword {
+    position: absolute;
+    right: 0.75rem;
+    cursor: pointer;
+    color: #007769;
+    font-size: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background-color: transparent;
+    border-color: black;
+}
+#togglePassword:hover {
+    border-color: transparent;
+    color: #0fb2e3;
+
+
+}
+#togglePassword:active {
+    border-color: transparent;
+    color: #2ced19;
+}

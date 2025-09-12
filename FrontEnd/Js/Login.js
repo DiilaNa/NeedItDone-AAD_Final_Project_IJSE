@@ -138,6 +138,21 @@ async function fetchWithRefresh(url, options = {}) {
 }
 
 
+/*----------------------Password Toggle Button----------------------*/
+$("#togglePassword").on("click", function () {
+    const input = $("#passWORD");
+    const icon = $(this).find("i");
+
+    if (input.attr("type") === "password") {
+        input.attr("type", "text");
+        icon.removeClass("bi-eye").addClass("bi-eye-slash");
+    } else {
+        input.attr("type", "password");
+        icon.removeClass("bi-eye-slash").addClass("bi-eye");
+    }
+});
+
+
 
 
 

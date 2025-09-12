@@ -92,4 +92,17 @@ function submitSignUp(selectedRole) {
     var modal = bootstrap.Modal.getInstance(roleModalEl);
     modal.hide();
 }
+/*----------------------PassWord Toggle------------------------*/
+$(".togglePassword").on("click",function () {
+    const input = $("#password");
+    const icon = $(this).find("i");
+
+    if (input.attr("type")=== "password"){
+        input.attr("type","text");
+        icon.removeClass("bi-eye").addClass("bi-eye-slash");
+    }else {
+        input.attr("type","password");
+        icon.removeClass("bi-eye-slash").addClass("bi-eye");
+    }
+})
 
