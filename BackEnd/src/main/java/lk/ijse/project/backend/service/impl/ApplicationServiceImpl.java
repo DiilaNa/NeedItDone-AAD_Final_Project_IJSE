@@ -105,21 +105,21 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     List<ApplicationDTO> dtos = new ArrayList<>();
-    for (Applications app : list) {
-        ApplicationDTO dto = modelMapper.map(app, ApplicationDTO.class);
-        dto.setJobTitle(app.getJobPosts().getJobTitle());
-        dto.setCategory(app.getJobPosts().getCategories() != null
-                ? app.getJobPosts().getCategories().getName() : "");
-        dto.setAmount(app.getJobPosts().getCost());
-        dto.setDate(app.getDate());
-        dto.setStatus(app.getStatus());
-        dto.setJobPostsId(app.getJobPosts().getId());
-        dto.setUserId(app.getUsers().getId());
-        dtos.add(dto);
-    }
+        for (Applications app : list) {
+            ApplicationDTO dto = modelMapper.map(app, ApplicationDTO.class);
+            dto.setJobTitle(app.getJobPosts().getJobTitle());
+            dto.setCategory(app.getJobPosts().getCategories() != null
+                 ? app.getJobPosts().getCategories().getName() : "");
+            dto.setAmount(app.getJobPosts().getCost());
+            dto.setDate(app.getDate());
+            dto.setStatus(app.getStatus());
+            dto.setJobPostsId(app.getJobPosts().getId());
+            dto.setUserId(app.getUsers().getId());
+            dtos.add(dto);
+        }
 
-    return dtos;
-}
+        return dtos;
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -234,10 +234,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return applicationRepository.save(application);
     }
-
-
-
-
 
     @Override
     @Transactional

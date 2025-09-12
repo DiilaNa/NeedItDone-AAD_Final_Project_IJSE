@@ -18,7 +18,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +55,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginResponseDTO authenticate(LogInDTO logInDTO) {
         User user = userRepository.findByUsername(logInDTO.getUsername())
-                .orElseThrow(() -> new RuntimeException("User Name not Found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User Name not Found"));
 
         if (!passwordEncoder.matches(logInDTO.getPassword(), user.getPassword())){
-            throw new RuntimeException("Invalid Credentials");
+            throw new BadCredentialsException("Invalid Credentials");
         }
         String token  = jwtUtil.generateToken(logInDTO.getUsername());
         String refreshToken = jwtUtil.generateRefreshToken(logInDTO.getUsername());

@@ -21,8 +21,6 @@ async function LogIn() {
         password: password
     };
 
-    console.log(data)
-
     try {
         const response = await fetch("http://localhost:8080/auth/login", {
             method: "POST",
@@ -30,11 +28,11 @@ async function LogIn() {
             body: JSON.stringify(data)
         });
 
-
         if (!response.ok) {
+            const errorResp = await response.json();
             const loginError = document.getElementById("loginError");
             loginError.style.display = "block";
-            loginError.innerText = "Invalid Credentials.";
+            loginError.innerText = errorResp.message || "Login Failed.";
             setTimeout(() => loginError.classList.remove("visible"), 5000);
             return;
         }

@@ -19,6 +19,9 @@ public class DashBoardServiceImpl implements DashBoardService {
     private final JobPostRepository jobPostRepository;
     private final ApplicationRepository applicationRepository;
     private final RatingRepository ratingRepository;
+
+    @Override
+    @Transactional
     public DashboardStatsHomeWorkerDTO getDashboardStats(Long userId) {
         long myJobsCount = jobPostRepository.countByUsers_Id(userId);
         long applicationsCount = applicationRepository.countByJobPosts_Users_Id(userId);
