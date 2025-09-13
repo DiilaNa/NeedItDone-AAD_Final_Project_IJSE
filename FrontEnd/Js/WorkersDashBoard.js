@@ -213,7 +213,8 @@ function loadLatestJobs() {
             jobsContainer.empty();
 
             const activeJobs = res.data.filter(job => job.jobPostStatus !== "DELETED");
-
+            console.log(res.data)
+            console.log(activeJobs)
 
             if (activeJobs.length  === 0) {
                 jobsContainer.append(`  
@@ -236,7 +237,7 @@ function loadLatestJobs() {
                 return;
             }
 
-            res.data.forEach(job => {
+            activeJobs.forEach(job => {
                 // build button depending on applied flag
                 let buttonHtml;
                 if (job.jobPostVisibility === "DISABLE") return;
@@ -301,7 +302,7 @@ $("#jobSearch").on("keyup", function () {
 
           jobsContainer.empty();
 
-            const activeJobs = res.data.filter(job => job.jobPostStatus !== "DELETED");
+            const activeJobs = response.data.filter(job => job.jobPostStatus !== "DELETED");
             if (activeJobs.length  === 0) {
                 jobsContainer.append(`  
    <div class="d-flex justify-content-center align-items-center py-5 px-3">
@@ -324,7 +325,7 @@ $("#jobSearch").on("keyup", function () {
             }
 
 
-            jobs.forEach(job => {
+            activeJobs.forEach(job => {
                 let buttonHtml;
                 if (job.jobPostVisibility === "DISABLE") return;
                 if (job.applied) {
@@ -358,6 +359,7 @@ $("#jobSearch").on("keyup", function () {
 
                 $("#jobs-container").append(card);
             });
+            loadLatestJobs()
         },
         error: function (err) {
             console.error("Failed to load filtered jobs", err);

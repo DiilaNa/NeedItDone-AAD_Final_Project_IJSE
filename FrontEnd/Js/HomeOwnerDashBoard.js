@@ -395,7 +395,6 @@ function loadMyJobs() {
                                 <div class="mt-3">
                                     <button class="btn btn-sm btn-outline-primary view-job">View</button>
                                     <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger delete-job">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -502,55 +501,6 @@ function updateJobPosts() {
             setTimeout(() => {
                 msg.style.display = 'none';
             }, 3000);
-        }
-    });
-}
-/*---------------------Delete Job Posts---------------------------*/
-function deleteJobPosts(jobId) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "This action cannot be undone!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#e74c3c',
-        cancelButtonColor: '#667eea',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel',
-        background: '#0a0f3d',
-        color: '#ffffff'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            ajaxWithRefresh({
-                url: `http://localhost:8080/home/deleteJob/${jobId}`,
-                type: "PUT",
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("token")
-                },
-                success: function () {
-                    Swal.fire({
-                        title: 'Deleted!',
-                        text: 'The job has been deleted.',
-                        icon: 'success',
-                        background: '#0a0f3d',
-                        color: '#ffffff',
-                        confirmButtonColor: '#667eea',
-                        timer: 2000,
-                        timerProgressBar: true
-                    });
-                    loadMyJobs();
-                },
-                error: function (err) {
-                    console.error(err);
-                    Swal.fire({
-                        title: 'Failed!',
-                        text: 'Unable to delete the job.',
-                        icon: 'error',
-                        background: '#0a0f3d',
-                        color: '#ffffff',
-                        confirmButtonColor: '#e74c3c'
-                    });
-                }
-            });
         }
     });
 }
