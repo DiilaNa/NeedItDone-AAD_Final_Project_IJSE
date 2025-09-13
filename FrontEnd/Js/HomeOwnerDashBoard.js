@@ -332,8 +332,8 @@ $("#updateUserForm").on('submit', function(e) {
 
 /*-----------------Load Job Posts-------------------------------------*/
 function loadMyJobs() {
-    const userID = localStorage.getItem("userID")
-   ajaxWithRefresh({
+    const userID = localStorage.getItem("userID");
+    ajaxWithRefresh({
         url: `http://localhost:8080/home/get${userID}`,
         type: "GET",
         headers: {
@@ -343,28 +343,31 @@ function loadMyJobs() {
             const jobsContainer = $("#homeowner-my-jobs-content .row");
             jobsContainer.empty();
 
-            if (res.data.length === 0) {
-                jobsContainer.append(`<div class="d-flex justify-content-center align-items-center py-5 px-3">
-         <div class="card text-center shadow-lg p-4" 
-         style="max-width: 600px; width: 100%; border-radius: 20px; background: linear-gradient(135deg, #5205d6, #7c1ff0); color: #fff;">
-           <div class="card-body">
-            <div class="mb-4">
-                <i class="fas fa-briefcase fa-5x"></i>
-            </div>
-            <h3 class="card-title mb-3">No Job Posts Found</h3>
-            <p class="card-text mb-4" style="font-size: 1.1rem;">
-                Currently, there are no job posts available. Please check back later or create a new job post if you are an employer.
-            </p>
-            <a href="#homeowner-post-job-content" class="btn btn-light btn-lg">Post a Job</a>
-        </div>
-    </div>
-</div> 
+            // Filter out deleted jobs
+            const activeJobs = res.data.filter(job => job.jobPostStatus !== "DELETED");
 
-                `);
+            if (activeJobs.length === 0) {
+                // No active jobs to show
+                jobsContainer.append(`<div class="d-flex justify-content-center align-items-center py-5 px-3">
+                    <div class="card text-center shadow-lg p-4" 
+                    style="max-width: 600px; width: 100%; border-radius: 20px; background: linear-gradient(135deg, #5205d6, #7c1ff0); color: #fff;">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <i class="fas fa-briefcase fa-5x"></i>
+                            </div>
+                            <h3 class="card-title mb-3">No Job Posts Found</h3>
+                            <p class="card-text mb-4" style="font-size: 1.1rem;">
+                                Currently, there are no job posts available. Please check back later or create a new job post if you are an employer.
+                            </p>
+                            <a href="#homeowner-post-job-content" class="btn btn-light btn-lg">Post a Job</a>
+                        </div>
+                    </div>
+                </div>`);
                 return;
             }
 
-            res.data.forEach(job => {
+            // Render active jobs
+            activeJobs.forEach(job => {
                 let badgeText = job.applicationsCount > 0
                     ? `${job.applicationsCount} Applications`
                     : 'In Progress';
@@ -378,28 +381,28 @@ function loadMyJobs() {
                     : 'Posted Today';
 
                 const cardHtml = `
-                            <div class="col-md-4 mb-3">
-                                <div class="card job-card" data-id="${job.id}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${job.jobTitle}</h5>
-                                            <p class="card-text">${job.description}</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="badge ${badgeClass}">
-                                                    ${badgeText}
-                                                </span>
-                                                    <small class="text-muted" style="color: white !important;">${postedText}</small>
-                                            </div>
-                                            <div class="mt-3">
-                                                <button class="btn btn-sm btn-outline-primary view-job">View</button>
-                                                <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
-                                                <button class="btn btn-sm btn-outline-danger delete-job">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card job-card" data-id="${job.id}">
+                            <div class="card-body">
+                                <h5 class="card-title">${job.jobTitle}</h5>
+                                <p class="card-text">${job.description}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge ${badgeClass}">
+                                        ${badgeText}
+                                    </span>
+                                    <small class="text-muted" style="color: white !important;">${postedText}</small>
                                 </div>
-                            `;
+                                <div class="mt-3">
+                                    <button class="btn btn-sm btn-outline-primary view-job">View</button>
+                                    <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger delete-job">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
 
-                $("#homeowner-my-jobs-content .row").append(cardHtml);
+                jobsContainer.append(cardHtml);
             });
         },
         error: function (err) {
@@ -509,24 +512,24 @@ function deleteJobPosts(jobId) {
         text: "This action cannot be undone!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#e74c3c', // Red button
-        cancelButtonColor: '#667eea',  // Cancel button
+        confirmButtonColor: '#e74c3c',
+        cancelButtonColor: '#667eea',
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel',
-        background: '#0a0f3d', // Dark background
-        color: '#ffffff'        // Text color
+        background: '#0a0f3d',
+        color: '#ffffff'
     }).then((result) => {
         if (result.isConfirmed) {
             ajaxWithRefresh({
                 url: `http://localhost:8080/home/deleteJob/${jobId}`,
-                type: "DELETE",
+                type: "PUT",
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 },
                 success: function () {
                     Swal.fire({
                         title: 'Deleted!',
-                        text: 'The item has been deleted.',
+                        text: 'The job has been deleted.',
                         icon: 'success',
                         background: '#0a0f3d',
                         color: '#ffffff',
@@ -535,13 +538,12 @@ function deleteJobPosts(jobId) {
                         timerProgressBar: true
                     });
                     loadMyJobs();
-                    loadDashboardStats();
-                    loadRecentJobs();
                 },
-                error: function () {
+                error: function (err) {
+                    console.error(err);
                     Swal.fire({
                         title: 'Failed!',
-                        text: 'Unable to delete the job. Please try again.',
+                        text: 'Unable to delete the job.',
                         icon: 'error',
                         background: '#0a0f3d',
                         color: '#ffffff',
@@ -552,7 +554,6 @@ function deleteJobPosts(jobId) {
         }
     });
 }
-
 
 /*------------------------Load Job Applications--------------------------------*/
 function loadApplications() {

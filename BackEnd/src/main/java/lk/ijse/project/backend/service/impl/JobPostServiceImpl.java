@@ -28,6 +28,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static lk.ijse.project.backend.entity.enums.JobPostStatus.*;
+
 @Service
 @RequiredArgsConstructor
 public class JobPostServiceImpl implements JobPostService {
@@ -56,7 +58,7 @@ public class JobPostServiceImpl implements JobPostService {
         job.setUsers(user);
         job.setCategories(category);
         job.setPostedDate(LocalDate.now());
-        job.setJobPostStatus(JobPostStatus.IN_PROGRESS);
+        job.setJobPostStatus(IN_PROGRESS);
         job.setJobPostVisibility(JobPostVisibility.ENABLE);
 
 
@@ -104,12 +106,14 @@ public class JobPostServiceImpl implements JobPostService {
 
         List<JobPosts> jobs = jobPostRepository.findByUsers(user);
 
+
         return jobs.stream()
                 .map(job -> {
                     JobPostDTO dto = modelMapper.map(job, JobPostDTO.class);
                     long daysSincePosted = job.getPostedDate() != null ?
                             ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now()) : 0;
                     dto.setDaysSincePosted((int) daysSincePosted);
+                    dto.setJobPostStatus(job.getJobPostStatus());
                     dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
                     dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
                     return dto;
@@ -147,8 +151,27 @@ public class JobPostServiceImpl implements JobPostService {
     @Override
     @Transactional
     public void deleteJobPostById(Long id) {
-        jobPostRepository.deleteById(id);
+        JobPosts job = (JobPosts) jobPostRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job not found"));
+
+        JobPostStatus status = job.getJobPostStatus();
+
+        if (status == JobPostStatus.IN_PROGRESS && !job.getApplications().isEmpty()) {
+            job.setJobPostStatus(JobPostStatus.CANCELLED);
+
+        } else if (status == JobPostStatus.IN_PROGRESS && job.getApplications().isEmpty()) {
+            job.setJobPostStatus(JobPostStatus.DELETED);
+
+        } else if (status == JobPostStatus.COMPLETED) {
+            throw new RuntimeException("Completed jobs cannot be deleted");
+
+        } else {
+            throw new RuntimeException("Invalid delete request");
+        }
+
+        jobPostRepository.save(job);
     }
+
 
     @Override
     public JobPostDTO getJobById(Long id) {
@@ -181,6 +204,7 @@ public class JobPostServiceImpl implements JobPostService {
                 dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : "Uncategorized");
                 dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
                 dto.setApplied(applied);
+                dto.setJobPostStatus(job.getJobPostStatus());
                 dto.setJobPostVisibility(job.getJobPostVisibility());
 
                 if (job.getPostedDate() != null) {
@@ -209,6 +233,7 @@ public class JobPostServiceImpl implements JobPostService {
                     dto.setApplied(applied);
                     dto.setJobPostVisibility(job.getJobPostVisibility());
                     dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
+                    dto.setJobPostStatus(job.getJobPostStatus());
 
                     if (job.getPostedDate() != null) {
                         long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
@@ -291,11 +316,11 @@ public class JobPostServiceImpl implements JobPostService {
 
     @Override
     public Object countActiveJobs() {
-        return jobPostRepository.countByJobPostStatus(JobPostStatus.IN_PROGRESS);
+        return jobPostRepository.countByJobPostStatus(IN_PROGRESS);
     }
 
     @Override
     public Object countCompletedJobs() {
-        return jobPostRepository.countByJobPostStatus(JobPostStatus.COMPLETED);
+        return jobPostRepository.countByJobPostStatus(COMPLETED);
     }
 }

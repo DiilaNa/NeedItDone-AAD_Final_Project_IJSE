@@ -205,6 +205,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         .applicationId(app.getId())
                         .jobPostId(app.getJobPosts().getId())
                         .jobTitle(app.getJobTitle())
+                        .jobPostStatus(app.getJobPosts().getJobPostStatus())
                         .description(app.getDescription())
                         .cost(app.getAmount())
                         .deadline(app.getJobPosts().getDeadline().toString())

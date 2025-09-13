@@ -1,5 +1,6 @@
 package lk.ijse.project.backend.dto;
 
+import lk.ijse.project.backend.entity.enums.JobPostStatus;
 import lombok.*;
 
 @AllArgsConstructor
@@ -12,6 +13,7 @@ public class ActiveJobDTO {
     private Long jobPostId;
     private String jobTitle;
     private String description;
+    private JobPostStatus jobPostStatus;
     private Double cost;
     private String deadline;
 }

@@ -212,7 +212,10 @@ function loadLatestJobs() {
             const jobsContainer = $("#jobs-container");
             jobsContainer.empty();
 
-            if (res.data.length  === 0) {
+            const activeJobs = res.data.filter(job => job.jobPostStatus !== "DELETED");
+
+
+            if (activeJobs.length  === 0) {
                 jobsContainer.append(`  
    <div class="d-flex justify-content-center align-items-center py-5 px-3">
             <div class="card text-center shadow-lg p-4" 
@@ -281,7 +284,7 @@ function loadLatestJobs() {
     });
 }
 
-/*----------------- Load Jobs with Filters -----------------*/
+/*----------------- Search Jobs with Filters -----------------*/
 $("#jobSearch").on("keyup", function () {
     let searchValue = $(this).val();
     const userID = localStorage.getItem("userID"); // optional if needed
@@ -298,9 +301,8 @@ $("#jobSearch").on("keyup", function () {
 
           jobsContainer.empty();
 
-            let jobs = response.data;
-
-            if (jobs.length  === 0) {
+            const activeJobs = res.data.filter(job => job.jobPostStatus !== "DELETED");
+            if (activeJobs.length  === 0) {
                 jobsContainer.append(`  
    <div class="d-flex justify-content-center align-items-center py-5 px-3">
             <div class="card text-center shadow-lg p-4" 
@@ -363,8 +365,7 @@ $("#jobSearch").on("keyup", function () {
     });
 });
 
-
-/*-------------------------------------------------------------------------------------------*/
+/*--------------------------------------Load My Applications-----------------------------------------------------*/
 function loadMyApplications() {
     const userId = localStorage.getItem("userID");
     ajaxWithRefresh({
@@ -494,8 +495,8 @@ $("#applyJobForm").submit(function (e) {
         }
     });
 });
-/*-----------------------------Load Active Jobs-----------------------------*/
 
+/*-----------------------------Load Active Jobs to Search-----------------------------*/
 async function loadActiveJobs() {
     const workerId = localStorage.getItem("userID"); // assuming you stored user id
     const token = localStorage.getItem("token");
@@ -521,11 +522,9 @@ function renderJobs(jobs) {
         console.error("Container not found!");
         return;
     }
-
     container.innerHTML = ""; // clear old cards
 
     if (jobs.length === 0) {
-        // Show a "No active jobs" card
         container.innerHTML = `
             <div class="col-12">
                 <div class="card text-center">
@@ -538,9 +537,6 @@ function renderJobs(jobs) {
         `;
         return;
     }
-
-
-
     jobs.forEach(job => {
         container.innerHTML += `
           <div class="col-md-6 mb-3">
@@ -570,8 +566,6 @@ function renderJobs(jobs) {
 }
 
 /*----------------------Mark Active Job as Complete----------------------------*/
-
-
 function markComplete(applicationID) {
     const userID = localStorage.getItem("userID")
     const token = localStorage.getItem("token")

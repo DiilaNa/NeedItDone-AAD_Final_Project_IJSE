@@ -24,7 +24,6 @@ public class WorkerDashBoardController {
     private final DashBoardService dashBoardService;
     private final RatingService ratingService;
 
-
     @GetMapping("/stats/{workerId}")
     public ResponseEntity<ApiResponseDTO> stats(@PathVariable Long workerId) {
         WorkersDashBoardStatsDTO stats = dashBoardService.getStats(workerId);
@@ -46,14 +45,12 @@ public class WorkerDashBoardController {
         return ResponseEntity.ok(new ApiResponseDTO(200, "Recent ratings loaded", ratings));
     }
 
-
-    @GetMapping("/latest/{userId}") /*LOAD Applications/below search*/
+    @GetMapping("/latest/{userId}") /*LOAD Applications/ search*/
     public ResponseEntity<ApiResponseDTO> getLatestJobs(@PathVariable Long userId) {
 
         List<JobPostDTO> jobPosts = jobPostService.getLatestJobPosts(userId,10);
         return ResponseEntity.ok(new ApiResponseDTO(200, "Success", jobPosts));
     }
-
 
     @GetMapping("/pagination")
     public ResponseEntity<ApiResponseDTO> getAllPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
@@ -137,7 +134,7 @@ public class WorkerDashBoardController {
 
     }
 
-    @GetMapping("/search")/*SEARCH applications*/
+    @GetMapping("/search")/*Load new Jobs to apply / SEARCH */
     public ResponseEntity<ApiResponseDTO> search(@RequestParam(required = false) String keyword , @RequestParam Long userID ) {
         List<JobPostDTO> applications =  jobPostService.getFilteredJobs(keyword,userID);
         return ResponseEntity.ok(
@@ -149,7 +146,7 @@ public class WorkerDashBoardController {
         );
     }
 
-    @GetMapping("/{workerId}/active-jobs")
+    @GetMapping("/{workerId}/active-jobs")/*Load new Jobs to apply /not search*/
     public ResponseEntity<List<ActiveJobDTO>> getActiveJobs(@PathVariable Long workerId) {
         List<ActiveJobDTO> jobs = applicationService.findActiveJobs(workerId);
         return ResponseEntity.ok(jobs);
