@@ -1,5 +1,10 @@
 package lk.ijse.project.backend.service.impl;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import lk.ijse.project.backend.dto.login.LogInDTO;
 import lk.ijse.project.backend.dto.login.LoginResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
@@ -24,6 +29,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -72,6 +78,88 @@ public class UserServiceImpl implements UserService {
                 user.getStatus()
         );
     }
+
+   /* @Override
+    public String verifyGoogleToken(String idToken) {
+        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), jsonFactory)
+                .setAudience(Collections.singletonList(CLIENT_ID))
+                .build();
+
+        try {
+            GoogleIdToken googleIdToken = verifier.verify(idToken);
+            if (googleIdToken != null) {
+                String email = googleIdToken.getPayload().getEmail();
+                String name = (String) googleIdToken.getPayload().get("name");
+
+                // Check if user already exists
+                User user = (User) userRepository.findByEmail(email)
+                        .orElseGet(() -> {
+                            // If not exists → sign up (new user)
+                            User newUser = new User();
+                            newUser.setEmail(email);
+                            newUser.setUsername(name);
+                            newUser.setPassword("GOOGLE_USER"); // or leave null if not needed
+                            return userRepository.save(newUser);
+                        });
+
+                // Generate JWT for login
+                return jwtUtil.generateToken(user.getEmail());
+            } else {
+                throw new RuntimeException("Invalid ID token");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Token verification failed: " + e.getMessage(), e);
+        }
+    }*/
+   @Override
+   public User verifyGoogleToken(String idToken) {
+       JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+       GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), jsonFactory)
+               .setAudience(Collections.singletonList(CLIENT_ID))
+               .build();
+
+       try {
+           GoogleIdToken googleIdToken = verifier.verify(idToken);
+           if (googleIdToken != null) {
+               String email = googleIdToken.getPayload().getEmail();
+               String name = (String) googleIdToken.getPayload().get("name");
+
+               User user = (User) userRepository.findByEmail(email)
+                       .orElseGet(() -> {
+
+                           User newUser = User.builder()
+                                   .email(email)
+                                   .username(name)
+                                   .password("GOOGLE_USER")
+                                   .status(Status.ACTIVE)
+                                   .build();
+
+                           return userRepository.save(newUser);
+                       });
+
+               return user; // return full user object
+           } else {
+               throw new RuntimeException("Invalid ID token");
+           }
+       } catch (Exception e) {
+           throw new RuntimeException("Token verification failed: " + e.getMessage(), e);
+       }
+   }
+
+    @Override
+    public void googleLogin(Long userId, String role) {
+        User user = (User) userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setRole(Role.valueOf(role));
+        userRepository.save(user);
+    }
+
+
+    private static final String CLIENT_ID = "188745450878-mft7eiau74ispdrf3l78ndhn74acrtoq.apps.googleusercontent.com";
+
+
 
     @Override
     public String updateUser(SignUpDTO signUpDTO) {

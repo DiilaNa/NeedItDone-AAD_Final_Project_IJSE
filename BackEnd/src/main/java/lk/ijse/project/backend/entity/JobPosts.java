@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lk.ijse.project.backend.entity.enums.JobPostStatus;
 import lk.ijse.project.backend.entity.enums.JobPostVisibility;
-import lk.ijse.project.backend.entity.enums.Status;
 import lombok.*;
 
 import java.time.LocalDate;

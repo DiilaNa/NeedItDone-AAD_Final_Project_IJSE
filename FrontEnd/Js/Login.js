@@ -152,6 +152,74 @@ $("#togglePassword").on("click", function () {
     }
 });
 
+/*--------------------------- Open modal-----------------------------------*/
+$("#forgotPasswordLink").on("click", function(e){
+    e.preventDefault();
+    $("#forgotPasswordModal").modal("show");
+});
+
+
+/*------------------Google SIgnIN-------------------------------------*/
+function handleGoogleLogin(response) {
+    $.ajax({
+        url: "http://localhost:8080/auth/google-login",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ token: response.credential }),
+        success: function(res) {
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("userID", res.userId);
+
+            if (!res.role) {
+                // Show role selection modal
+                $("#roleModal").modal("show");
+
+                $("#homeownerBtn").off("click").on("click", function() {
+                    assignRole("HOMEOWNER", res.userId);
+                });
+                $("#workerBtn").off("click").on("click", function() {
+                    assignRole("WORKER", res.userId);
+                });
+
+            } else {
+                redirectByRole(res.role);
+            }
+        },
+        error: function(err) {
+            console.error(err);
+            alert("Google login failed");
+        }
+    });
+}
+function assignRole(role, userId) {
+    $.ajax({
+        url: "http://localhost:8080/auth/user/assign-role",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ role: role, userId: userId }),
+        success: function(res) {
+            $("#roleModal").modal("hide");
+            redirectByRole(role);
+        },
+        error: function(err) {
+            console.error(err);
+            alert("Failed to assign role");
+        }
+    });
+}
+function redirectByRole(role) {
+    if (role === "HOMEOWNER") {
+        localStorage.setItem("role","HOMEOWNER")
+        window.location.href = "../Pages/HomeOwnerDashBoard.html";
+    } else if (role === "WORKER") {
+        localStorage.setItem("role","WORKER")
+        window.location.href = "../Pages/WorkersDashBoard.html";
+    } else {
+        alert("Unknown role");
+    }
+}
+
+
 
 
 

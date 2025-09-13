@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
 
+    @Override
     public void sendEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
@@ -19,7 +20,7 @@ public class EmailServiceImpl implements EmailService {
         message.setText(text);
         mailSender.send(message);
     }
-
+    @Override
     public void sendJobCompletionEmail(String homeownerEmail, String workerName, String jobTitle) {
         String subject = "✅ Job Marked as Completed";
         String body = "Hello,\n\nThe worker " + workerName + " has marked the job '" + jobTitle +

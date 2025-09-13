@@ -3,6 +3,7 @@ package lk.ijse.project.backend.service;
 import lk.ijse.project.backend.dto.login.LogInDTO;
 import lk.ijse.project.backend.dto.login.LoginResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
+import lk.ijse.project.backend.entity.User;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -24,4 +25,8 @@ public interface UserService {
     String Register(SignUpDTO signUpDTO);
 
     LoginResponseDTO authenticate(LogInDTO loginDTO);
+
+    User verifyGoogleToken(String idToken);
+
+    void googleLogin(Long userId, String role);
 }

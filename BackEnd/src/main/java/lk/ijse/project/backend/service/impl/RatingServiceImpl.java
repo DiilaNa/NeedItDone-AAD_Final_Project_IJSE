@@ -50,16 +50,7 @@ public class RatingServiceImpl implements RatingService {
 
         return ratingRepository.save(rating);
     }
- /*   @Override
-    @Transactional(readOnly = true)
-    public List<RatingDTO> getRecentRatings(Long workerId) {
-        List<Rating> ratings = ratingRepository.findTop3ForWorkerOrderByDateDesc(
-                workerId, ApplicationStatus.ACCEPTED, PageRequest.of(0, 3));
 
-        return ratings.stream()
-                .map(r -> modelMapper.map(r, RatingDTO.class))
-                .toList();
-    }*/
     @Override
     @Transactional(readOnly = true)
     public List<RatingDTO> getRecentRatings(Long workerId) {

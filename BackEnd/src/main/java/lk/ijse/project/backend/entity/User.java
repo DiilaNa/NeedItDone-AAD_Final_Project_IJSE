@@ -50,4 +50,5 @@ public class User implements SuperEntity {
     @OneToMany(mappedBy = "users")
     @JsonIgnore
     private List<Applications> applications;
+
 }
