@@ -45,4 +45,8 @@ public interface ApplicationRepository extends JpaRepository<Applications,Intege
 
 
     List<Applications> findTop3ByUsers_IdOrderByDateDesc(Long workerId);
+
+    List<Applications> findByJobPosts_Id(Long id);
+
+    List<Applications> findByjobPosts_Id(Long id);
 }

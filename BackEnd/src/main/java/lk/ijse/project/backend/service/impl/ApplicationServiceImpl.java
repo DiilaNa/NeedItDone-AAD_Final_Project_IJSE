@@ -2,12 +2,12 @@ package lk.ijse.project.backend.service.impl;
 
 import lk.ijse.project.backend.dto.ActiveJobDTO;
 import lk.ijse.project.backend.dto.ApplicationDTO;
-import lk.ijse.project.backend.dto.JobPostDTO;
 import lk.ijse.project.backend.entity.Applications;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
 import lk.ijse.project.backend.entity.enums.ApplicationStatus;
 import lk.ijse.project.backend.entity.enums.JobPostStatus;
+import lk.ijse.project.backend.entity.enums.JobPostVisibility;
 import lk.ijse.project.backend.entity.enums.RatingStatus;
 import lk.ijse.project.backend.repository.ApplicationRepository;
 import lk.ijse.project.backend.repository.JobPostRepository;
@@ -17,7 +17,6 @@ import lk.ijse.project.backend.service.ApplicationService;
 import lk.ijse.project.backend.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -104,7 +103,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return Collections.emptyList();
     }
 
-    List<ApplicationDTO> dtos = new ArrayList<>();
+    List<ApplicationDTO> applicationDTOS = new ArrayList<>();
         for (Applications app : list) {
             ApplicationDTO dto = modelMapper.map(app, ApplicationDTO.class);
             dto.setJobTitle(app.getJobPosts().getJobTitle());
@@ -115,10 +114,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             dto.setStatus(app.getStatus());
             dto.setJobPostsId(app.getJobPosts().getId());
             dto.setUserId(app.getUsers().getId());
-            dtos.add(dto);
+            applicationDTOS.add(dto);
         }
 
-        return dtos;
+        return applicationDTOS;
     }
 
     @Override
@@ -140,6 +139,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return apps.stream().map(app -> {
             ApplicationDTO dto = modelMapper.map(app, ApplicationDTO.class);
+
+            JobPosts job = app.getJobPosts();
+            dto.setJobPostStatus(job.getJobPostStatus());
+            dto.setJobPostVisibility(job.getJobPostVisibility());
             dto.setJobTitle(app.getJobPosts().getJobTitle());
             dto.setWorkerName(app.getUsers().getUsername());
             dto.setSkills(app.getSkills());
@@ -208,7 +211,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                         .jobPostStatus(app.getJobPosts().getJobPostStatus())
                         .description(app.getDescription())
                         .cost(app.getAmount())
-                        .deadline(app.getJobPosts().getDeadline().toString())
+                        .deadline(app.getJobPosts().getDeadline())
                         .build())
                 .toList();
     }

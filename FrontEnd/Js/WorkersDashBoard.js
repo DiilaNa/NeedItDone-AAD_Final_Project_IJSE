@@ -233,8 +233,6 @@ function loadLatestJobs() {
             jobsContainer.empty();
 
             const activeJobs = res.data.filter(job => job.jobPostStatus !== "DELETED");
-            console.log(res.data)
-            console.log(activeJobs)
 
             if (activeJobs.length  === 0) {
                 jobsContainer.append(`  

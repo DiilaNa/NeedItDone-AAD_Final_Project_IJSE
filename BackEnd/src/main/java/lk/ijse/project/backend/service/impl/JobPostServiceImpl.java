@@ -1,9 +1,11 @@
 package lk.ijse.project.backend.service.impl;
 
 import lk.ijse.project.backend.dto.JobPostDTO;
+import lk.ijse.project.backend.entity.Applications;
 import lk.ijse.project.backend.entity.Categories;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.entity.enums.ApplicationStatus;
 import lk.ijse.project.backend.entity.enums.JobPostStatus;
 import lk.ijse.project.backend.entity.enums.JobPostVisibility;
 import lk.ijse.project.backend.repository.ApplicationRepository;
@@ -114,6 +116,7 @@ public class JobPostServiceImpl implements JobPostService {
                             ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now()) : 0;
                     dto.setDaysSincePosted((int) daysSincePosted);
                     dto.setJobPostStatus(job.getJobPostStatus());
+                    dto.setJobPostVisibility(job.getJobPostVisibility());
                     dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
                     dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
                     return dto;
@@ -249,6 +252,7 @@ public class JobPostServiceImpl implements JobPostService {
                 .toList();
     }
     @Override
+    @Transactional
     public void disableJob(Long id) {
         JobPosts job = (JobPosts) jobPostRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found"));
@@ -259,7 +263,12 @@ public class JobPostServiceImpl implements JobPostService {
             job.setJobPostVisibility(JobPostVisibility.ENABLE);
         }
         jobPostRepository.save(job);
-        sendMail(job);
+        List<Applications> apps = applicationRepository.findByJobPosts_Id(id);
+        for (Applications app : apps) {
+            app.setStatus(ApplicationStatus.CANCELLED);
+        }
+        applicationRepository.saveAll(apps);
+//        sendMail(job);
 
     }
 
@@ -307,7 +316,8 @@ public class JobPostServiceImpl implements JobPostService {
                             ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now()) : 0;
                     dto.setDaysSincePosted((int) daysSincePosted);
                     dto.setApplicationsCount(jobPostRepository.countApplicationsByJobId(job.getId()));
-
+                    dto.setJobPostVisibility(job.getJobPostVisibility());
+                    dto.setJobPostStatus(job.getJobPostStatus());
                     return dto;
                 })
                 .collect(Collectors.toList());

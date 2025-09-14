@@ -76,6 +76,9 @@ function loadRecentJobs() {
             const container = $("#recent-jobs-container");
             container.empty();
 
+
+
+
             if (!res.data || res.data === null) {
                 container.append(`
                     <div class="text-center py-4">
@@ -99,15 +102,38 @@ function loadRecentJobs() {
                     ? `Posted ${moment(job.postedDate).fromNow()}`
                     : 'Posted Today';
 
-                const jobHtml = `
+                let jobHtml = "";
+
+                if (job.jobPostVisibility === "DISABLE") {
+                    jobHtml = `
+                        <div class="job-card card mb-2 shadow-sm">
+                            <div class="card job-card disabled-job" data-id="${job.id}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${job.jobTitle}</h5>
+                                    <p class="card-text text-danger">This job has been removed by admin.</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-secondary">Disabled</span>
+                                        <small>Posted ${job.postedDate ? moment(job.postedDate).fromNow() : 'Today'}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else{
+                    jobHtml = `
                     <div class="job-card card mb-2 shadow-sm">
                          <div class="card-body">
                              <h6>${job.jobTitle}</h6>
-                             <p class="small text-muted" style="color: white !important;">${postedText}</p>
+                             <p class="small" style="color: white !important;">${postedText}</p>
                              <span class="badge ${badgeClass} status-badge">${badgeText}</span
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <small>Posted ${job.postedDate ? moment(job.postedDate).fromNow() : 'Today'}</small>
+                              </div>
                          </div>
                     </div>
                `;
+
+                }
                 container.append(jobHtml);
             });
         }
@@ -184,7 +210,7 @@ function loadRecentApplications() {
         }
     });
 }
-    /*-----------------------Side Navigation Bar--------------------------------*/
+/*-----------------------Side Navigation Bar--------------------------------*/
 function sideNav() {
     let $circleMenuBtn = $('#circleMenuBtn');
     let $hamburgerIcon = $('#hamburgerIcon');
@@ -387,40 +413,62 @@ function loadMyJobs() {
                 return;
             }
 
-            // Render active jobs
+            // Render jobs
             activeJobs.forEach(job => {
-                let badgeText = job.applicationsCount > 0
-                    ? `${job.applicationsCount} Applications`
-                    : 'In Progress';
+                let cardHtml = '';
 
-                let badgeClass = job.applicationsCount > 0
-                    ? (job.urgency === 'In Progress' ? 'bg-warning' : 'bg-success')
-                    : 'bg-warning text-white';
-
-                let postedText = job.postedDate
-                    ? `Posted ${moment(job.postedDate).fromNow()}`
-                    : 'Posted Today';
-
-                const cardHtml = `
-                    <div class="col-md-4 mb-3">
-                        <div class="card job-card" data-id="${job.id}">
-                            <div class="card-body">
-                                <h5 class="card-title">${job.jobTitle}</h5>
-                                <p class="card-text">${job.description}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="badge ${badgeClass}">
-                                        ${badgeText}
-                                    </span>
-                                    <small class="text-muted" style="color: white !important;">${postedText}</small>
-                                </div>
-                                <div class="mt-3">
-                                    <button class="btn btn-sm btn-outline-primary view-job">View</button>
-                                    <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
+                if (job.jobPostVisibility === "DISABLE") {
+                    // Job disabled by admin
+                    cardHtml = `
+                        <div class="col-md-4 mb-3">
+                            <div class="card job-card disabled-job" data-id="${job.id}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${job.jobTitle}</h5>
+                                    <p class="card-text text-danger">This job has been removed by admin.</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-secondary">Disabled</span>
+                                        <small class="text-muted">Posted ${job.postedDate ? moment(job.postedDate).fromNow() : 'Today'}</small>
+                                    </div>
+                                    <div class="mt-5"> </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                } else {
+                    // Active job
+                    let badgeText = job.applicationsCount > 0
+                        ? `${job.applicationsCount} Applications`
+                        : 'In Progress';
+
+                    let badgeClass = job.applicationsCount > 0
+                        ? (job.urgency === 'In Progress' ? 'bg-warning' : 'bg-success')
+                        : 'bg-warning text-white';
+
+                    let postedText = job.postedDate
+                        ? `Posted ${moment(job.postedDate).fromNow()}`
+                        : 'Posted Today';
+
+                    cardHtml = `
+                        <div class="col-md-4 mb-3">
+                            <div class="card job-card" data-id="${job.id}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${job.jobTitle}</h5>
+                                    <p class="card-text">${job.description}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge ${badgeClass}">
+                                            ${badgeText}
+                                        </span>
+                                        <small class="text-muted" style="color: white !important;">${postedText}</small>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button class="btn btn-sm btn-outline-primary view-job">View</button>
+                                        <button class="btn btn-sm btn-outline-secondary edit-job">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
 
                 jobsContainer.append(cardHtml);
             });
@@ -540,6 +588,10 @@ function loadApplications() {
             const container = $("#applications-container");
             container.empty();
 
+            if (res.data.jobPostVisibility === "DISABLE"){
+                    return;
+            }
+
             if (!res.data || res.data.length === 0) {
                 container.append(`<div class="d-flex justify-content-center align-items-center py-5 px-3">
                         <div class="card text-center shadow-lg p-4"
@@ -565,9 +617,7 @@ function loadApplications() {
 
                 const isCompleted = app.status === "COMPLETED";
 
-                console.log(app.ratingStatus)
                 const alreadyRated = app.ratingStatus === "ADDED";
-                console.log(alreadyRated)
 
                 const statusClass = app.status === "ACCEPTED" ? "btn-success" :
                     app.status === "REJECTED" ? "btn-danger" : "btn-warning text-dark";
