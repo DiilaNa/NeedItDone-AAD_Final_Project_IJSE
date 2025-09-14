@@ -3,6 +3,7 @@ package lk.ijse.project.backend.controller;
 import jakarta.validation.Payload;
 import lk.ijse.project.backend.dto.login.*;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.entity.enums.Status;
 import lk.ijse.project.backend.service.UserService;
 import lk.ijse.project.backend.service.impl.UserServiceImpl;
 import lk.ijse.project.backend.util.JwtUtil;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;

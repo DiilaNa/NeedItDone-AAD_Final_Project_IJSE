@@ -29,6 +29,8 @@ $(document).ready(function () {
         deleteJobPosts(jobId)
     });
 
+    checkAccountStatus();
+
 });
 /*--------------------------Check the token when login to the system------------------*/
 function checkToken() {
@@ -41,6 +43,25 @@ function checkToken() {
         window.location.href = "../Pages/LogIn.html";
         return;
     }
+}
+
+function checkAccountStatus() {
+    ajaxWithRefresh({
+        url: `http://localhost:8080/home/check-status`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function(res) {
+            console.log(res.message);
+        },
+        error: function(xhr) {
+            if(xhr.status === 403) {
+                alert(xhr.responseJSON.message); // "Account banned"
+                window.location.href = "../Pages/HomePage.html"; // redirect to homepage
+            }
+        }
+    });
 }
 /*--------------------------Load the recent 2 jobs in Dashboard----------------------*/
 function loadRecentJobs() {

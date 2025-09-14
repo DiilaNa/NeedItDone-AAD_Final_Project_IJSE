@@ -4,6 +4,7 @@ import lk.ijse.project.backend.dto.*;
 import lk.ijse.project.backend.dto.login.ApiResponseDTO;
 import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.entity.Applications;
+import lk.ijse.project.backend.entity.enums.Status;
 import lk.ijse.project.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -29,6 +31,17 @@ public class WorkerDashBoardController {
         WorkersDashBoardStatsDTO stats = dashBoardService.getStats(workerId);
         ResponseEntity.badRequest().body(stats);
         return ResponseEntity.ok(new ApiResponseDTO(200, "Worker stats loaded", stats));
+    }
+    @GetMapping("/check-status")
+    public ResponseEntity<ApiResponseDTO> checkAccountStatus(Principal principal) {
+        Status status = userService.checkUserStatus(principal.getName());
+
+        if (status == Status.ACTIVE) {
+            return ResponseEntity.ok(new ApiResponseDTO(200, "Account active", null));
+        } else { // BANNED
+            return ResponseEntity.status(403)
+                    .body(new ApiResponseDTO(403, "Account banned", null));
+        }
     }
 
     @GetMapping("/recent-applications/{workerId}")

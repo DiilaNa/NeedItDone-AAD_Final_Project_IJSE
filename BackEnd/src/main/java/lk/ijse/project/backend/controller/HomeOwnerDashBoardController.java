@@ -10,6 +10,7 @@ import lk.ijse.project.backend.dto.login.SignUpDTO;
 import lk.ijse.project.backend.entity.JobPosts;
 import lk.ijse.project.backend.entity.Rating;
 import lk.ijse.project.backend.entity.User;
+import lk.ijse.project.backend.entity.enums.Status;
 import lk.ijse.project.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -200,6 +202,17 @@ public class HomeOwnerDashBoardController {
         return ResponseEntity.ok(
                 new ApiResponseDTO(200, "Applications fetched successfully", apps)
         );
+    }
+    @GetMapping("/check-status")
+    public ResponseEntity<ApiResponseDTO> checkAccountStatus(Principal principal) {
+        Status status = userService.checkUserStatus(principal.getName());
+
+        if (status == Status.ACTIVE) {
+            return ResponseEntity.ok(new ApiResponseDTO(200, "Account active", null));
+        } else { // BANNED
+            return ResponseEntity.status(403)
+                    .body(new ApiResponseDTO(403, "Account banned", null));
+        }
     }
 
     @PutMapping("/updateApplicationStatus/{applicationId}")

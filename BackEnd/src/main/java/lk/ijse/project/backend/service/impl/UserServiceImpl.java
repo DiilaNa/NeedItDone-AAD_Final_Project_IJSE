@@ -156,6 +156,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public Status checkUserStatus(String name) {
+        return userRepository.findByUsername(name)
+                .map(User::getStatus)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+    }
+
 
     private static final String CLIENT_ID = "188745450878-mft7eiau74ispdrf3l78ndhn74acrtoq.apps.googleusercontent.com";
 
