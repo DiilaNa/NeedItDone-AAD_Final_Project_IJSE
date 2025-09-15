@@ -121,20 +121,32 @@
       </div>
 
 
-      <!-- Browse Jobs Section -->
+      <!-- SEARCH/Browse Jobs Section -->
       <div id="worker-browse-jobs-content" class="dashboard-section">
-                <h2 class="mb-4">Browse Available Jobs</h2>
-                <div class="rol mb-4">
-                  <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="Search jobs..." id="jobSearch">
-                  </div>
-                </div>
+        <h2 class="mb-4">Browse Available Jobs</h2>
 
-                <div class="row" id="jobs-container">
+        <!-- Search + Location in one row -->
+        <div class="row mb-4 g-2">
+          <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search jobs..." id="jobSearch">
+          </div>
+          <div class="col-md-4">
+            <select class="form-control" id="locationFilter">
+              <option value="">All Locations</option>
+              <option value="Colombo">Colombo</option>
+              <option value="Gampaha">Gampaha</option>
+              <option value="Kandy">Kandy</option>
+              <option value="Galle">Galle</option>
+              <option value="Horana">Horana</option>
+              <option value="Panadura">Panadura</option>
+              <option value="Kalutara">Kalutara</option>
 
+            </select>
+          </div>
+        </div>
 
-                </div>
-              </div>
+        <div class="row" id="jobs-container"></div>
+      </div>
 
       <!--Apply for Jobs Modal-->
       <div class="modal fade" style="color: rgba(255,255,255,0.92);" id="applyJobModal" tabindex="-1" aria-hidden="true">

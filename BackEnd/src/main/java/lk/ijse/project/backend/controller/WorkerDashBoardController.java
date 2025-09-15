@@ -147,7 +147,7 @@ public class WorkerDashBoardController {
 
     }
 
-    @GetMapping("/search")/*Load new Jobs to apply / SEARCH */
+  /*  @GetMapping("/search")*//*Load new Jobs to apply / SEARCH *//*
     public ResponseEntity<ApiResponseDTO> search(@RequestParam(required = false) String keyword , @RequestParam Long userID ) {
         List<JobPostDTO> applications =  jobPostService.getFilteredJobs(keyword,userID);
         return ResponseEntity.ok(
@@ -158,6 +158,22 @@ public class WorkerDashBoardController {
                 )
         );
     }
+*/
+  @GetMapping("/search")
+  public ResponseEntity<ApiResponseDTO> search(
+          @RequestParam(required = false) String keyword,
+          @RequestParam(required = false) String location,
+          @RequestParam Long userID
+  ) {
+      List<JobPostDTO> applications = jobPostService.getFilteredJobs(keyword, location, userID);
+      return ResponseEntity.ok(
+              new ApiResponseDTO(
+                      200,
+                      "Searched all Applications successfully",
+                      applications
+              )
+      );
+  }
 
     @GetMapping("/{workerId}/active-jobs")/*Load new Jobs to apply /not search*/
     public ResponseEntity<List<ActiveJobDTO>> getActiveJobs(@PathVariable Long workerId) {

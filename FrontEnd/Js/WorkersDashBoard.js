@@ -303,8 +303,91 @@ function loadLatestJobs() {
     });
 }
 
+function searchJobs() {
+    let searchValue = $("#jobSearch").val();
+    let locationValue = $("#locationFilter").val();
+    const userID = localStorage.getItem("userID");
+
+    ajaxWithRefresh({
+        url: `http://localhost:8080/worker/search?keyword=${searchValue}&location=${locationValue}&userID=${userID}`,
+        type: "GET",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        success: function (response) {
+            let jobsContainer = $("#jobs-container");
+            jobsContainer.empty();
+
+            const activeJobs = response.data.filter(job => job.jobPostStatus !== "DELETED");
+
+            if (activeJobs.length === 0) {
+                jobsContainer.append(`
+                    <div class="d-flex justify-content-center align-items-center py-5 px-3">
+                        <div class="card text-center shadow-lg p-4"
+                             style="max-width: 600px; width: 100%; border-radius: 20px;
+                             background: linear-gradient(135deg, #1305d6, #3d008e); color: #fff;">
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <i class="fas fa-clipboard-list fa-5x"></i>
+                                </div>
+                                <h3 class="card-title mb-3">No Jobs Posts Found</h3>
+                                <p class="card-text mb-4" style="font-size: 1.1rem;">
+                                    Currently, there are no job posts available. Please check back later.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                return;
+            }
+
+            activeJobs.forEach(job => {
+                let buttonHtml;
+                if (job.jobPostVisibility === "DISABLE") return;
+                if (job.applied) {
+                    buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;
+                } else {
+                    buttonHtml = `<button class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>`;
+                }
+
+                if (job.jobPostStatus === 'COMPLETED') {
+                    buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>This Job is Closed</button>`;
+                }
+
+                let card = `
+                    <div class="col-md-6 mb-3">
+                        <div class="card job-card" data-id="${job.id}">
+                            <div class="card-body">
+                                <h5 class="card-title">${job.jobTitle}</h5>
+                                <p class="card-text">${job.description}</p>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-primary">${job.categoryName}</span>
+                                    <span class="text-success fw-bold">$${job.cost}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <small><i class="fas fa-map-marker-alt"></i> ${job.location}</small>
+                                    <small><i class="fas fa-clock"></i> ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}</small>
+                                </div>
+                                ${buttonHtml}
+                            </div>
+                        </div>
+                    </div>`;
+                $("#jobs-container").append(card);
+            });
+        },
+        error: function (err) {
+            console.error("Failed to load filtered jobs", err);
+        }
+    });
+}
+
+// Trigger on typing OR changing dropdown
+$("#jobSearch").on("keyup", searchJobs);
+$("#locationFilter").on("change", searchJobs);
+
+
 /*----------------- Search Jobs with Filters -----------------*/
-$("#jobSearch").on("keyup", function () {
+/*$("#jobSearch").on("keyup", function () {
     let searchValue = $(this).val();
     const userID = localStorage.getItem("userID"); // optional if needed
 
@@ -383,7 +466,7 @@ $("#jobSearch").on("keyup", function () {
             console.error("Failed to load filtered jobs", err);
         }
     });
-});
+});*/
 
 /*--------------------------------------Load My Applications-----------------------------------------------------*/
 function loadMyApplications() {

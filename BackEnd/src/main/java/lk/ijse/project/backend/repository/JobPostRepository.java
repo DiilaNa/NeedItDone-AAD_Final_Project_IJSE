@@ -26,9 +26,14 @@ public interface JobPostRepository extends JpaRepository<JobPosts,Integer> {
 
     List<JobPosts> findByUsers(User user);
 
-    @Query("SELECT j FROM JobPosts j " +
-            "WHERE (:keyword IS NULL OR j.jobTitle LIKE %:keyword% OR j.description LIKE %:keyword%)")
-    List<JobPosts> searchJobs(@Param("keyword") String keyword);
+//    @Query("SELECT j FROM JobPosts j " +
+//            "WHERE (:keyword IS NULL OR j.jobTitle LIKE %:keyword% OR j.description LIKE %:keyword%)")
+//    List<JobPosts> searchJobs(@Param("keyword") String keyword);
+@Query("SELECT j FROM JobPosts j " +
+        "WHERE (:keyword IS NULL OR j.jobTitle LIKE %:keyword% OR j.description LIKE %:keyword%) " +
+        "AND (:location IS NULL OR j.location LIKE %:location%)")
+List<JobPosts> searchJobs(@Param("keyword") String keyword, @Param("location") String location);
+
 
     List<JobPosts> findByJobTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrLocationContainingIgnoreCase(
             String title, String description, String location
