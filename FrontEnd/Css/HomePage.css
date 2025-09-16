@@ -1,23 +1,23 @@
 :root {
     --primary-color: #3b82f6;
-    --secondary-color: #0f172a;
+    --secondary-color: #051025;
     --accent-color: #fbbf24;
     --success-color: #10b981;
     --danger-color: #ef4444;
-    --dark-color: #0f172a;
-    --darker-color: #020617;
-    --card-dark: #1e293b;
+    --dark-color: #030b22;
+    --darker-color: #09134e;
+    --card-dark: #070a0c;
     --card-darker: #334155;
     --light-color: #f1f5f9;
-    --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    --gradient-secondary: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    --gradient-accent: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    --text-dark: #f8fafc;
+    --gradient-primary: linear-gradient(135deg, #3670da 0%, #c2bbd1 100%);
+    --gradient-secondary: linear-gradient(135deg, #080d43 0%, #1d4acf 100%);
+    --gradient-accent: linear-gradient(135deg, #7171ff 0%, #533791 100%);
+    --text-dark: #ffffff;
     --text-light: #94a3b8;
     --text-muted: #64748b;
     --border-color: #334155;
     --border-light: #475569;
-    --glass-bg: rgba(15, 23, 42, 0.8);
+    --glass-bg: rgba(8, 8, 39, 0.66);
     --glass-border: rgba(148, 163, 184, 0.1);
 }
 
@@ -37,9 +37,9 @@ body {
 
 /* Dark Mode Navigation */
 .navbar {
-    background: var(--glass-bg) !important;
+    background:rgba(8, 8, 39, 0.66) !important;
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: 1px solid  rgba(148, 163, 184, 0.1);
     transition: all 0.3s ease;
     padding: 1rem 0;
 }
@@ -47,23 +47,23 @@ body {
 .navbar.scrolled {
     background: rgba(15, 23, 42, 0.95) !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid  #334155;
 }
 
 .navbar-brand {
     font-weight: 700;
     font-size: 1.5rem;
-    color: var(--primary-color) !important;
+    color:  #3b82f6 !important;
     transition: all 0.3s ease;
 }
 
 .navbar-brand:hover {
     transform: scale(1.05);
-    color: #60a5fa !important;
+    color: #0998e1 !important;
 }
 
 .nav-link {
-    color: var(--text-dark) !important;
+    color: #ffffff !important;
     font-weight: 500;
     margin: 0 0.5rem;
     padding: 0.5rem 1rem !important;
@@ -73,14 +73,14 @@ body {
 }
 
 .nav-link:hover {
-    color: var(--primary-color) !important;
+    color: #3b82f6 !important;
     background: rgba(59, 130, 246, 0.1);
     transform: translateY(-2px);
 }
 
 .navbar-toggler {
     border: none;
-    color: var(--text-dark) !important;
+    color: #ffffff !important;
 }
 
 .navbar-toggler:focus {
