@@ -7,8 +7,8 @@
 body{
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.6;
-    color: var(--text-dark);
-    background-color: var(--secondary-color);
+    color: #f1f5f9;
+    background-color:  #051025;
     overflow-x: hidden;
 }
 
@@ -256,7 +256,7 @@ body{
 .navbar-brand {
     font-weight: 700;
     font-size: 1.5rem;
-    color: #020202 !important;
+    color: rgba(56, 227, 227, 0.79) !important;
     transition: all 0.3s ease;
 }
 

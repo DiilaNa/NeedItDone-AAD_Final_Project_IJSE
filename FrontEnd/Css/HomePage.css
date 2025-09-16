@@ -10,7 +10,7 @@
     --card-darker: #334155;
     --light-color: #f1f5f9;
     --gradient-primary: linear-gradient(135deg, #3670da 0%, #c2bbd1 100%);
-    --gradient-secondary: linear-gradient(135deg, #080d43 0%, #1d4acf 100%);
+    --gradient-secondary: linear-gradient(135deg, #5d68dc 0%, rgba(30, 53, 126, 0.66) 100%);
     --gradient-accent: linear-gradient(135deg, #7171ff 0%, #533791 100%);
     --text-dark: #ffffff;
     --text-light: #94a3b8;

@@ -1,6 +1,6 @@
 $(document).ready(function() {
-   /* checkAccountStatus();
-    checkToken();*/
+    checkAccountStatus();
+    checkToken();
     sideNavBar();
     loadUsers();
     loadJobs();

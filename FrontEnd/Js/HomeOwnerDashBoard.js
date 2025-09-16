@@ -33,7 +33,7 @@ $(document).ready(function () {
 
 });
 /*--------------------------Check the token when login to the system------------------*/
-/*function checkToken() {
+function checkToken() {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
     if (!token) {
@@ -62,7 +62,7 @@ function checkAccountStatus() {
             }
         }
     });
-}*/
+}
 /*--------------------------Load the recent 2 jobs in Dashboard----------------------*/
 function loadRecentJobs() {
     const userID = localStorage.getItem("userID");
