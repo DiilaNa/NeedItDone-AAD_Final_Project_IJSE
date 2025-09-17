@@ -20,13 +20,4 @@ public class EmailServiceImpl implements EmailService {
         message.setText(text);
         mailSender.send(message);
     }
-    @Override
-    public void sendJobCompletionEmail(String homeownerEmail, String workerName, String jobTitle) {
-        String subject = "✅ Job Marked as Completed";
-        String body = "Hello,\n\nThe worker " + workerName + " has marked the job '" + jobTitle +
-                "' as completed.\n\nPlease review and confirm the completion. " +
-                "Once confirmed, you’ll be able to leave a rating.\n\nThank you for using NeedItDone!";
-
-        sendEmail(homeownerEmail, subject, body);
-    }
 }

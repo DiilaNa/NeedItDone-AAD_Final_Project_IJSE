@@ -31,7 +31,18 @@ $(document).ready(function () {
 
     checkAccountStatus();
 
+
 });
+function clearJobForm() {
+    $("#jobTitle").val("");
+    $("#jobDescription").val("");
+    $("#jobBudget").val("");
+    $("#jobLocation").val("");
+    $("#jobUrgency").val("");
+    $("#jobDeadline").val("");
+    $("#jobCategory").val("");
+}
+
 /*--------------------------Check the token when login to the system------------------*/
 function checkToken() {
     const token = localStorage.getItem("token");
@@ -44,7 +55,7 @@ function checkToken() {
         return;
     }
 }
-
+/*---------------------Check Account isActive or not--------------------------*/
 function checkAccountStatus() {
     ajaxWithRefresh({
         url: `http://localhost:8080/home/check-status`,
@@ -255,12 +266,12 @@ $("#logoutBTN").on('click',function () {
     localStorage.removeItem("role")
     window.location.href = "../Pages/HomePage.html";
 })
-/* -------------------Post a Job/Save----------------------- */
+/* -------------------Add a Job Post----------------------- */
 $("#saveJopPostForm").on('submit',function(e){
     e.preventDefault();
     saveJobPosts();
 });
-
+/*-----------------------Add a Job Post/SAVE-------------------------------------------*/
 function saveJobPosts() {
     const JobData = {
         jobTitle : $("#jobTitle").val(),
@@ -298,6 +309,7 @@ function saveJobPosts() {
                 loadMyJobs();
                 loadWorkerStats();
             });
+            clearJobForm();
         },
         error: function (){
             Swal.fire({
@@ -924,30 +936,3 @@ function ajaxWithRefresh(options) {
 
     $.ajax(options);
 }
-
-/*    Swal.fire({
-        title: 'Saved!',
-        text: 'Your Post have been saved successfully.',
-        icon: 'success',
-        background: '#0a0f3d',
-        color: '#ffffff',
-        confirmButtonColor: '#667eea',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: true
-    }).then(() => {
-    });
-
-    Swal.fire({
-        background: "#1e1e1e",   // dark background
-        color: "#ffffff",
-        position: "center",
-        icon: "error",
-        title: "Failed to Save",
-        showConfirmButton: false,
-        timer: 1500
-    });*/
-
-
-
-

@@ -56,6 +56,16 @@ public class UserServiceImpl implements UserService {
                 .status(Status.ACTIVE)
                 .build();
         userRepository.save(user);
+
+        emailService.sendEmail(
+                user.getEmail(),
+                "Welcome to the System",
+                "Hello " + user.getUsername() + ",\n\n" +
+                        "Your account has been created successfully. " +
+                        "You can now sign in and start using the system.\n\n" +
+                        "Thank you!"
+        );
+
         return "User Registered Successfully";
     }
     @Override
@@ -79,39 +89,6 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-   /* @Override
-    public String verifyGoogleToken(String idToken) {
-        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), jsonFactory)
-                .setAudience(Collections.singletonList(CLIENT_ID))
-                .build();
-
-        try {
-            GoogleIdToken googleIdToken = verifier.verify(idToken);
-            if (googleIdToken != null) {
-                String email = googleIdToken.getPayload().getEmail();
-                String name = (String) googleIdToken.getPayload().get("name");
-
-                // Check if user already exists
-                User user = (User) userRepository.findByEmail(email)
-                        .orElseGet(() -> {
-                            // If not exists → sign up (new user)
-                            User newUser = new User();
-                            newUser.setEmail(email);
-                            newUser.setUsername(name);
-                            newUser.setPassword("GOOGLE_USER"); // or leave null if not needed
-                            return userRepository.save(newUser);
-                        });
-
-                // Generate JWT for login
-                return jwtUtil.generateToken(user.getEmail());
-            } else {
-                throw new RuntimeException("Invalid ID token");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Token verification failed: " + e.getMessage(), e);
-        }
-    }*/
    @Override
    public User verifyGoogleToken(String idToken) {
        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -147,6 +124,8 @@ public class UserServiceImpl implements UserService {
        }
    }
 
+    private static final String CLIENT_ID = "188745450878-mft7eiau74ispdrf3l78ndhn74acrtoq.apps.googleusercontent.com";
+
     @Override
     public void googleLogin(Long userId, String role) {
         User user = (User) userRepository.findById(userId)
@@ -164,8 +143,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
-    private static final String CLIENT_ID = "188745450878-mft7eiau74ispdrf3l78ndhn74acrtoq.apps.googleusercontent.com";
 
 
 

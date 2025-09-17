@@ -58,12 +58,24 @@ function submitSignUp(selectedRole) {
         role: selectedRole
     };
 
+    Swal.fire({
+        title: 'Creating Account',
+        text: 'Please wait while we set up your account and send a confirmation email...',
+        allowOutsideClick: false,
+        background: '#1e1e1e',
+        color: '#ffffff',
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
     $.ajax({
         url: 'http://localhost:8080/auth/register',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(data),
         success: function (response) {
+            Swal.close();
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
@@ -77,6 +89,7 @@ function submitSignUp(selectedRole) {
             });
         },
         error: function (xhr) {
+            Swal.close();
             Swal.fire({
                 icon: 'error',
                 title: 'Registration Failed',

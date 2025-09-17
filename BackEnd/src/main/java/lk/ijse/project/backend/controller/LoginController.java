@@ -47,7 +47,7 @@ public class LoginController {
 
         return ResponseEntity.ok(new TokenRefreshResponse(newAccessToken, refreshToken));
     }
-
+/*
     @PostMapping("/google-login")
     public Map<String, Object> googleLogin(@RequestBody Map<String, String> request) {
         String idToken = request.get("token");
@@ -62,6 +62,8 @@ public class LoginController {
 
         return response;
     }
+
+
     @PostMapping("/user/assign-role")
     public ResponseEntity<ApiResponseDTO> assignRole(@RequestBody Map<String, String> body) {
         Long userId = Long.parseLong(body.get("userId"));
@@ -73,7 +75,7 @@ public class LoginController {
                 200,
                 "message", "Role assigned successfully"));
 
-    }
+    }*/
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponseDTO> login(@RequestBody LogInDTO loginDTO) {

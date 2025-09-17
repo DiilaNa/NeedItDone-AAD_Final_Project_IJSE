@@ -160,7 +160,7 @@ $("#forgotPasswordLink").on("click", function(e){
 
 
 /*------------------Google SIgnIN-------------------------------------*/
-function handleGoogleLogin(response) {
+/*function handleGoogleLogin(response) {
     $.ajax({
         url: "http://localhost:8080/auth/google-login",
         method: "POST",
@@ -217,7 +217,7 @@ function redirectByRole(role) {
     } else {
         alert("Unknown role");
     }
-}
+}*/
 
 
 
