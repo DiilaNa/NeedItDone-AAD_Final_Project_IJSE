@@ -9,7 +9,7 @@
     <style>:root {
         --primary-color: #8b5cf6; /* Vibrant purple */
         --secondary-color: #0f172a;
-        --accent-color: #f59e0b; /* Warm amber */
+        --accent-color: #7b08c8; /* Warm amber */
         --success-color: #22c55e;
         --danger-color: #ef4444;
         --dark-color: #020617;
@@ -19,7 +19,7 @@
         --light-color: #f8fafc;
         --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #a5b4fc 100%); /* Purple gradient */
         --gradient-secondary: linear-gradient(135deg, #4f46e5 0%, rgba(79, 70, 229, 0.5) 100%);
-        --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); /* Amber gradient */
+        --gradient-accent: linear-gradient(135deg, #7b08c8 0%, #4a0077 100%); /* Amber gradient */
         --text-dark: #ffffff;
         --text-light: #d1d5db;
         --text-muted: #9ca3af;
@@ -38,16 +38,16 @@
     body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         line-height: 1.6;
-        color: var(--text-dark);
-        background-color: var(--dark-color);
+        color:#ffffff;
+        background-color:  #020617;
         overflow-x: hidden;
     }
 
     /* Navigation */
     .navbar {
-        background: var(--glass-bg) !important;
+        background:  rgba(15, 23, 42, 0.7) !important;
         backdrop-filter: blur(16px);
-        border-bottom: 1px solid var(--glass-border);
+        border-bottom: 1px solid  rgba(209, 213, 219, 0.15);
         padding: 1rem 0;
         transition: all 0.3s ease-in-out;
     }
@@ -60,17 +60,17 @@
     .navbar-brand {
         font-weight: 800;
         font-size: 1.8rem;
-        color: var(--primary-color) !important;
+        color:#8b5cf6 !important;
         transition: all 0.2s ease;
     }
 
     .navbar-brand:hover {
-        color: #a78bfa !important;
+        color: #ffffff !important;
         transform: scale(1.03);
     }
 
     .nav-link {
-        color: var(--text-light) !important;
+        color:#d1d5db !important;
         font-weight: 600;
         padding: 0.6rem 1.2rem !important;
         border-radius: 12px;
@@ -80,7 +80,7 @@
     }
 
     .nav-link:hover {
-        color: var(--primary-color) !important;
+        color: #8b5cf6 !important;
         background: rgba(139, 92, 246, 0.1);
         transform: translateY(-1px);
     }
@@ -92,7 +92,7 @@
         left: 0;
         width: 100%;
         height: 2px;
-        background: var(--primary-color);
+        background: #8b5cf6;
         transform: scaleX(0);
         transform-origin: right;
         transition: transform 0.3s ease;
@@ -105,7 +105,7 @@
 
     .navbar-toggler {
         border: none;
-        color: var(--text-light) !important;
+        color: #d1d5db !important;
         transition: transform 0.2s ease;
     }
 
@@ -194,13 +194,13 @@
     .btn-primary-modern {
         background: var(--gradient-accent); /* Uses amber gradient */
         color: var(--text-dark);
-        box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+        box-shadow: 0 8px 24px rgba(11, 112, 245, 0.3);
     }
 
     .btn-primary-modern:hover {
         transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(245, 158, 11, 0.5);
-        background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        box-shadow: 0 12px 32px rgba(11, 66, 245, 0.5);
+        background: linear-gradient(135deg, #7b08c8 0%, #7b08c8 100%);
     }
 
     .btn-outline-modern {
@@ -310,7 +310,7 @@
     }
 
     .service-icon.electrical {
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        background: linear-gradient(135deg, #7b08c8 0%, #3e0067 100%);
     }
 
     .service-icon.construction {

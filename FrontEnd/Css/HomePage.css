@@ -1,7 +1,7 @@
 :root {
     --primary-color: #3b82f6;
     --secondary-color: #051025;
-    --accent-color: #fbbf24;
+    --accent-color: #7b08c8;
     --success-color: #10b981;
     --danger-color: #ef4444;
     --dark-color: #030b22;
@@ -283,7 +283,7 @@ body {
 }
 
 .service-icon.electrical {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    background: linear-gradient(135deg, #7b08c8 0%, #45006e 100%);
 }
 
 .service-icon.construction {
