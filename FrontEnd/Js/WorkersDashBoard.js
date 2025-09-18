@@ -259,6 +259,8 @@ function loadLatestJobs() {
                 // build button depending on applied flag
                 let buttonHtml;
                 if (job.jobPostVisibility === "DISABLE") return;
+                if (job.jobPostStatus === "COMPLETED") return;
+
                 if (job.applied) {
                     buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;
                 } else {
@@ -296,6 +298,27 @@ function loadLatestJobs() {
                 `;
                 jobsContainer.append(cardHtml);
             });
+
+            if ($("#jobs-container").children().length === 0) {
+                $(jobsContainer).append(
+                    `  
+   <div class="d-flex justify-content-center align-items-center py-5 px-3">
+            <div class="card text-center shadow-lg p-4" 
+                 style="max-width: 600px; width: 100%; border-radius: 20px; background: linear-gradient(135deg, #350091, #1f22f0); color: #fff;">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <i class="fas fa-clipboard-list fa-5x"></i>
+                    </div>
+                    <h3 class="card-title mb-3">No Jobs Posts Yet</h3>
+                    <p class="card-text mb-4" style="font-size: 1.1rem;">
+                        Currently, there are no job posts available. Please check back later.
+                    </p>
+                </div>
+            </div>
+        </div>
+                   
+                `);
+            }
         },
         error: function (err) {
             console.error("Failed to load latest jobs", err);
@@ -344,6 +367,8 @@ function searchJobs() {
             activeJobs.forEach(job => {
                 let buttonHtml;
                 if (job.jobPostVisibility === "DISABLE") return;
+                if (job.jobPostStatus === "COMPLETED") return;
+
                 if (job.applied) {
                     buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;
                 } else {
@@ -374,6 +399,27 @@ function searchJobs() {
                     </div>`;
                 $("#jobs-container").append(card);
             });
+
+            if ($("#jobs-container").children().length === 0) {
+                $(jobsContainer).append(
+                    `  
+   <div class="d-flex justify-content-center align-items-center py-5 px-3">
+            <div class="card text-center shadow-lg p-4" 
+                 style="max-width: 600px; width: 100%; border-radius: 20px; background: linear-gradient(135deg, #350091, #1f22f0); color: #fff;">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <i class="fas fa-clipboard-list fa-5x"></i>
+                    </div>
+                    <h3 class="card-title mb-3">No Jobs Posts Yet</h3>
+                    <p class="card-text mb-4" style="font-size: 1.1rem;">
+                        Currently, there are no job posts available. Please check back later.
+                    </p>
+                </div>
+            </div>
+        </div>
+                   
+                `);
+            }
         },
         error: function (err) {
             console.error("Failed to load filtered jobs", err);
@@ -385,88 +431,6 @@ function searchJobs() {
 $("#jobSearch").on("keyup", searchJobs);
 $("#locationFilter").on("change", searchJobs);
 
-
-/*----------------- Search Jobs with Filters -----------------*/
-/*$("#jobSearch").on("keyup", function () {
-    let searchValue = $(this).val();
-    const userID = localStorage.getItem("userID"); // optional if needed
-
-    ajaxWithRefresh({
-        url: `http://localhost:8080/worker/search?keyword=${searchValue}&userID=${userID}`, // make sure backend accepts userId
-        type: "GET",
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("token") // <-- must be correct
-        },
-        data: {search: searchValue},
-        success: function (response) {
-           let jobsContainer = $("#jobs-container")
-
-          jobsContainer.empty();
-
-            const activeJobs = response.data.filter(job => job.jobPostStatus !== "DELETED");
-            if (activeJobs.length  === 0) {
-                jobsContainer.append(`  
-   <div class="d-flex justify-content-center align-items-center py-5 px-3">
-            <div class="card text-center shadow-lg p-4" 
-                 style="max-width: 600px; width: 100%; border-radius: 20px; background: linear-gradient(135deg, #1305d6, #3d008e); color: #fff;">
-                <div class="card-body">
-                    <div class="mb-4">
-                        <i class="fas fa-clipboard-list fa-5x"></i>
-                    </div>
-                    <h3 class="card-title mb-3">No Jobs Posts Found</h3>
-                    <p class="card-text mb-4" style="font-size: 1.1rem;">
-                        Currently, there are no job posts available. Please check back later.
-                    </p>
-                </div>
-            </div>
-        </div>
-                   
-                `)
-                return;
-            }
-
-
-            activeJobs.forEach(job => {
-                let buttonHtml;
-                if (job.jobPostVisibility === "DISABLE") return;
-                if (job.applied) {
-                    buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>APPLIED</button>`;
-                } else {
-                    buttonHtml = `<button class="btn btn-custom btn-sm w-100 apply-job">Apply Now</button>`;
-                }
-
-                if (job.jobPostStatus === 'COMPLETED') {
-                    buttonHtml = `<button class="btn btn-secondary btn-sm w-100 apply-job" disabled>This Job is Closed</button>`;
-                }
-
-                let card = `
-                    <div class="col-md-6 mb-3">
-                        <div class="card job-card" data-id="${job.id}">
-                            <div class="card-body">
-                                <h5 class="card-title">${job.jobTitle}</h5>
-                                <p class="card-text">${job.description}</p>
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="badge bg-primary">${job.categoryName}</span>
-                                    <span class="text-success fw-bold">$${job.cost}</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <small><i class="fas fa-map-marker-alt"></i> ${job.location}</small>
-                                    <small><i class="fas fa-clock"></i> ${job.daysSincePosted > 0 ? 'Posted ' + job.daysSincePosted + ' days ago' : 'Posted Today'}</small>
-                                </div>
-                                ${buttonHtml} <!-- use buttonHtml here -->
-                            </div>
-                        </div>
-                    </div>`;
-
-                $("#jobs-container").append(card);
-            });
-            loadLatestJobs()
-        },
-        error: function (err) {
-            console.error("Failed to load filtered jobs", err);
-        }
-    });
-});*/
 
 /*--------------------------------------Load My Applications-----------------------------------------------------*/
 function loadMyApplications() {
@@ -658,7 +622,7 @@ function renderJobs(jobs) {
                   </div>
                 </div>
                  <button class="btn btn-success btn-sm" 
-                        onclick="markComplete(${job.applicationId}, ${job.jobPostId})">
+                        onclick="markComplete(${job.applicationId}, ${job.jobPostId , this})">
                             Mark Complete
             </button>
               </div>
@@ -669,24 +633,31 @@ function renderJobs(jobs) {
 }
 
 /*----------------------Mark Active Job as Complete----------------------------*/
-function markComplete(applicationID) {
-    const userID = localStorage.getItem("userID")
-    const token = localStorage.getItem("token")
-    const $btn = $(this);
-    $btn.prop("disabled", true).text("Processing...");
+function markComplete(applicationID, btnElement) {
+    const userID = localStorage.getItem("userID");
+    const token = localStorage.getItem("token");
+    const $btn = $(btnElement);
 
-   ajaxWithRefresh({
+    if ($btn.data("processing")) {
+        return;
+    }
+
+    $btn.data("processing", true);
+    $btn.prop("disabled", true).html(`<span class="spinner-border spinner-border-sm"></span> Processing...`);
+
+    ajaxWithRefresh({
         url: `http://localhost:8080/worker/mark-complete?applicationId=${applicationID}&userId=${userID}`,
         method: "PUT",
         headers: {
             "Authorization": "Bearer " + token
         },
         contentType: "application/json",
-        success: function() {
-            $btn.prop("disabled", false).text("Marked");
+        success: function () {
+            $btn.html("✅ Marked");
+
             Swal.fire({
                 title: 'Marked!',
-                text: 'Marked Job post successfully.',
+                text: 'Job post marked as completed successfully.',
                 icon: 'success',
                 background: '#0a0f3d',
                 color: '#ffffff',
@@ -697,16 +668,18 @@ function markComplete(applicationID) {
             }).then(() => {
                 loadActiveJobs();
                 loadMyApplications();
-                loadWorkerStats()
-                loadRecentJobs()
-                loadDashboardStats()
-                loadWorkerRecentApplications()
+                loadWorkerStats();
+                loadRecentJobs();
+                loadDashboardStats();
+                loadWorkerRecentApplications();
             });
         },
-        error: function(xhr) {
+        error: function (xhr) {
+            $btn.prop("disabled", false).text("Mark Complete");
+            $btn.data("processing", false);
 
             Swal.fire({
-                background: "#1e1e1e",   // dark background
+                background: "#1e1e1e",
                 color: "#ffffff",
                 position: "center",
                 icon: "error",
@@ -718,6 +691,7 @@ function markComplete(applicationID) {
         }
     });
 }
+
 
 /*----------------------Update Worker Profile details----------------------------*/
 $("#updateUserForm").on('submit', function(e) {

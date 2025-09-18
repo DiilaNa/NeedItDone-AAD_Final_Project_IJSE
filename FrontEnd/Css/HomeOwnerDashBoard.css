@@ -443,23 +443,30 @@ body {
 
 /* Modern form controls */
 .form-control, .form-select {
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: #ffffff;
+    background: rgba(20, 20, 40, 0.8) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
     padding: 12px 18px;
     font-size: 0.95rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(10px);
 }
 
-.form-control:focus, .form-select:focus {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: #8b5cf6;
-    box-shadow:
-            0 0 0 0.2rem rgba(139, 92, 246, 0.25),
-            0 8px 25px rgba(139, 92, 246, 0.15);
+
+/* Ensure dropdown options are readable */
+.form-select option {
+    background: #0d0d1a;
     color: #ffffff;
+}
+
+
+
+.form-control:focus, .form-select:focus {
+    background: rgba(30, 30, 60, 0.9) !important;
+    color: #ffffff !important;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
     transform: translateY(-1px);
 }
 
@@ -750,4 +757,18 @@ body {
     .demo-content h1 {
         font-size: 2rem;
     }
+}
+
+/*-------------------AUTO FILL Suggestions BG Color-------------------------*/
+/* Chrome, Safari, Edge autofill fix */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px linear-gradient(135deg, #010122, #000000) inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* For Firefox */
+input:autofill {
+    box-shadow: 0 0 0px 1000px linear-gradient(135deg, #010122, #000000) inset !important;
+    -webkit-text-fill-color: #fff !important;
 }

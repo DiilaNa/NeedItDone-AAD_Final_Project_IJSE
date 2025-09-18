@@ -454,10 +454,10 @@ body {
 
 /* Modern form controls */
 .form-control, .form-select {
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: #ffffff;
+    background: rgba(20, 20, 40, 0.8) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
     padding: 12px 18px;
     font-size: 0.95rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -465,17 +465,20 @@ body {
 }
 
 .form-control:focus, .form-select:focus {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(30, 30, 60, 0.9) !important;
+    color: #ffffff !important;
     border-color: #8b5cf6;
-    box-shadow:
-            0 0 0 0.2rem rgba(139, 92, 246, 0.25),
-            0 8px 25px rgba(139, 92, 246, 0.15);
-    color: #ffffff;
+    box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
     transform: translateY(-1px);
 }
 
 .form-control::placeholder {
     color: rgba(255, 255, 255, 0.5);
+}
+
+.form-select option {
+    background: #0d0d1a;
+    color: #ffffff;
 }
 
 .form-label {
@@ -569,7 +572,7 @@ body {
     left: 100%;
 }
 
-/* Modern table styling */
+/* Modern tables */
 .table-responsive {
     background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(20px);
@@ -579,7 +582,6 @@ body {
     box-shadow:
             0 8px 32px rgba(31, 38, 135, 0.37),
             0 2px 16px rgba(0, 0, 0, 0.2);
-    margin-bottom: 2rem;
 }
 
 .table {
@@ -591,13 +593,8 @@ body {
     margin-bottom: 0;
 }
 
-.table thead {
-    background: linear-gradient(135deg, #0b4da0, #1a5bc2);
-    color: #fff;
-}
-
 .table th {
-    background: transparent;
+    background: linear-gradient(135deg, #1a1f58, #2d1b69);
     color: #ffffff;
     font-weight: 600;
     text-transform: uppercase;
@@ -607,6 +604,10 @@ body {
     border: none;
     position: relative;
     overflow: hidden;
+}
+
+.table td {
+    color: white;
 }
 
 .table th::before {
@@ -624,17 +625,8 @@ body {
     left: 100%;
 }
 
-.table tbody tr:nth-child(odd) {
-    background: rgba(13, 91, 207, 0.3);
-    color: #fff;
-}
-
-.table tbody tr:nth-child(even) {
-    background: rgba(11, 77, 160, 0.3);
-    color: #fff;
-}
-
 .table td {
+    background: rgba(10, 15, 61, 0.3);
     border: none;
     padding: 16px 20px;
     vertical-align: middle;
@@ -644,7 +636,7 @@ body {
 
 .table tbody tr {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
+    cursor: default;
     position: relative;
 }
 
@@ -661,7 +653,7 @@ body {
 }
 
 .table tbody tr:hover {
-    background: rgba(8, 63, 122, 0.5) !important;
+    background: rgba(74, 89, 255, 0.4);
     transform: translateX(4px);
     box-shadow:
             0 4px 20px rgba(139, 92, 246, 0.15),
@@ -676,14 +668,36 @@ body {
     background: transparent;
 }
 
-/* Badge styling */
-.table tbody tr td span.badge {
-    font-size: 0.85rem;
-    padding: 6px 12px;
+/* Modern buttons with better styling */
+.table tbody td .btn {
+    font-size: 0.8rem;
+    padding: 6px 16px;
     border-radius: 20px;
     font-weight: 500;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+.table tbody td .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.table tbody td .btn:active::before {
+    width: 100px;
+    height: 100px;
 }
 
 /* No data row styling */
@@ -754,7 +768,7 @@ body {
 /* Responsive enhancements */
 @media (min-width: 992px) {
     #worker-dashboard-content {
-        margin-top: 45px !important;
+        margin-top: 70px !important;
     }
 
     .navbar {

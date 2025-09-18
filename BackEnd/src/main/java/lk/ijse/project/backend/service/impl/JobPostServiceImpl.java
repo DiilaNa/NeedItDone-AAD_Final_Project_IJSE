@@ -222,35 +222,6 @@ public class JobPostServiceImpl implements JobPostService {
             .collect(Collectors.toList());
     }
 
-  /*  @Override
-   public List<JobPostDTO> getFilteredJobs(String keyword, Long userId) {
-        List<JobPosts> jobs = jobPostRepository.searchJobs(
-                (keyword == null || keyword.isEmpty()) ? null : keyword
-        );
-
-        return jobs.stream()
-                .map(job -> {
-                    JobPostDTO dto = modelMapper.map(job, JobPostDTO.class);
-
-                    boolean applied = applicationRepository.existsByUsers_IdAndJobPosts_Id(userId, job.getId());
-                    dto.setApplied(applied);
-                    dto.setJobPostVisibility(job.getJobPostVisibility());
-                    dto.setCategoryName(job.getCategories() != null ? job.getCategories().getName() : null);
-                    dto.setJobPostStatus(job.getJobPostStatus());
-
-                    if (job.getPostedDate() != null) {
-                        long days = ChronoUnit.DAYS.between(job.getPostedDate(), LocalDate.now());
-                        dto.setDaysSincePosted((int) days);
-                    } else {
-                        dto.setDaysSincePosted(0);
-                    }
-
-                    dto.setApplicationsCount(job.getApplications() != null ? job.getApplications().size() : 0);
-
-                    return dto;
-                })
-                .toList();
-    }*/
   @Override
   public List<JobPostDTO> getFilteredJobs(String keyword, String location, Long userId) {
       List<JobPosts> jobs = jobPostRepository.searchJobs(

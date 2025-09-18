@@ -231,10 +231,15 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         jobPostRepository.save(jobPost);
 
-        // ✅ Send mail to homeowner
         String homeownerEmail = jobPost.getUsers().getEmail();
         String jobTitle = application.getJobTitle();
-//        emailService.sendJobCompletionEmail(homeownerEmail, workerName, jobTitle);
+
+        String subject = "Job Completed: " + jobTitle;
+        String body = "Hello " + jobPost.getUsers().getUsername() + ",\n\n" +
+                "The job you posted (\"" + jobTitle + "\") has been marked as COMPLETED by worker " + workerName + ".\n\n" +
+                "Please review and confirm completion in the system.\n\n" +
+                "Thank you,\nYour Team";
+        emailService.sendEmail(homeownerEmail, subject, body);
 
         return applicationRepository.save(application);
     }

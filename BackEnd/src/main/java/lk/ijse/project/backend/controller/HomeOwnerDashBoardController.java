@@ -157,12 +157,6 @@ public class HomeOwnerDashBoardController {
         );
     }
 
-    @PutMapping("/deleteJob/{id}")
-    public ResponseEntity<ApiResponseDTO> deleteJob(@PathVariable Long id) {
-        jobPostService.deleteJobPostById(id);
-        return ResponseEntity.ok(new ApiResponseDTO(200, "Job deleted successfully", "ok"));
-    }
-
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponseDTO> getJobById(@PathVariable Long id) {
