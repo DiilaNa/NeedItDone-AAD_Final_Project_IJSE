@@ -21,18 +21,18 @@ The primary goal of **NeedItDone** is to:
 ## 📸 Screenshots
 
 ### 🔑 Login Page
-![Login Page](../FrontEnd/Assets/login.png)
+![Login Page](FrontEnd/Assets/login.png)
 ### 🔑 Home Page
-![Home Page](../FrontEnd/Assets/Homepage.png)
+![Home Page](FrontEnd/Assets/Homepage.png)
 
 ### 🏠 Homeowner Dashboard
-![Homeowner Dashboard](../FrontEnd/Assets/HomeOwnerDash.png)
+![Homeowner Dashboard](FrontEnd/Assets/HomeOwnerDash.png)
 
 ### 👷 Worker Dashboard
-![Worker Dashboard](../FrontEnd/Assets/Worler.png)
+![Worker Dashboard](FrontEnd/Assets/Worler.png)
 
 ### 📋 Admin Dashboard
-![Job Posting](../FrontEnd/Assets/Admin.png)
+![Job Posting](FrontEnd/Assets/Admin.png)
 ---
 
 ## ⚙️ Setup Instructions
