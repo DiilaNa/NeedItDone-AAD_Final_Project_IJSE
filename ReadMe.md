@@ -84,7 +84,9 @@ Visit the frontend in your browser. Register/login to explore Homeowner, Worker,
 
 ## 🎥 Demo Video
 
-📌 Watch the Demo on YouTube : (Upload your demo video and replace the link above. Use a title like: "NeedItDone – AAD Final Project (IJSE)")
+ "NeedItDone – AAD Final Project (IJSE)" : https://youtu.be/XfpZwwc_PHU 
+📌 Watch the Demo on YouTube
+
 
 ## 🛠️ Tech Stack
 
