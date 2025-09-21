@@ -1,6 +1,5 @@
 package lk.ijse.project.backend.config;
 
-import lk.ijse.project.backend.util.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

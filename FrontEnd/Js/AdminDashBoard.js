@@ -141,14 +141,6 @@ function loadUsers(page = 0) {
                         </tr>
                     `);
                 });
-
-                /* <td>
-                              <span class="badge ${user.active ? 'bg-success' : 'bg-danger'}">
-                                  ${user.active ? 'Active' : 'Inactive'}
-                              </span>
-                          </td>*/
-
-                // pagination
                 renderPagination(res.data.totalPages, page);
             }
         },
@@ -199,12 +191,30 @@ $(document).on("click", ".disable-btn", function () {
             Authorization: "Bearer " + localStorage.getItem("token")
         },
         success: function (res) {
-            alert(res.message || "User disabled successfully!");
-            loadUsers(currentPage);
+            Swal.fire({
+                title: 'Success',
+                text: '',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            }).then(() => {
+                loadUsers(currentPage);
+            });
         },
         error: function (err) {
-            console.error("Failed to disable user", err);
-            alert("Error disabling user");
+            Swal.fire({
+                background: "#1e1e1e",
+                color: "#ffffff",
+                position: "center",
+                icon: "error",
+                title: "Error Job Disable !!",
+                showConfirmButton: false,
+                timer: 1500
+            });
         },
         complete: function () {
             btn.prop("disabled", false).text("Disable / Enable User");
@@ -251,7 +261,15 @@ $("#userSearch").on("keyup", function () {
             $("#paginationControls").empty();
         },
         error: function (err) {
-            console.error("User search failed", err);
+            Swal.fire({
+                background: "#1e1e1e",
+                color: "#ffffff",
+                position: "center",
+                icon: "error",
+                title: "Failed !!",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     });
 });
@@ -295,8 +313,16 @@ function loadJobs(page = 0) {
                 renderJobPagination(res.data.totalPages, page);
             }
         },
-        error: function (err) {
-            console.error("Failed to load jobs", err);
+        error: function () {
+            Swal.fire({
+                background: "#1e1e1e",
+                color: "#ffffff",
+                position: "center",
+                icon: "error",
+                title: "Failed !!",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     });
 }
@@ -332,12 +358,30 @@ $(document).on("click", ".disable-job-btn", function () {
             Authorization: "Bearer " + localStorage.getItem("token")
         },
         success: function (res) {
-            alert(res.message || "Job disabled successfully!");
-            loadJobs(currentJobPage);
+            Swal.fire({
+                title: 'Success',
+                text: '',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            }).then(() => {
+                loadJobs(currentJobPage);
+            });
         },
-        error: function (err) {
-            console.error("Failed to disable job", err);
-            alert("Error disabling job");
+        error: function () {
+            Swal.fire({
+                background: "#1e1e1e",
+                color: "#ffffff",
+                position: "center",
+                icon: "error",
+                title: "Failed !!",
+                showConfirmButton: false,
+                timer: 1500
+            });
         },
         complete: function () {
                 btn.prop("disabled", false).text("Disable / Enable JobPost");
@@ -386,7 +430,15 @@ $("#jobSearchAdmin").on("keyup", function () {
             $("#jobPaginationControls").empty();
         },
         error: function (err) {
-            console.error("Job search failed", err);
+            Swal.fire({
+                background: "#1e1e1e",
+                color: "#ffffff",
+                position: "center",
+                icon: "error",
+                title: "Job search Failed !!",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     });
 });
