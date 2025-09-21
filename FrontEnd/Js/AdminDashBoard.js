@@ -58,8 +58,6 @@ function loadAdminDashboardStats() {
     });
 }
 
-
-
 /*----------------------SIDE NAV BAR-------------------------------------------*/
 
 function sideNavBar() {
@@ -122,9 +120,34 @@ function loadUsers(page = 0) {
         },
         success: function (res) {
             if (res.status === 200) {
-                const users = res.data.content;
+              /*  const users = res.data.content;*/
                 const tbody = $("#userTableBody");
+                console.log(res.data)
+                console.log(res.data.role)
+                let users = res.data.content;
+
+                // Filter out ADMIN users
+                users = users.filter(user => user.role !== "ADMIN");
                 tbody.empty();
+                if (!users || users.length === 0) {
+                    tbody.append(`
+                    <tr class="text-center">
+                        <td colspan="5" style="
+                            padding: 50px 0;
+                            background: rgba(10, 15, 61, 0.3);
+                            border-radius: 12px;
+                            color: rgba(255, 255, 255, 0.6);
+                            font-weight: 600;
+                            font-size: 1rem;
+                        ">
+                            <i class="fas fa-user-slash fa-2x mb-2" style="display:block; margin-bottom:10px;"></i>
+                            No users found"
+                        </td>
+                    </tr>
+                `);
+                    $("#paginationControls").empty();
+                    return;
+                }
                 users.forEach(user => {
                     tbody.append(`
                         <tr>
@@ -141,6 +164,7 @@ function loadUsers(page = 0) {
                         </tr>
                     `);
                 });
+                // pagination
                 renderPagination(res.data.totalPages, page);
             }
         },
@@ -206,15 +230,8 @@ $(document).on("click", ".disable-btn", function () {
             });
         },
         error: function (err) {
-            Swal.fire({
-                background: "#1e1e1e",
-                color: "#ffffff",
-                position: "center",
-                icon: "error",
-                title: "Error Job Disable !!",
-                showConfirmButton: false,
-                timer: 1500
-            });
+            console.error("Failed to disable user", err);
+            alert("Error disabling user");
         },
         complete: function () {
             btn.prop("disabled", false).text("Disable / Enable User");
@@ -222,7 +239,7 @@ $(document).on("click", ".disable-btn", function () {
     });
 });
 
-/*--------------------------Search By Keyword------------------------------------------*/
+/*--------------------------Search By Keyword USER------------------------------------------*/
 $("#userSearch").on("keyup", function () {
     const keyword = $(this).val().trim();
 
@@ -238,9 +255,31 @@ $("#userSearch").on("keyup", function () {
             Authorization: "Bearer " + localStorage.getItem("token")
         },
         success: function (res) {
-            const users = res.data;
+            let users = res.data;
+            users = users.filter(user => user.role !== "ADMIN");
+
             const tbody = $("#userTableBody");
             tbody.empty();
+
+            if (!users || users.length === 0) {
+                tbody.append(`
+                    <tr class="text-center">
+                        <td colspan="5" style="
+                            padding: 50px 0;
+                            background: rgba(10, 15, 61, 0.3);
+                            border-radius: 12px;
+                            color: rgba(255, 255, 255, 0.6);
+                            font-weight: 600;
+                            font-size: 1rem;
+                        ">
+                            <i class="fas fa-user-slash fa-2x mb-2" style="display:block; margin-bottom:10px;"></i>
+                            No users found as "<strong>${keyword}</strong>"
+                        </td>
+                    </tr>
+                `);
+                $("#paginationControls").empty();
+                return;
+            }
 
             users.forEach(user => {
                 tbody.append(`
@@ -261,15 +300,22 @@ $("#userSearch").on("keyup", function () {
             $("#paginationControls").empty();
         },
         error: function (err) {
-            Swal.fire({
-                background: "#1e1e1e",
-                color: "#ffffff",
-                position: "center",
-                icon: "error",
-                title: "Failed !!",
-                showConfirmButton: false,
-                timer: 1500
-            });
+            console.error("User search failed", err);
+            $("#userTableBody").html(`
+                <tr class="text-center">
+                    <td colspan="5" style="
+                        padding: 50px 0;
+                        background: rgba(255, 0, 0, 0.2);
+                        border-radius: 12px;
+                        color: #fff;
+                        font-weight: 600;
+                        font-size: 1rem;
+                    ">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-2" style="display:block; margin-bottom:10px;"></i>
+                        Failed to fetch users. Please try again.
+                    </td>
+                </tr>
+            `);
         }
     });
 });
@@ -290,6 +336,26 @@ function loadJobs(page = 0) {
                 const jobs = res.data.content;
                 const tbody = $("#jobTableBody");
                 tbody.empty();
+
+                if (!jobs || jobs.length === 0) {
+                    tbody.append(`
+                    <tr class="text-center">
+                        <td colspan="7" style="
+                            padding: 50px 0;
+                            background: rgba(10, 15, 61, 0.3);
+                            border-radius: 12px;
+                            color: rgba(255, 255, 255, 0.6);
+                            font-weight: 600;
+                            font-size: 1rem;
+                        ">
+                            <i class="fas fa-briefcase fa-2x mb-2" style="display:block; margin-bottom:10px;"></i>
+                            No job posts found
+                        </td>
+                    </tr>
+                `);
+                    $("#jobPaginationControls").empty();
+                    return;
+                }
 
                 jobs.forEach(job => {
                     tbody.append(`
@@ -313,16 +379,8 @@ function loadJobs(page = 0) {
                 renderJobPagination(res.data.totalPages, page);
             }
         },
-        error: function () {
-            Swal.fire({
-                background: "#1e1e1e",
-                color: "#ffffff",
-                position: "center",
-                icon: "error",
-                title: "Failed !!",
-                showConfirmButton: false,
-                timer: 1500
-            });
+        error: function (err) {
+            console.error("Failed to load jobs", err);
         }
     });
 }
@@ -358,30 +416,12 @@ $(document).on("click", ".disable-job-btn", function () {
             Authorization: "Bearer " + localStorage.getItem("token")
         },
         success: function (res) {
-            Swal.fire({
-                title: 'Success',
-                text: '',
-                icon: 'success',
-                background: '#0a0f3d',
-                color: '#ffffff',
-                confirmButtonColor: '#667eea',
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: true
-            }).then(() => {
-                loadJobs(currentJobPage);
-            });
+            alert(res.message || "Job disabled successfully!");
+            loadJobs(currentJobPage);
         },
-        error: function () {
-            Swal.fire({
-                background: "#1e1e1e",
-                color: "#ffffff",
-                position: "center",
-                icon: "error",
-                title: "Failed !!",
-                showConfirmButton: false,
-                timer: 1500
-            });
+        error: function (err) {
+            console.error("Failed to disable job", err);
+            alert("Error disabling job");
         },
         complete: function () {
                 btn.prop("disabled", false).text("Disable / Enable JobPost");
@@ -409,6 +449,27 @@ $("#jobSearchAdmin").on("keyup", function () {
             const tbody = $("#jobTableBody");
             tbody.empty();
 
+
+            if (!jobs || jobs.length === 0) {
+                tbody.append(`
+                    <tr class="text-center">
+                        <td colspan="7" style="
+                            padding: 50px 0;
+                            background: rgba(10, 15, 61, 0.3);
+                            border-radius: 12px;
+                            color: rgba(255, 255, 255, 0.6);
+                            font-weight: 600;
+                            font-size: 1rem;
+                        ">
+                            <i class="fas fa-briefcase fa-2x mb-2" style="display:block; margin-bottom:10px;"></i>
+                            No job posts found for "<strong>${keyword}</strong>"
+                        </td>
+                    </tr>
+                `);
+                $("#jobPaginationControls").empty();
+                return;
+            }
+
             jobs.forEach(job => {
                 tbody.append(`
                     <tr>
@@ -430,15 +491,23 @@ $("#jobSearchAdmin").on("keyup", function () {
             $("#jobPaginationControls").empty();
         },
         error: function (err) {
-            Swal.fire({
-                background: "#1e1e1e",
-                color: "#ffffff",
-                position: "center",
-                icon: "error",
-                title: "Job search Failed !!",
-                showConfirmButton: false,
-                timer: 1500
-            });
+            console.error("Job search failed", err);
+            $("#jobTableBody").html(`
+                <tr class="text-center">
+                    <td colspan="7" style="
+                        padding: 50px 0;
+                        background: rgba(255, 0, 0, 0.2);
+                        border-radius: 12px;
+                        color: #fff;
+                        font-weight: 600;
+                        font-size: 1rem;
+                    ">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-2" style="display:block; margin-bottom:10px;"></i>
+                        Failed to fetch job posts. Please try again.
+                    </td>
+                </tr>
+            `);
+
         }
     });
 });

@@ -76,7 +76,7 @@ function loadWorkerRecentApplications() {
                 box.append(`
           <div class="text-center py-4">
             <i class="fas fa-user-clock fa-2x mb-2"></i>
-            <p>No recent applications whotto</p>
+            <p>No recent applications</p>
           </div>
         `);
                 return;
@@ -622,7 +622,7 @@ function renderJobs(jobs) {
                   </div>
                 </div>
                  <button class="btn btn-success btn-sm" 
-                        onclick="markComplete(${job.applicationId}, ${job.jobPostId , this})">
+                        onclick="markComplete(${job.applicationId}, this)">
                             Mark Complete
             </button>
               </div>
@@ -666,6 +666,7 @@ function markComplete(applicationID, btnElement) {
                 timerProgressBar: true,
                 showConfirmButton: true
             }).then(() => {
+                loadRecentApplications()
                 loadActiveJobs();
                 loadMyApplications();
                 loadWorkerStats();
@@ -780,28 +781,6 @@ function ajaxWithRefresh(options) {
 
     $.ajax(options);
 }
-/*    Swal.fire({
-        title: 'Saved!',
-        text: 'Your Post have been saved successfully.',
-        icon: 'success',
-        background: '#0a0f3d', // Dark background
-        color: '#ffffff',       // Text color
-        confirmButtonColor: '#667eea',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: true
-    }).then(() => {
-    });
-
-    Swal.fire({
-        background: "#1e1e1e",   // dark background
-        color: "#ffffff",
-        position: "center",
-        icon: "error",
-        title: "Failed to Save",
-        showConfirmButton: false,
-        timer: 1500
-    });*/
 
 
 

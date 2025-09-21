@@ -4,7 +4,7 @@ NeedItDone is a web-based platform designed to connect service providers (worker
 It allows homeowners to post jobs and manage applications, while workers can browse, apply, and manage job opportunities efficiently. 
 Workers can be rated Homeowners and Admins will manage users and Job posts.
 
-This project demonstrates **Spring Boot (Backend)** and **React/Bootstrap (Frontend)** integration with **JWT authentication, role-based access, and secure APIs**.
+This project demonstrates **Spring Boot (Backend)** and **Html/Css/Bootstrap (Frontend)** integration with **JWT authentication, role-based access, and secure APIs**.
 
 ---
 
@@ -14,7 +14,7 @@ The primary goal of **NeedItDone** is to:
 - Enable workers to **search, apply, and manage applications**.
 - Ensure **secure login & registration** with **JWT authentication and refresh tokens**.
 - Offer dashboards tailored to both **homeowners** and **workers** and **admins**.
-- Showcase practical use of **Spring Boot, REST APIs, Spring Security, JWT, MySQL, and Smtp Mail Sender , **.
+- Showcase practical use of **Spring Boot, REST APIs, Spring Security, JWT, MySQL, and Smtp Mail Sender**.
 
 ---
 
@@ -65,9 +65,13 @@ The backend will start on http://localhost:8080
 ### 3️⃣ DB Setup
 
 Add admin manuualy to the database.
-INSERT INTO users (username,password,email,phone,role,status) VALUES ('admin''$2a$10$7znjmDpCbnz8f82iaEWeHueDN1cueR7k5eLPS6iYO6bLI4nhxE1TW','admin@gmail.com','077918155','ADMIN','ACTIVE');  
-
-
+        *Ex: username-admin , password - admin123*
+```bash
+INSERT INTO user (join_date, username, password, email, phone, role, status) 
+VALUES (CURDATE(), 'admin', 
+        '$2a$10$7znjmDpCbnz8f82iaEWeHueDN1cueR7k5eLPS6iYO6bLI4nhxE1TW', 
+        'admin@gmail.com', '077918155', 'ADMIN', 'ACTIVE');
+```
 ### 4️⃣ Frontend Setup (HTML/CSS/Bootstrap + jQuery)
 
 Navigate to the frontend folder : cd frontend

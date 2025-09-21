@@ -182,11 +182,11 @@ public class UserServiceImpl implements UserService {
                 .findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(
                         keyword, keyword
                 );
-
-        if (list.isEmpty()) {
-            throw new RuntimeException("Users Not Found");
-        }
-        return modelMapper.map(list, new TypeToken<List<SignUpDTO>>(){}.getType());
+        return list.stream().map(user -> {
+            SignUpDTO dto = modelMapper.map(user, SignUpDTO.class);
+            dto.setStatus(user.getStatus());
+            return dto;
+        }).toList();
     }
 
     @Override
@@ -249,6 +249,7 @@ public class UserServiceImpl implements UserService {
             SignUpDTO dto = modelMapper.map(user, SignUpDTO.class);
             dto.setJoinDate(user.getJoinDate());
             dto.setStatus(user.getStatus());
+            dto.setRole(String.valueOf(user.getRole()));
             return dto;
         });
     }
