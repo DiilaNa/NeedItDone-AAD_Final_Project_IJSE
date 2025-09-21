@@ -13,7 +13,7 @@ The primary goal of **NeedItDone** is to:
 - Provide a platform for homeowners to **post and manage jobs**.
 - Enable workers to **search, apply, and manage applications**.
 - Ensure **secure login & registration** with **JWT authentication and refresh tokens**.
-- Offer dashboards tailored to both **homeowners** and **workers** and **admins**.
+- Offer dashboards tailored to both **homeowners** , **workers** and **admins**.
 - Showcase practical use of **Spring Boot, REST APIs, Spring Security, JWT, MySQL, and Smtp Mail Sender**.
 
 ---
@@ -76,7 +76,7 @@ VALUES (CURDATE(), 'admin',
 
 Navigate to the frontend folder : cd frontend
 
-Since the frontend is static HTML/CSS/JS:Simply open index.html in a browser, or Serve it via a lightweight server (e.g., Live Server in VS Code).The frontend will connect to the backend API running at http://localhost:8080
+Since the frontend is static HTML/CSS/JS:Simply open login.html in a browser, or Serve it via a lightweight server (e.g., Live Server in VS Code).The frontend will connect to the backend API running at http://localhost:8080
 
 ### 5️⃣ Access the Application
 
