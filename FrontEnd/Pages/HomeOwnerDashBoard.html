@@ -303,20 +303,31 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
-                            <form id="updateUserForm">
+                            <form id="updateUserForm" novalidate>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="profileUserName" class="form-label">User Name</label>
-                                        <input type="text" class="form-control" id="profileUserName">
+                                        <input type="text" class="form-control" id="profileUserName" name="username"
+                                               pattern="^[A-Za-z]{3,10}$"
+                                               title="Username must be 3–10 letters only (no numbers or symbols)."
+                                               required>
                                     </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="profileEmail" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="profileEmail">
+                                    <input type="email" class="form-control" id="profileEmail" name="email"
+                                           pattern="^[\w\.-]+@[\w\.-]+\.\w{2,}$"
+                                           title="Enter a valid email address"
+                                           required>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="profilePhone" class="form-label">Phone</label>
-                                    <input type="tel" class="form-control" id="profilePhone">
+                                    <input type="tel" class="form-control" id="profilePhone" name="phone"
+                                           pattern="[0-9]{10}"
+                                           title="Phone number must be 10 digits"
+                                           required>
                                 </div>
 
                                 <button type="submit" class="btn btn-custom">Update Profile</button>
