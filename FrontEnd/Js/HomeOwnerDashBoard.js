@@ -345,6 +345,30 @@ function loadUserDetails() {
 /*----------------------Update User/Home Owner details----------------------------*/
 $("#updateUserForm").on('submit', function(e) {
     e.preventDefault();
+    let isValid = true;
+    const username = $("#profileUserName").val();
+    const email = $("#profileEmail").val();
+    const phone = $("#profilePhone").val();
+
+    // Clear previous errors
+    $(".invalid-feedback").text("");
+    $(".form-control").removeClass("is-invalid");
+
+    // Email check
+    if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
+        $("#profileEmail").addClass("is-invalid");
+        $("#profileEmail").next(".invalid-feedback").text("Enter a valid email address.");
+        isValid = false;
+    }
+
+    // Phone check
+    if (!/^[0-9]{10}$/.test(phone)) {
+        $("#profilePhone").addClass("is-invalid");
+        $("#profilePhone").next(".invalid-feedback").text("Phone number must be 10 digits.");
+        isValid = false;
+    }
+
+    if (!isValid) return;
     const updatedUser = {
         username: $("#profileUserName").val(),
         email: $("#profileEmail").val(),
@@ -360,31 +384,25 @@ $("#updateUserForm").on('submit', function(e) {
             Authorization : "Bearer " + localStorage.getItem("token")
         },
         success: function(response) {
-            if (response.data === 200){
-                Swal.fire({
-                    title: 'Saved!',
-                    text: 'Your Post has been saved successfully.',
-                    icon: 'success',
-                    background: '#0a0f3d',
-                    color: '#ffffff',
-                    confirmButtonColor: '#667eea',
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: true
-                }).then(() => {
-                    loadMyJobs();
-                    loadUserDetails();
-                });
-            } else {
-                // Show inline toast-style message
-                const msg = document.getElementById('updateMessage');
-                msg.innerText = "Failed to save post!";
-                msg.style.display = 'block';
-                setTimeout(() => {
-                    msg.style.display = 'none';
-                }, 3000); // hide after 3 seconds
-            }
-        },
+            Swal.fire({
+                title: 'Saved!',
+                text: 'Your Post has been saved successfully.',
+                icon: 'success',
+                background: '#0a0f3d',
+                color: '#ffffff',
+                confirmButtonColor: '#667eea',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true
+            });
+            },error:function () {
+            const msg = document.getElementById('updateMessage');
+            msg.innerText = "Failed to save post!";
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
+        }
 
     });
 });

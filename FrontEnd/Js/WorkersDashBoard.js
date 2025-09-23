@@ -693,16 +693,35 @@ function markComplete(applicationID, btnElement) {
     });
 }
 
-
 /*----------------------Update Worker Profile details----------------------------*/
 $("#updateUserForm").on('submit', function(e) {
     e.preventDefault();
 
-    const updatedWorker = {
-        username: $("#profileUserName").val(),
-        email: $("#profileEmail").val(),
-        phone: $("#profilePhone").val(),
-    };
+    let isValid = true;
+    const username = $("#profileUserName").val();
+    const email = $("#profileEmail").val();
+    const phone = $("#profilePhone").val();
+
+    $(".invalid-feedback").text("");
+    $(".form-control").removeClass("is-invalid");
+
+    // Email check
+    if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
+        $("#profileEmail").addClass("is-invalid");
+        $("#profileEmail").next(".invalid-feedback").text("Enter a valid email address.");
+        isValid = false;
+    }
+
+    // Phone check
+    if (!/^[0-9]{10}$/.test(phone)) {
+        $("#profilePhone").addClass("is-invalid");
+        $("#profilePhone").next(".invalid-feedback").text("Phone number must be 10 digits.");
+        isValid = false;
+    }
+
+    if (!isValid) return; // stop if invalid
+
+    const updatedWorker = { username, email, phone };
 
     ajaxWithRefresh({
         url: "http://localhost:8080/worker/updateUserWorkerController",
@@ -712,10 +731,11 @@ $("#updateUserForm").on('submit', function(e) {
         headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
         },
-        success: function() {
+        success: function(response) {
+            console.log(response)
             Swal.fire({
                 title: 'Updated!',
-                text: 'Your Account Details updated successfully.',
+                text: 'Your account details updated successfully.',
                 icon: 'success',
                 background: '#0a0f3d',
                 color: '#ffffff',
@@ -723,17 +743,16 @@ $("#updateUserForm").on('submit', function(e) {
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: true
-            })
-
-        },
-        error: function(xhr) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "Failed to update profile details. Please try again.",
-                showConfirmButton: false,
-                timer: 1500
             });
+        },
+        error: function() {
+            // inline toast-like message instead of swal
+            const msg = document.getElementById('updateMessage');
+            msg.innerText = "Failed to update profile details!";
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
         }
     });
 });
@@ -752,6 +771,7 @@ function ajaxWithRefresh(options) {
         if (xhr.status === 401 || xhr.status === 403) {
             // silently handle token expiration
             const refreshToken = localStorage.getItem("refreshToken");
+            options._retry = true;
             try {
                 const res = await fetch("http://localhost:8080/auth/refresh-token", {
                     method: "POST",

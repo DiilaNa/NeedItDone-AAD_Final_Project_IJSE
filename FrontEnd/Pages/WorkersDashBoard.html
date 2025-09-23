@@ -236,17 +236,21 @@
                     <div class="col-md-6 mb-3">
                       <label for="profileUserName" class="form-label">User Name</label>
                       <input type="text" class="form-control" id="profileUserName"  pattern="^[A-Za-z]{3,10}$"
-                             title="Username must be 3–10 letters only (no numbers or symbols)." required>
+                             title="Username must be 3–10 letters only (no numbers or symbols)." readonly>
+                      <div class="invalid-feedback"></div>
                     </div>
                   </div>
                   <div class="mb-3">
                     <label for="profileEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="profileEmail" pattern="^[\w\.-]+@[\w\.-]+\.\w{2,}$"  title="Enter a valid email address">
+                    <input type="email" class="form-control" id="profileEmail"pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+                           title="Enter a valid email address">
+                    <div class="invalid-feedback"></div>
                   </div>
                   <div class="mb-3">
                     <label for="profilePhone" class="form-label">Phone</label>
                     <input type="tel" class="form-control" id="profilePhone" pattern="[0-9]{10}"
                            title="Phone number must be 10 digits" required>
+                    <div class="invalid-feedback"></div>
                   </div>
 
                   <button type="submit" class="btn btn-custom">Update Profile</button>
