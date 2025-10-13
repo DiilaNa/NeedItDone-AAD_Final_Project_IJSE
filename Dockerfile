@@ -2,20 +2,20 @@
 FROM openjdk:17-jdk-slim AS build
 WORKDIR /app
 
-# Copy Maven files
-COPY Backend/pom.xml Backend/pom.xml
-COPY Backend/src Backend/src
+# Copy Maven files (use exact folder name)
+COPY BackEnd/pom.xml BackEnd/pom.xml
+COPY BackEnd/src BackEnd/src
 
-# Install Maven & build
+# Install Maven and build the JAR
 RUN apt-get update && apt-get install -y maven
-RUN mvn -f Backend/pom.xml clean package -DskipTests
+RUN mvn -f BackEnd/pom.xml clean package -DskipTests
 
 # Stage 2: Runtime
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 
+# Copy the built JAR
 COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]
-
-
