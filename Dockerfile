@@ -1,15 +1,27 @@
-# Use official Java 17 image
-FROM openjdk:17-jdk-slim
+# Use Java 17 image
+FROM openjdk:17-jdk-slim AS build
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy the backend jar into the container
-ARG JAR_FILE=backend/target/*.jar
-COPY ${JAR_FILE} app.jar
+# Copy Maven files
+COPY backend/pom.xml backend/pom.xml
+COPY backend/src backend/src
 
-# Expose the default Spring Boot port
+# Install Maven and build the JAR
+RUN apt-get update && apt-get install -y maven
+RUN mvn -f backend/pom.xml clean package -DskipTests
+
+# Second stage: runtime
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+
+# Copy the JAR from build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose port
 EXPOSE 8080
 
-# Run the jar file
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Run the app
+ENTRYPOINT ["java","-jar","app.jar"]
+
