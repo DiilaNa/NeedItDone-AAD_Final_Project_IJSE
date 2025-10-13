@@ -13,7 +13,6 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the built JAR
-COPY --from=build /target/BackEnd-0.0.1-SNAPSHOT.jar app.jar
 COPY --from=build /app/target/BackEnd-0.0.1-SNAPSHOT.jar app.jar
 
 
