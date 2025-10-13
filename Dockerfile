@@ -3,10 +3,9 @@ FROM maven:3.9.3-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copy backend module
-COPY BackEnd/ .
+COPY BackEnd/pom.xml .
+COPY BackEnd/src ./src
 
-# Build the JAR
-RUN mvn clean package -DskipTests
 
 # Use a lightweight JDK for running
 FROM openjdk:17-jdk-slim
