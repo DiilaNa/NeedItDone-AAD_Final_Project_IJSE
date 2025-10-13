@@ -1,21 +1,24 @@
-# Stage 1: Build
-FROM openjdk:17-jdk-slim AS build
+# Stage 1: Build the backend JAR
+FROM maven:3.9.3-eclipse-temurin-17 AS build
+
 WORKDIR /app
 
-# Copy Maven files (use exact folder name)
-COPY BackEnd/pom.xml BackEnd/pom.xml
-COPY BackEnd/src BackEnd/src
+# Copy backend module
+COPY Backend/pom.xml .
+COPY Backend/src ./src
 
-# Install Maven and build the JAR
-RUN apt-get update && apt-get install -y maven
-RUN mvn -f BackEnd/pom.xml clean package -DskipTests
+# Build the JAR
+RUN mvn clean package -DskipTests
 
-# Stage 2: Runtime
+# Stage 2: Run the app
 FROM openjdk:17-jdk-slim
+
 WORKDIR /app
 
 # Copy the built JAR
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
